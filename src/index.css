@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --color-grey: #dcdcdc;
+  --color-darkgrey: #a9a9a9;
+}
+
+@font-face {
+  font-family: "Mona Sans";
+  src: url("./assets/fonts/MonaSans.ttf") format("truetype");
+  font-display: swap;
+}
+
+body {
+  font-family: "Mona Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+}
+
+#root {
+  display: grid;
+  height: 100vh;
+  height: 100dvh;
+  grid-template-rows: min-content 1fr;
+}
+
+select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown::before,
+.dropdown::after {
+  --size: 0.3rem;
+  position: absolute;
+  content: "";
+  right: 1rem;
+  pointer-events: none;
+}
+
+.dropdown::before {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-bottom: var(--size) solid black;
+  top: 40%;
+}
+
+.dropdown::after {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-top: var(--size) solid black;
+  top: 55%;
+}
