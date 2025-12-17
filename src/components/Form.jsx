@@ -126,7 +126,7 @@ const Form = ({ record, courses, handleSubmit }) => {
             onChange={(e) => setStartTime(e.target.value)}
             onFocus={showStartTimePicker}
             required
-            className={`min-w-25 border border-grey rounded-2xl p-2 py-2 ${theme.current == "dark" ? "darkmode" : ""}`}
+            className={`border border-grey rounded-2xl p-2 py-2 ${theme.current == "dark" ? "darkmode" : ""}`}
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -143,7 +143,7 @@ const Form = ({ record, courses, handleSubmit }) => {
             onChange={(e) => setEndTime(e.target.value)}
             onFocus={showEndTimePicker}
             required
-            className={`min-w-25 border rounded-2xl p-2 py-2 border-grey ${theme.current == "dark" ? "darkmode" : ""} invalid:border-red-500 invalid:outline-red-500`}
+            className={`border rounded-2xl p-2 py-2 border-grey ${theme.current == "dark" ? "darkmode" : ""} invalid:border-red-500 invalid:outline-red-500`}
           />
         </div>
       </div>
@@ -152,7 +152,7 @@ const Form = ({ record, courses, handleSubmit }) => {
           Total time
         </label>
         <p
-          className={`min-w-25 h-full border ${darkMode ? "" : "text-gray-700"}  border-grey rounded-2xl p-2 py-2 ${theme.current == "dark" ? "darkmode" : ""}`}
+          className={`h-full border ${darkMode ? "" : "text-gray-700"}  border-grey rounded-2xl p-2 py-2 ${theme.current == "dark" ? "darkmode" : ""}`}
         >
           {minutesSpent(startTime, endTime)}
         </p>
