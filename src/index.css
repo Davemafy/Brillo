@@ -7,7 +7,7 @@
 
 @font-face {
   font-family: "Mona Sans";
-  src: url("./assets/fonts/MonaSans.ttf") format("truetype");
+  src: url("assets/fonts/MonaSans.ttf") format("truetype");
   font-display: swap;
 }
 
