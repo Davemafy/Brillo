@@ -25,11 +25,13 @@ export const Route = createLazyFileRoute("/_authenticated/dashboard")({
   component: MainDash,
 });
 
-function NavBar({ className}) {
+function NavBar({ className }) {
   return (
-    <nav className={`flex justify-between items-stretch gap-8 ${className}`}>
-      <div className="flex-2 flex rounded-xl px-2 items-center bg-accent">
-        <button className="py-2 flex place-items-center">
+    <nav
+      className={`sticky top-0 z-10 backdrop-blur-sm bg-white pb-5 flex justify-between items-stretch gap-2 ${className}`}
+    >
+      <div className="ls:flex-2 flex rounded-xl px-2 items-center bg-accent">
+        <button className="py-2 shrink-0 flex place-items-center">
           <img
             src="/assets/img/search.svg"
             alt="search"
@@ -41,14 +43,18 @@ function NavBar({ className}) {
           className="px-4 w-full h-full focus:outline-0 text-sm"
         />
       </div>
-      <div className="flex-1 shrink-0 flex items-center justify-end gap-4">
-        <button className="relative">
-          <img src="/assets/img/bell.svg" alt="bell" className="block h-6" />
+      <div className="ls:flex-1 shrink-0 flex items-center justify-end gap-4">
+        <button className="relative shrink-0">
+          <img
+            src="/assets/img/bell.svg"
+            alt="bell"
+            className="block h-5 xs:h-6"
+          />
           <div className="absolute -top-[25%] right-0 flex justify-center items-center rounded-full w-2.5 h-2.5  aspect-square bg-red-400 text-[0.5rem] text-white">
             1
           </div>
         </button>
-        <div className="flex items-center gap-2">
+        <div className="shrink-0 flex items-center gap-2">
           <button className="w-9 aspect-square bg-black rounded overflow-hidden">
             <img src="https://picsum.photos/200" alt="profile" />
           </button>
@@ -102,40 +108,49 @@ function MainDash() {
   return (
     <div className="grid grid-dashboard  w-full h-full overflow-auto gap-8 p-5 sm:p-8 pt-0 sm:py-0">
       <div className="h-full pb-5 overflow-auto no-scrollbar flex flex-col gap-6 rounded-xl">
-       <NavBar className="sm:hidden pt-6"/>
-        <div className="grid mt-5 sm:mt-8 grid-cols-2 bg-accent items-stretch  rounded-[inherit]">
-          <div className="p-8">
-            <h2 className="font-extrabold text-2xl">Hello Jane!</h2>
-            <p className="text-[0.7rem]">It's good to see you again.</p>
+        <NavBar className="xlg:hidden pt-6" />
+        <div className="grid xlg:mt-8 xs:grid-cols-2 bg-accent items-stretch  rounded-[inherit]">
+          <div className="p-4 xs:p-8">
+            <h2 className="font-extrabold max-w-[4ch] xxs:max-w-full text-xl">Hello Jane!</h2>
+            <p className="text-[0.7rem] ">It's good to see you again.</p>
           </div>
-          <div className="p-2 relative">
+          <div className="flex justify- h-full items-center xxs:block p-2 relative max-h-30 xxs:max-h-full">
             <img
-              className="absolute right-[40%] bottom-0 h-[110%] "
+              className="mx-auto xs:absolute xs:right-[15%]  xs:opacity-100 sm:right-[40%] h-full object-contain object-bottom bottom-0 sm:h-[110%] "
               src="/assets/img/user.svg"
-              alt="welcome"
+              alt="user.svg"
             />
           </div>
         </div>
-        <div className="flex lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex-1 flex min-h-16 items-center gap-4 p-2 bg-accent rounded-xl">
-            <div className="rounded-[inherit] w-10 aspect-square bg-white">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex-1 flex flex-col ls:flex-row min-h-16 ls:items-center gap-4 p-2 bg-accent rounded-xl">
+            <div className="shrink-0 rounded-[inherit] w-10 aspect-square bg-white">
               <img
                 src="https://picsum.photos/200"
                 className="rounded-xl"
                 alt=""
               />
             </div>
-            <div>
-              <h3 className="text-[0.8rem] font-bold">Spanish B2</h3>
-              <p className="text-[0.65rem]">by Alejandro Velazquez</p>
+            <div className="flex flex-col xxs:flex-row gap-2 justify-between">
+              <div>
+                <h3 className="text-[0.7rem] xs:text-[0.8rem] font-bold">
+                  Spanish B2
+                </h3>
+                <p className="text-[0.6rem] xs:text-[0.65rem]">
+                  by Alejandro Velazquez
+                </p>
+              </div>
+              <p className="ls:hidden grid place-items-center text-[0.65rem]  border-[2.5px] rounded-full  w-9 h-9 aspect-square">
+                99%
+              </p>
             </div>
-            <div className="flex gap-4 ml-auto">
-              <div className="flex justify-center px-2">
+            <div className="flex gap-4 ls:ml-auto">
+              <div className="hidden ls:flex justify-center ls:px-2">
                 <p className="grid place-items-center text-[0.65rem] border-[2.5px] rounded-full w-10 aspect-square">
                   99%
                 </p>
               </div>
-              <button className="bg-black text-white rounded-xl text-[0.7rem] p-3 px-6">
+              <button className="bg-black text-white rounded-xl text-[0.7rem] p-3 px-6 w-full ls:w-fit">
                 Continue
               </button>
             </div>
@@ -149,27 +164,27 @@ function MainDash() {
             </button>
           </div>
         </div>
-        <section className="flex flex-col gap-4 h-full overflow-auto">
+        <section className="flex flex-col gap-4 h-full xlg:overflow-auto">
           <h3 className="font-bold">Courses</h3>
-          <div className="flex flex-col gap-2 h-full overflow-auto">
-            <ul className="flex text-xs gap-6 font-bold">
-              <li>
+          <div className="flex flex-col gap-2 md:h-full md:overflow-auto">
+            <ul className="flex text-xs  w-full px-4 -ml-4 py-2 overflow-auto no-scrollbar  gap-6 font-bold">
+              <li className="shrink-0 ">
                 <button>All Courses</button>
               </li>
-              <li className="opacity-40">
+              <li className="shrink-0 opacity-40">
                 <button>The Newest</button>
               </li>
-              <li className="opacity-40">
+              <li className="shrink-0 opacity-40">
                 <button>Top Rated</button>
               </li>
-              <li className="opacity-40">
+              <li className="shrink-0 opacity-40">
                 <button>Most Popular</button>
               </li>
             </ul>
-            <ul className="grid sm:grid-cols-2 md:grid-cols-3 xlg:grid-cols-1 gap-3 text-[0.65rem] h-full overflow-auto no-scrollbar">
+            <ul className="grid ls:grid-cols-2 md:grid-cols-3 xlg:grid-cols-1 gap-3 text-[0.65rem] xlg:overflow-auto no-scrollbar">
               {mockCourses.map((course, index) => {
                 return (
-                  <li className="h-max flex sm:flex-col xlg:flex-row min-h-16 items-center sm:items-start xlg:items-center gap-2 xlg:gap-4 p-2 bg-accent rounded-xl">
+                  <li className="h-max flex flex-col xlg:flex-row min-h-16 items-start xlg:items-center gap-2 xlg:gap-4 p-2 bg-accent rounded-xl">
                     <div className="rounded-xl p-1 overflow-hidden w-10 aspect-square bg-white">
                       <img
                         src={`https://picsum.photos/${index}00`}
@@ -177,14 +192,14 @@ function MainDash() {
                         className="h-full w-full rounded-xl object-cover "
                       />
                     </div>
-                    <div className="flex w-full items-center sm:items-stretch sm:flex-col gap-2 justify-between sm:justify-start xlg:justify-between xlg:flex-row">
+                    <div className="flex w-full items-stretch flex-col gap-2  justify-start xlg:justify-between xlg:flex-row">
                       <div className="">
                         <h3 className="text-[0.8rem] font-bold">
                           {course.title}
                         </h3>
                         <p className="text-[0.65rem]">by {course.instructor}</p>
                       </div>
-                      <div className="flex sm:flex-col xlg:flex-row gap-4 sm:gap-2 xlg:gap-4 ml:auto sm:ml-0 xlg:ml-auto items-center sm:items-stretch xlg:items-center">
+                      <div className="flex flex-col xlg:flex-row gap-4 gap-2 xlg:gap-4 ml:auto ml-0 xlg:ml-auto items-center items-stretch xlg:items-center">
                         <div className="flex gap-4 xlg:ml-auto items-center">
                           <p className="flex gap-1">
                             <Clock
@@ -210,42 +225,8 @@ function MainDash() {
           </div>
         </section>
       </div>
-      <div className="hidden sm:flex rounded-xl flex-col gap-4 pt-8 pb-7 h-full w-full overflow-auto">
-        <nav className="flex justify-between items-stretch gap-8">
-          <div className="flex-2 flex rounded-xl px-2 items-center bg-accent">
-            <button className="py-2 flex place-items-center">
-              <img
-                src="/assets/img/search.svg"
-                alt="search"
-                style={{ height: "20.5px" }}
-              />
-            </button>
-            <input
-              type="text"
-              className="px-4 w-full h-full focus:outline-0 text-sm"
-            />
-          </div>
-          <div className="flex-1 shrink-0 flex items-center justify-end gap-4">
-            <button className="relative">
-              <img
-                src="/assets/img/bell.svg"
-                alt="bell"
-                className="block h-6"
-              />
-              <div className="absolute -top-[25%] right-0 flex justify-center items-center rounded-full w-2.5 h-2.5  aspect-square bg-red-400 text-[0.5rem] text-white">
-                1
-              </div>
-            </button>
-            <div className="flex items-center gap-2">
-              <button className="w-9 aspect-square bg-black rounded overflow-hidden">
-                <img src="https://picsum.photos/200" alt="profile" />
-              </button>
-              <button>
-                <img src="/assets/img/arrow-down.svg" alt="arrow down" />
-              </button>
-            </div>
-          </div>
-        </nav>
+      <div className="hidden xlg:flex rounded-xl flex-col gap-4 pt-8 pb-7 h-full w-full overflow-auto">
+        <NavBar />
         <div className="flex gap-[inherit] text-xs">
           <div className="flex-1 flex items-center bg-accent p-[0.65625rem] pl-6 gap-2 rounded-xl">
             <h4 className="text-4xl font-black">11</h4>
