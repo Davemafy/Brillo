@@ -103,7 +103,7 @@ function MainDash() {
     <div className="grid grid-dashboard  w-full h-full overflow-auto gap-8 p-5 sm:p-8 pt-0 sm:py-0">
       <div className="h-full pb-5 overflow-auto no-scrollbar flex flex-col gap-6 rounded-xl">
        <NavBar className="sm:hidden pt-6"/>
-        <div className="grid mt-5 sm:mt-8 xs:grid-cols-2 bg-accent items-stretch  rounded-[inherit]">
+        <div className="grid mt-5 sm:mt-8 grid-cols-2 bg-accent items-stretch  rounded-[inherit]">
           <div className="p-8">
             <h2 className="font-extrabold text-2xl">Hello Jane!</h2>
             <p className="text-[0.7rem]">It's good to see you again.</p>
