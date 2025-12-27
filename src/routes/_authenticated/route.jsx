@@ -23,7 +23,7 @@ function Setup() {
   }
 
   return (
-    <div className={`setup ${theme.themes[theme.current].style}`}>
+    <div className={`setup font-monasans ${theme.themes[theme.current].style}`}>
         <RecordProvider>
           <Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar} />
           <div className="w-full h-full flex flex-col">
