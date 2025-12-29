@@ -1,4 +1,4 @@
-# Brillo
+# Brillo <img src="./logo.png" alt="Brillo logo" width="32" />
 
 Brillo is a simple learning tracker that helps users log daily learning activity and stay consistent.
 
