@@ -9,9 +9,9 @@ Brillo is a simple learning tracker that helps users log daily learning activity
 
 ## Tech Stack
 - React
-- JavaScript
+- Tanstack Router
 - Tailwind CSS
-- (Optional) API / local storage
+- Node.js
 
 ## Why I built this
 I wanted to practice building a real, usable web app instead of isolated components.
