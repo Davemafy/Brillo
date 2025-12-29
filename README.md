@@ -1,6 +1,6 @@
 # <img src="./public/brillo.svg" alt="Brillo logo"  />
 
-Brillo is a simple learning tracker that helps users log daily learning activity and stay consistent.
+A simple learning tracker that helps users log daily learning activity and stay consistent.
 
 ## Features
 - Add daily learning entries
