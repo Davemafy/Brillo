@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
 @theme {
   --color-grey: #e5e7eb;
@@ -6,6 +7,7 @@
   --color-lightgrey: #6d6d6d;
   --color-darkgrey: #a9a9a9;
   --color-dark: #181818;
+  --color-mediumgrey: #5d5d5d;
   --font-monasans: "Mona Sans", "Uncut Sans", "system-ui";
   --text-xs: 0.75rem;
   --breakpoint-xlg: 70rem;
@@ -96,6 +98,21 @@ blockquote, dl, dd, h1, h2, h3, h4, h5, h6, hr, figure, p, a, span, div, pre {
 
 @font-face {
   font-family: "Uncut Sans";
+  src: url("/assets/fonts/UncutSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  font-optical-sizing: auto;
+  font-feature-settings:
+    "liga" 0,
+    "ss02",
+    "ss07";
+  font-variation-settings: normal;
+}
+
+
+@font-face {
+  font-family: "Uncut Sans";
   src: url("/assets/fonts/UncutSans-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
@@ -179,6 +196,14 @@ body {
 
 button {
   cursor: pointer;
+}
+
+[type='checkbox']:checked {
+    background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 12'%3e %3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M1 5.917 5.724 10.5 15 1.5'/%3e %3c/svg%3e");
+    background-repeat: no-repeat;
+    background-size: 0.55em 0.55em;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
 }
 
 .shapes-pos {

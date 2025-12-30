@@ -1,17 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { CoursesContext } from "./CoursesContext";
-
-function useSemiPersistentState(key, initialValue) {
-  const [value, setValue] = useState(
-    JSON.parse(localStorage.getItem(key)) || initialValue,
-  );
-
-  useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
-
-  return [value, setValue];
-}
+import { useSemiPersistentState } from "../../hooks/useSemiPersistentState";
 
 export const CoursesProvider = ({ children }) => {
   const [courses, setCourses] = useSemiPersistentState("courses", []);
@@ -21,7 +10,7 @@ export const CoursesProvider = ({ children }) => {
       const response = await fetch(`/api/courses`);
       const data = await response.json();
       console.log(data);
-      
+
       setCourses(data);
     };
 

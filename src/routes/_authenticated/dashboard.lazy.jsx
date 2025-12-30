@@ -1,31 +1,23 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import Note from "../../components/Note";
 import {
-  AlertCircle,
-  Bell,
-  BellRing,
-  BookCopy,
-  ChevronDown,
-  ChevronDownCircleIcon,
   ChevronRightCircleIcon,
   Clock,
-  Droplet,
   Flame,
   FolderOpenDot,
   MoveLeft,
   MoveRight,
-  Search,
-  StretchVertical,
 } from "lucide-react";
 import { useRecord } from "../../hooks/useRecord";
 import Form from "../../components/Form";
 import { useTheme } from "../../hooks/useTheme";
+import { useUser } from "../../hooks/useUser";
 
 export const Route = createLazyFileRoute("/_authenticated/dashboard")({
   component: NewDash,
 });
 
-function NavBar({ className }) {
+function NavBar({ pictureUrl, className }) {
   return (
     <nav
       className={`sticky top-0 z-10 backdrop-blur-sm bg-white pb-5 flex justify-between items-stretch gap-2 ${className}`}
@@ -40,7 +32,7 @@ function NavBar({ className }) {
         </button>
         <input
           type="text"
-          className=" w-0 p-0 ls:px-4 ls:w-full h-full focus:outline-0 text-sm"
+          className=" w-0 p-0 ls:px-4 ls:w-full h-full border-0 bg-inherit focus::border-0 focus:outline-0 text-sm"
         />
       </div>
       <div className="ls:flex-1 shrink-0 flex items-center justify-end gap-4">
@@ -55,8 +47,8 @@ function NavBar({ className }) {
           </div>
         </button>
         <div className="shrink-0 flex items-center gap-2">
-          <button className="w-9 aspect-square bg-black rounded overflow-hidden">
-            <img src="https://picsum.photos/200" alt="profile" />
+          <button className="w-9 aspect-square bg-black rounded-lg overflow-hidden">
+            <img src={pictureUrl} alt="profile" />
           </button>
           <button>
             <img src="/assets/img/arrow-down.svg" alt="arrow down" />
@@ -68,6 +60,9 @@ function NavBar({ className }) {
 }
 
 function NewDash() {
+  const [user] = useUser();
+  console.log(user)
+
   const mockCourses = [
     {
       title: "Learn Figma",
@@ -105,16 +100,17 @@ function NewDash() {
       img: "https://picsum.photos/200",
     },
   ];
+
   return (
     <>
       <title> Dashboard | Brillo </title>
       <div className="grid grid-dashboard  w-full h-full overflow-auto gap-8 p-5 px-8 ls:pl-4 sm:p-8 pt-0 sm:py-0">
         <div className="h-full pb-5 overflow-auto no-scrollbar flex flex-col gap-6 rounded-xl">
-          <NavBar className="xlg:hidden pt-6" />
+          <NavBar className="xlg:hidden pt-6" pictureUrl={user.picture}/>
           <div className="grid xlg:mt-8 xs:grid-cols-2 bg-accent items-stretch  rounded-[inherit]">
             <div className="p-4 py-8 sm:p-8">
               <h2 className="font-extrabold max-w-[4ch] xxs:max-w-full text-xl">
-                Hello Jane!
+                Hello {user.given_name}!
               </h2>
               <p className="text-[0.7rem] ">It's good to see you again.</p>
             </div>
@@ -208,7 +204,7 @@ function NewDash() {
                             by {course.instructor}
                           </p>
                         </div>
-                        <div className="flex flex-col xlg:flex-row gap-4 gap-2 xlg:gap-4 ml:auto ml-0 xlg:ml-auto items-center items-stretch xlg:items-center">
+                        <div className="flex flex-col xlg:flex-row gap-2  xlg:gap-4 ml:auto ml-0 xlg:ml-auto items-center  xlg:items-center">
                           <div className="flex gap-4 xlg:ml-auto items-center">
                             <p className="flex gap-1">
                               <Clock
@@ -235,7 +231,7 @@ function NewDash() {
           </section>
         </div>
         <div className="hidden xlg:flex rounded-xl flex-col gap-4 pt-8 pb-7 h-full w-full overflow-auto">
-          <NavBar />
+          <NavBar pictureUrl={user.picture} />
           <div className="flex gap-[inherit] text-xs">
             <div className="flex-1 flex items-center bg-accent p-[0.65625rem] pl-6 gap-2 rounded-xl">
               <h4 className="text-4xl font-black">11</h4>

@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import { RecordProvider } from "../../contexts/RecordContext";
@@ -7,7 +7,17 @@ import { useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
 export const Route = createFileRoute("/_authenticated")({
-  component: Setup,
+  beforeLoad: ({ context, location }) => {
+    if (!context.auth.isAuthenticated) {
+      throw redirect({
+        to: '/login',
+        search: {
+          redirect: location.pathname,
+        },
+      })
+    }
+  },
+ component: Setup,
 });
 
 function Setup() {
