@@ -37,13 +37,13 @@ function Index() {
             </div>
             <div className=" flex justify-end gap-2 ">
               <Link
-                to="/login"
+                to="/auth/login"
                 className="text-[14px] sm:text-base hidden sm:block border bg-white border-grey font-medium px-4 sm:px-6 py-2 rounded-[6.25rem]"
               >
                 Login
               </Link>
               <Link
-                to="/signup"
+                to="/auth/signup"
                 className="text-[14px] sm:text-base text-white whitespace-nowrap bg-dark font-medium px-4 sm:px-6 py-2 rounded-[6.25rem]"
               >
                 Sign up
@@ -66,7 +66,7 @@ function Index() {
             </div>
             <div>
               <Link
-                to="/signup"
+                to="/auth/signup"
                 className=" block w-fit mx-auto font-semibold text-white text-base sm:text-xl bg-dark px-12 py-4 rounded-[6.25rem]"
               >
                 Try Brillo free
@@ -133,14 +133,14 @@ function Index() {
             </article>
           </div>
           <Link
-            to="/signup"
+            to="/auth/signup"
             className="bg-dark text-white font-semibold px-12 py-4 rounded-[6.25rem]"
           >
             Start learning today
           </Link>
         </div>
       </section>
-      <footer className="grid grid-rows-[min-content] p-10">
+      <footer className="grid grid-rows-[min-content] p-10 pb-6">
         <div className="grid gap-5.5">
           <img src="/assets/img/brillo.svg" alt="" className="mx-auto" />
           <p className="text-lightgrey font-normal leading-7">

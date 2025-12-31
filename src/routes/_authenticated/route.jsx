@@ -10,14 +10,15 @@ export const Route = createFileRoute("/_authenticated")({
   beforeLoad: ({ context, location }) => {
     if (!context.auth.isAuthenticated) {
       throw redirect({
-        to: '/login',
-        search: {
+        to: "/auth/login",
+        state: {
           redirect: location.pathname,
         },
-      })
+      });
     }
   },
- component: Setup,
+
+  component: Setup,
 });
 
 function Setup() {

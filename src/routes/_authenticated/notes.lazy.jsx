@@ -6,9 +6,6 @@ import Sidebar from "../../components/Sidebar";
 
 export const Route = createLazyFileRoute("/_authenticated/notes")({
   component: Notes,
-  pendingComponent: () => {
-    return <p>Loading ...</p>;
-  },
 });
 
 function Notes() {

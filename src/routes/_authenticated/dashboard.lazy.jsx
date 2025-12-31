@@ -60,7 +60,7 @@ function NavBar({ pictureUrl, className }) {
 }
 
 function NewDash() {
-  const [user] = useUser();
+  const { user } = useUser();
   console.log(user)
 
   const mockCourses = [
