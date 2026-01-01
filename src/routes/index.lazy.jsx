@@ -37,13 +37,13 @@ function Index() {
             </div>
             <div className=" flex justify-end gap-2 ">
               <Link
-                to="/auth/login"
+                to="/app/login"
                 className="text-[14px] sm:text-base hidden sm:block border bg-white border-grey font-medium px-4 sm:px-6 py-2 rounded-[6.25rem]"
               >
                 Login
               </Link>
               <Link
-                to="/auth/signup"
+                to="/app/signup"
                 className="text-[14px] sm:text-base text-white whitespace-nowrap bg-dark font-medium px-4 sm:px-6 py-2 rounded-[6.25rem]"
               >
                 Sign up
@@ -66,7 +66,7 @@ function Index() {
             </div>
             <div>
               <Link
-                to="/auth/signup"
+                to="/app/signup"
                 className=" block w-fit mx-auto font-semibold text-white text-base sm:text-xl bg-dark px-12 py-4 rounded-[6.25rem]"
               >
                 Try Brillo free
@@ -133,7 +133,7 @@ function Index() {
             </article>
           </div>
           <Link
-            to="/auth/signup"
+            to="/app/signup"
             className="bg-dark text-white font-semibold px-12 py-4 rounded-[6.25rem]"
           >
             Start learning today

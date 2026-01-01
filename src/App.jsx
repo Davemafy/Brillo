@@ -1,4 +1,4 @@
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { Link, RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { useUser } from "./hooks/useUser";
 import { UserProvider } from "./contexts/UserContext";
@@ -26,8 +26,8 @@ const router = createRouter({
   defaultPendingMinMs: 0,
   defaultPendingMs: 0,
   defaultNotFoundComponent: () => (
-    <div>
-      <p>Oops, not found! Haha..🤷‍♂️ 👨🏻‍💻</p>
+    <div className="h-screen grid place-items-center ">
+      <p className="font-bold text-xl">Oops, not found! Haha..🤷‍♂️ 👨🏻‍💻<Link to="/" className="underline">Go home</Link></p>
     </div>
   ),
 });

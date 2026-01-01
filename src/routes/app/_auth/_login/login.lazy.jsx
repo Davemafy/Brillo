@@ -7,10 +7,11 @@ import {
 } from "@tanstack/react-router";
 import { jwtDecode } from "jwt-decode";
 import { flushSync } from "react-dom";
-import { useUser } from "../../../hooks/useUser";
+import { useUser } from "../../../../hooks/useUser";
 import { GoogleLogin } from "@react-oauth/google";
+import { supabase } from "../../../../superbaseClient";
 
-export const Route = createLazyFileRoute("/auth/_login/login")({
+export const Route = createLazyFileRoute("/app/_auth/_login/login")({
   component: Login,
 });
 
@@ -20,6 +21,7 @@ function Login() {
   const navigate = useNavigate();
   const state = useRouterState({ select: (s) => s.location.state });
   const router = useRouter();
+  const { redirect } = Route.useSearch(); // Captured from the initial redirect
 
   const handleLoginSuccess = (response) => {
     const token = response.credential;
@@ -34,13 +36,50 @@ function Login() {
 
     router.invalidate();
 
-    const destination = state?.returnTo || "/dashboard";
+    const destination = state?.returnTo || "/app/dashboard";
 
     navigate({ to: destination });
   };
 
   const handleLoginError = (error) => {
     console.log(error);
+  };
+
+  const handleLogin = async (formdata) => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: formdata.get("email"),
+      password: formdata.get("password"),
+    });
+
+    if (error) {
+      console.log("Login failed:", error);
+      return;
+    }
+
+    if (data.user) {
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", data.user.id)
+        .single();
+
+      if (profileError) {
+        console.error("Error fetching profile:", profileError.message);
+      } else {
+        console.log("User Profile:", profileData);
+
+        flushSync(() => {
+          setUser({
+            ...profileData,
+            isAuthenticated: true,
+          });
+        });
+
+        router.invalidate();
+
+        navigate({ to: redirect || "/app/dashboard" });
+      }
+    }
   };
   return (
     <>
@@ -54,17 +93,16 @@ function Login() {
           <h1 className="pt-1.5 text-2xl text-center font-bold leading-tight tracking-tight text-gray-900 ">
             Welcome back
           </h1>
-          <form className="flex flex-col w-full gap-6">
+          <form action={handleLogin} className="flex flex-col w-full gap-6">
             <div className="flex flex-col gap-2">
-              <label
-                htmlFor="email-address"
-                className="font-medium text-gray-900"
-              >
+              <label htmlFor="email" className="font-medium text-gray-900">
                 Email address
               </label>
               <input
                 type="text"
                 placeholder="Email address"
+                id="email"
+                name="email"
                 className="bg-gray-50 border border-gray-200 text-gray-900 text-base md:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-4 py-3  placeholder:text-gray-400"
               />
             </div>
@@ -75,6 +113,8 @@ function Login() {
               <input
                 type="text"
                 placeholder="Password"
+                id="password"
+                name="password"
                 className="bg-gray-50 border border-gray-200 text-gray-900 text-base md:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-4 py-3  placeholder:text-gray-400"
               />
             </div>
@@ -91,7 +131,7 @@ function Login() {
           <p className="text-mediumgrey font-light">
             New here?
             <Link
-              to="/auth/signup"
+              to="/app/signup"
               className="inline-block ml-1 font-normal text-dark"
             >
               Sign up

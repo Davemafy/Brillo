@@ -1,15 +1,14 @@
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import { FolderOpenDot } from "lucide-react";
-import Note from "../../components/Note";
-import { useRecord } from "../../hooks/useRecord";
-import Sidebar from "../../components/Sidebar";
+import { createLazyFileRoute, Link } from '@tanstack/react-router'
+import { FolderOpenDot } from 'lucide-react'
+import Note from '../../../components/Note'
+import { useRecord } from '../../../hooks/useRecord'
 
-export const Route = createLazyFileRoute("/_authenticated/notes")({
+export const Route = createLazyFileRoute('/app/_authenticated/notes')({
   component: Notes,
-});
+})
 
 function Notes() {
-  const [record] = useRecord();
+  const [record] = useRecord()
 
   return (
     <>
@@ -41,7 +40,7 @@ function Notes() {
               {record.notes.map((note, index, notes) => (
                 <Note
                   key={note.id}
-                  className={notes.length === 1 ? "sm:max-w-[70%]" : ""}
+                  className={notes.length === 1 ? 'sm:max-w-[70%]' : ''}
                   note={note}
                 />
               ))}
@@ -50,29 +49,29 @@ function Notes() {
         ))}
       </div>
     </>
-  );
+  )
 }
 
 function formatDate(date) {
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
+  const today = new Date()
+  const yesterday = new Date(today)
+  yesterday.setDate(today.getDate() - 1)
 
   const format = [
-    "en-us",
+    'en-us',
     {
-      year: "numeric",
-      month: "short",
-      day: "2-digit",
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
     },
-  ];
+  ]
 
-  const todayDate = today.toLocaleDateString(...format);
-  const yesterdayDate = yesterday.toLocaleDateString(...format);
+  const todayDate = today.toLocaleDateString(...format)
+  const yesterdayDate = yesterday.toLocaleDateString(...format)
 
   return date === todayDate
-    ? "Today"
+    ? 'Today'
     : date === yesterdayDate
-      ? "Yesterday"
-      : date;
+      ? 'Yesterday'
+      : date
 }

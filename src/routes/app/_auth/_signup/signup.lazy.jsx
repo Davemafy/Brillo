@@ -5,20 +5,43 @@ import {
   useRouter,
 } from "@tanstack/react-router";
 import { GoogleLogin } from "@react-oauth/google";
-import { useUser } from "../../../hooks/useUser";
+import { supabase } from "../../../../superbaseClient";
+import { useUser } from "../../../../hooks/useUser";
 import { jwtDecode } from "jwt-decode";
 import { flushSync } from "react-dom";
+import { useEffect, useState } from "react";
 
-export const Route = createLazyFileRoute("/auth/_signup/signup")({
+export const Route = createLazyFileRoute("/app/_auth/_signup/signup")({
   component: Signup,
 });
 
+
 function Signup() {
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   const { setUser } = useUser();
 
   const navigate = useNavigate();
   const router = useRouter();
   const { redirect } = Route.useSearch(); // Captured from the initial redirect
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      },
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
 
   const handleLoginSuccess = (response) => {
     const token = response.credential;
@@ -33,16 +56,50 @@ function Signup() {
 
     router.invalidate();
 
-    navigate({ to: redirect || "/dashboard" });
+    navigate({ to: redirect || "/app/dashboard" });
   };
 
   const handleLoginError = (error) => {
     console.log(error);
   };
 
-  const handleSignup = (formdata) => {
-    alert(formdata.get("name"));
-    setUser();
+  const handleSignup = async (formdata) => {
+    setLoading(true);
+    setErrorMsg("");
+
+    // 1. Sign up user with email & password
+    const { data, error } = await supabase.auth.signUp({
+      email: formdata.get("email"),
+      password: formdata.get("password"),
+      options: {
+        data: {
+          name: formdata.get("name"),
+          given_name: formdata.get("name").split(" ")[0],
+        },
+      },
+    });
+
+    if (error) {
+      setErrorMsg(error.message);
+      setLoading(false);
+      return;
+    }
+
+    if (data.user) {
+      flushSync(() => {
+        setUser({
+          ...data.user.user_metadata,
+          isAuthenticated: true,
+        });
+      });
+
+      router.invalidate();
+      navigate({ to: redirect || "/app/dashboard" });
+
+      alert("Signup successful! Welcome, " + data.user.user_metadata.name);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -65,6 +122,8 @@ function Signup() {
               <input
                 type="text"
                 placeholder="Name"
+                autoFocus
+                minLength="3"
                 name="name"
                 className="bg-gray-50 border border-gray-200 text-gray-900 text-base md:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-4 py-3  placeholder:text-gray-400"
               />
@@ -77,6 +136,8 @@ function Signup() {
                 type="email"
                 placeholder="Email address"
                 name="email"
+                autoComplete="username"
+                required
                 className="bg-gray-50 border border-gray-200 text-gray-900 text-base md:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-4 py-3  placeholder:text-gray-400"
               />
             </div>
@@ -88,6 +149,9 @@ function Signup() {
                 type="password"
                 placeholder="Password"
                 name="password"
+                autoComplete="new-password"
+                minLength="6"
+                required
                 className="bg-gray-50 border border-gray-200 text-gray-900 text-base md:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-4 py-3  placeholder:text-gray-400"
               />
             </div>
@@ -95,6 +159,7 @@ function Signup() {
               <input
                 type="checkbox"
                 name="accept-terms"
+                required
                 className="w-5 h-5 border-gray-200  rounded checked:border-0  focus:ring-2 focus:ring-[#b0b0b0] "
               />
               <label
@@ -122,7 +187,7 @@ function Signup() {
           </div>
           <p className="text-[#6b7280] font-light">
             Already have an account?{" "}
-            <Link to="/auth/login" className="font-medium text-dark">
+            <Link to="/app/login" className="font-medium text-dark">
               Login
             </Link>
           </p>

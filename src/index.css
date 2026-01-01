@@ -251,33 +251,6 @@ select {
   appearance: none;
   cursor: pointer;
 }
-.dropdown {
-  position: relative;
-}
-
-.dropdown::before,
-.dropdown::after {
-  --size: 0.3rem;
-  position: absolute;
-  content: "";
-  right: 1rem;
-  pointer-events: none;
-}
-
-.dropdown::before {
-  border-left: var(--size) solid transparent;
-  border-right: var(--size) solid transparent;
-  border-bottom: var(--size) solid;
-  top: 40%;
-}
-
-.dropdown::after {
-  border-left: var(--size) solid transparent;
-  border-right: var(--size) solid transparent;
-  border-top: var(--size) solid;
-  top: 55%;
-}
-
 .truncate-text {
   overflow: hidden;
   white-space: nowrap;

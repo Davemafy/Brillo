@@ -1,7 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { useTheme } from "../../hooks/useTheme";
+import { useTheme } from "../../../hooks/useTheme";
 
-export const Route = createLazyFileRoute("/_authenticated/settings")({
+export const Route = createLazyFileRoute("/app/_authenticated/settings")({
   component: Settings,
 });
 

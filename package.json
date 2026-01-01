@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-oauth/google": "^0.13.4",
+    "@supabase/supabase-js": "^2.89.0",
     "@tailwindcss/forms": "^0.5.11",
     "@tanstack/react-router": "1.117.1",
     "axios": "^1.13.2",
@@ -19,7 +20,8 @@
     "ldrs": "^1.1.9",
     "lucide-react": "^0.556.0",
     "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react-dom": "^19.2.1",
+    "react-loading-skeleton": "^3.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -35,6 +37,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "prettier": "^3.3.3",
+    "supabase": "^2.70.5",
     "tailwindcss": "^4.1.17",
     "vite": "^7.2.4"
   }

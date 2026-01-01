@@ -1,5 +1,5 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import Note from "../../components/Note";
+import Note from "../../../components/Note";
 import {
   ChevronRightCircleIcon,
   Clock,
@@ -8,16 +8,26 @@ import {
   MoveLeft,
   MoveRight,
 } from "lucide-react";
-import { useRecord } from "../../hooks/useRecord";
-import Form from "../../components/Form";
-import { useTheme } from "../../hooks/useTheme";
-import { useUser } from "../../hooks/useUser";
+import { useRecord } from "../../../hooks/useRecord";
+import Form from "../../../components/Form";
+import { useTheme } from "../../../hooks/useTheme";
+import { useUser } from "../../../hooks/useUser";
 
-export const Route = createLazyFileRoute("/_authenticated/dashboard")({
+export const Route = createLazyFileRoute("/app/_authenticated/dashboard")({
   component: NewDash,
 });
 
-function NavBar({ pictureUrl, className }) {
+function formatName(name) {
+  if(!name) return
+  const firstLetter = name[0];
+  const nameArr = name.split(" ");
+  if (nameArr.length > 1) {
+    return (firstLetter + nameArr[1][0]).toUpperCase();
+  }
+  return (firstLetter + name[name.length - 1]).toUpperCase();
+}
+
+function NavBar({ pictureUrl, userName, className }) {
   return (
     <nav
       className={`sticky top-0 z-10 backdrop-blur-sm bg-white pb-5 flex justify-between items-stretch gap-2 ${className}`}
@@ -48,7 +58,11 @@ function NavBar({ pictureUrl, className }) {
         </button>
         <div className="shrink-0 flex items-center gap-2">
           <button className="w-9 aspect-square bg-black rounded-lg overflow-hidden">
-            <img src={pictureUrl} alt="profile" />
+            {pictureUrl ? (
+              <img src={pictureUrl} alt="profile" />
+            ) : (
+              <p className="text-white">{formatName(userName)}</p>
+            )}
           </button>
           <button>
             <img src="/assets/img/arrow-down.svg" alt="arrow down" />
@@ -61,7 +75,6 @@ function NavBar({ pictureUrl, className }) {
 
 function NewDash() {
   const { user } = useUser();
-  console.log(user)
 
   const mockCourses = [
     {
@@ -104,17 +117,21 @@ function NewDash() {
   return (
     <>
       <title> Dashboard | Brillo </title>
-      <div className="grid grid-dashboard  w-full h-full overflow-auto gap-8 p-5 px-8 ls:pl-4 sm:p-8 pt-0 sm:py-0">
-        <div className="h-full pb-5 overflow-auto no-scrollbar flex flex-col gap-6 rounded-xl">
-          <NavBar className="xlg:hidden pt-6" pictureUrl={user.picture}/>
+      <div className="grid grid-dashboard w-full h-full overflow-auto gap-8 p-5 px-0 ls:pl-4 sm:p-8 pt-0 sm:py-0">
+        <div className="h-full pb-5 overflow-auto no-scrollbar flex flex-col gap-6 rounded-xl px-5 sm:px-0">
+          <NavBar
+            className="xlg:hidden pt-6"
+            pictureUrl={user.picture}
+            userName={user.name}
+          />
           <div className="grid xlg:mt-8 xs:grid-cols-2 bg-accent items-stretch  rounded-[inherit]">
             <div className="p-4 py-8 sm:p-8">
               <h2 className="font-extrabold max-w-[4ch] xxs:max-w-full text-xl">
-                Hello {user.given_name}!
+                Hello {console.log(user) || user.given_name}!
               </h2>
               <p className="text-[0.7rem] ">It's good to see you again.</p>
             </div>
-            <div className="flex justify- h-full items-center xxs:block p-2 relative max-h-30 xxs:max-h-full">
+            <div className="flex h-full items-center xxs:block p-2 relative max-h-30 xxs:max-h-full">
               <img
                 className="mx-auto xs:absolute xs:right-[15%]  xs:opacity-100 sm:right-[40%] h-full object-contain object-bottom bottom-0 sm:h-[110%] "
                 src="/assets/img/user.svg"
@@ -171,7 +188,7 @@ function NewDash() {
             <h3 className="font-bold">Courses</h3>
             <div className="flex flex-col gap-2 md:h-full md:overflow-auto">
               <ul className="flex text-xs  w-full px-4 -ml-4 py-2 overflow-auto no-scrollbar  gap-6 font-bold">
-                <li className="shrink-0 ">
+                <li className="shrink-0">
                   <button>All Courses</button>
                 </li>
                 <li className="shrink-0 opacity-40">
@@ -187,15 +204,18 @@ function NewDash() {
               <ul className="grid ls:grid-cols-2 md:grid-cols-3 xlg:grid-cols-1 gap-3 text-[0.65rem] xlg:overflow-auto no-scrollbar">
                 {mockCourses.map((course, index) => {
                   return (
-                    <li className="h-max flex isolate backdrop-blur-3xl flex-col relative xlg:flex-row min-h-16 items-start xlg:items-center gap-2 xlg:gap-4 p-4 lg:p-2  bg-accent rounded-xl">
-                      <div className="rounded-xl overflow-hidden w-10 aspect-square bg-white">
+                    <li
+                      key={index}
+                      className="h-max flex isolate backdrop-blur-3xl flex-col relative xlg:flex-row min-h-16 items-start xlg:items-center gap-4 xlg:gap-4 p-4 lg:p-2  bg-accent rounded-xl"
+                    >
+                      <div className="rounded-xl -mx-4 sm:mx-0 overflow-hidden   w-[calc(100%+2rem)] lg:w-10 aspect-square bg-white">
                         <img
                           src={`https://picsum.photos/${index}00`}
                           alt={course.title}
                           className="h-full  w-full top-0 left-0 -z-1 rounded-xl object-cover "
                         />
                       </div>
-                      <div className="flex w-full items-stretch flex-col gap-2  justify-start xlg:justify-between xlg:flex-row">
+                      <div className="flex w-full items-stretch flex-col gap-4  justify-start xlg:justify-between xlg:flex-row">
                         <div className="">
                           <h3 className="text-[0.8rem] font-bold">
                             {course.title}
@@ -204,7 +224,7 @@ function NewDash() {
                             by {course.instructor}
                           </p>
                         </div>
-                        <div className="flex flex-col xlg:flex-row gap-2  xlg:gap-4 ml:auto ml-0 xlg:ml-auto items-center  xlg:items-center">
+                        <div className="flex flex-col xlg:flex-row gap-4  xlg:gap-4 ml:auto ml-0 xlg:ml-auto md:items-center  xlg:items-center">
                           <div className="flex gap-4 xlg:ml-auto items-center">
                             <p className="flex gap-1">
                               <Clock
@@ -231,7 +251,7 @@ function NewDash() {
           </section>
         </div>
         <div className="hidden xlg:flex rounded-xl flex-col gap-4 pt-8 pb-7 h-full w-full overflow-auto">
-          <NavBar pictureUrl={user.picture} />
+          <NavBar pictureUrl={user.picture} userName={user.name} />
           <div className="flex gap-[inherit] text-xs">
             <div className="flex-1 flex items-center bg-accent p-[0.65625rem] pl-6 gap-2 rounded-xl">
               <h4 className="text-4xl font-black">11</h4>

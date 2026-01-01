@@ -1,9 +1,9 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import { useCourses } from "../../hooks/useCourses";
-import { useTheme } from "../../hooks/useTheme";
+import { useCourses } from "../../../hooks/useCourses";
+import { useTheme } from "../../../hooks/useTheme";
 import { ArrowRightSquare, AwardIcon } from "lucide-react";
 
-export const Route = createLazyFileRoute("/_authenticated/courses")({
+export const Route = createLazyFileRoute("/app/_authenticated/courses")({
   component: Courses,
 });
 
@@ -52,7 +52,7 @@ function Courses() {
                     <button className="text-[0.699rem]  border-black cursor-pointer  border rounded-xl p-2 px-4">
                       View Course
                     </button>
-                    <Link to="/dashboard" className="">
+                    <Link to="/app/dashboard" className="">
                       <button className="text-[0.699rem] w-full h-full bg-[#282828]  text-white rounded-xl p-2 px-4">
                         Check In
                       </button>
