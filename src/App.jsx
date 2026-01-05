@@ -27,7 +27,7 @@ const router = createRouter({
   defaultPendingMs: 0,
   defaultNotFoundComponent: () => (
     <div className="h-screen grid place-items-center ">
-      <p className="font-bold text-xl">Oops, not found! Haha..🤷‍♂️ 👨🏻‍💻<Link to="/" className="underline">Go home</Link></p>
+      <p className="font-bold text-xl">Oops, not found! Haha..🤷‍♂️ 👨🏻‍💻<Link to="/" className="underline">Back to App</Link></p>
     </div>
   ),
 });

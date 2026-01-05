@@ -1,88 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/forms";
 
-@theme {
-  --color-grey: #e5e7eb;
-  --color-accent: #f6f6f6;
-  --color-lightgrey: #6d6d6d;
-  --color-darkgrey: #a9a9a9;
-  --color-dark: #181818;
-  --color-mediumgrey: #5d5d5d;
-  --font-monasans: "Mona Sans", "Uncut Sans", "system-ui";
-  --text-xs: 0.75rem;
-  --breakpoint-xlg: 70rem;
-  --breakpoint-xm: 56rem;
-  --breakpoint-xxs: 10rem;
-  --breakpoint-xs: 16rem;
-  --breakpoint-ls: 25.5rem;
-  --breakpoint-lls: 27rem;
-}
-
-@layer utilities {
-  body {
-    @apply text-dark;
-  }
-  /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* IE, Edge and Firefox */
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  /* Custom scrollbar styles (WebKit) */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 11rem; /* vertical scrollbar width */
-    height: 11rem; /* horizontal scrollbar height */
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-transparent rounded-full;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-black rounded-full;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    @apply bg-black;
-  }
-
-  /* Custom scrollbar styles (Firefox) */
-  .custom-scrollbar {
-    scrollbar-width: thin; /* "auto" or "thin" */
-    scrollbar-color: theme("colors.black") theme("colors.gray.200"); /* thumb and track color */
-  }
-}
-
-blockquote, dl, dd, h1, h2, h3, h4, h5, h6, hr, figure, p, a, span, div, pre {
-  font-feature-settings: 'ss02' on, 'ss07' on, 'liga' off;
-}
-
-* {
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: thin;
-  /* IE and Edge */
-  overflow: -moz-scrollbars-thin;
-  scrollbar-width: thin;
-  /* Firefox */
-  scrollbar-color: #f3f4f6 transparent;
-}
-
-*::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
-  background-color: transparent;
-  z-index: 1000;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: #f3f4f6;
-}
-
 @font-face {
   font-family: "Mona Sans";
   src: url("/assets/fonts/MonaSans.ttf") format("ttf");
@@ -109,7 +27,6 @@ blockquote, dl, dd, h1, h2, h3, h4, h5, h6, hr, figure, p, a, span, div, pre {
     "ss07";
   font-variation-settings: normal;
 }
-
 
 @font-face {
   font-family: "Uncut Sans";
@@ -167,6 +84,98 @@ blockquote, dl, dd, h1, h2, h3, h4, h5, h6, hr, figure, p, a, span, div, pre {
   font-variation-settings: normal;
 }
 
+@theme {
+  --color-grey: #e5e7eb;
+  --color-accent: #f6f6f6;
+  --color-lightgrey: #6d6d6d;
+  --color-darkgrey: #a9a9a9;
+  --color-dark: #181818;
+  --color-mediumgrey: #5d5d5d;
+  --font-monasans: "Mona Sans", "Uncut Sans", "system-ui";
+  --text-xs: 0.75rem;
+  --breakpoint-xlg: 70rem;
+  --breakpoint-xm: 56rem;
+  --breakpoint-xxs: 10rem;
+  --breakpoint-xs: 16rem;
+  --breakpoint-ls: 25.5rem;
+  --breakpoint-lls: 27rem;
+}
+
+@layer utilities {
+  body {
+    @apply text-dark;
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+
+  /* Custom scrollbar styles (WebKit) */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 11rem; /* vertical scrollbar width */
+    height: 11rem; /* horizontal scrollbar height */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-black rounded-full;
+  }
+  
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-black;
+  }
+
+  /* Custom scrollbar styles (Firefox) */
+  .custom-scrollbar {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: theme("colors.black") theme("colors.gray.200"); /* thumb and track color */
+  }
+}
+
+* {
+  font-feature-settings:
+    "ss02" on,
+    "ss07" on,
+    "liga" off;
+
+    scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: thin;
+  /* IE and Edge */
+  overflow: -moz-scrollbars-thin;
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: #f3f4f6 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  background-color: transparent;
+  z-index: 1000;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #f3f4f6;
+}
+
+
+  /* Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+
 body {
   font-family: "Uncut Sans", sans-serif;
   position: relative;
@@ -194,16 +203,13 @@ body {
   font-variation-settings: normal;
 }
 
-button {
-  cursor: pointer;
-}
 
-[type='checkbox']:checked {
-    background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 12'%3e %3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M1 5.917 5.724 10.5 15 1.5'/%3e %3c/svg%3e");
-    background-repeat: no-repeat;
-    background-size: 0.55em 0.55em;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+[type="checkbox"]:checked {
+  background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 12'%3e %3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M1 5.917 5.724 10.5 15 1.5'/%3e %3c/svg%3e");
+  background-repeat: no-repeat;
+  background-size: 0.55em 0.55em;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .shapes-pos {
@@ -211,6 +217,30 @@ button {
   margin-top: -40px;
   object-fit: cover;
   width: 1608px;
+}
+
+.bg-fade {
+  position: relative;
+  /* border: 1px solid; */
+}
+
+.bg-fade::before {
+  content: "";
+  position: sticky;
+  top: 0;
+  background: linear-gradient(white, transparent);
+  height: 3rem;
+  z-index: 10;
+
+}
+.bg-fade::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, white, transparent);
+  height: 3rem;
+  z-index: 10;
+
 }
 
 .bg-home-shapes {
@@ -238,6 +268,18 @@ button {
 .darkmode::-webkit-calendar-picker-indicator {
   /* This filter turns the icon white */
   filter: invert(100%);
+}
+
+@media (width < 48rem) {
+  .transition-sidebar {
+    transition: 150ms 300ms;
+  }
+
+  .transition-inner {
+    transition:
+      all 150ms,
+      padding 150ms 75ms;
+  }
 }
 
 .setup {

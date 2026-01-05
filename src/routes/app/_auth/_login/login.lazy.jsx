@@ -66,8 +66,6 @@ function Login() {
       if (profileError) {
         console.error("Error fetching profile:", profileError.message);
       } else {
-        console.log("User Profile:", profileData);
-
         flushSync(() => {
           setUser({
             ...profileData,
@@ -84,16 +82,16 @@ function Login() {
   return (
     <>
       <title> Login | Brillo </title>
-      <div className="h-screen flex flex-col  lg:flex-row gap-2">
-        <div className="grow bg-[url(/assets/img/jive-shapes-top.svg)] lg:bg-[url(/assets/img/jive-shapes-left.svg)] flex min-h-0 lg:h-screen bg-no-repeat bg-cover bg-bottom lg:bg-top w-full"></div>
-        <div className="p-6 md:py-8 w-full lg:w-auto px-6 mx-auto flex flex-col justify-center flex-none gap-6 items-center lg:min-w-125 max-w-160 md:mt-0 ">
+      <div className="h-screen  flex flex-col  lg:flex-row gap-2">
+        <div className="grow bg-[url(/assets/img/jive-shapes-top.svg)]  lg:bg-[url(/assets/img/jive-shapes-left.svg)] flex min-h-0 lg:h-screen bg-no-repeat bg-cover bg-bottom lg:bg-top-right w-full"></div>
+        <div className="grow md:py-8 w-full md:mt-0 sm:max-w-md xl:p-0 lg:w-auto px-6 mx-auto flex flex-col justify-center flex-none gap-6 items-center lg:min-w-125 max-w-160 ">
           <div className="mb-4">
             <img src="/assets/img/brillo.svg" alt="logo.svg" />
           </div>
           <h1 className="pt-1.5 text-2xl text-center font-bold leading-tight tracking-tight text-gray-900 ">
             Welcome back
           </h1>
-          <form action={handleLogin} className="flex flex-col w-full gap-6">
+          <form action={handleLogin} className="flex flex-col w-full gap-6 sm:max-w-md">
             <div className="flex flex-col gap-2">
               <label htmlFor="email" className="font-medium text-gray-900">
                 Email address
@@ -143,11 +141,11 @@ function Login() {
               href="https://www.letsjive.io/"
               class="inline-block ml-1 text-700"
             >
-              Jive
+              Brillo
             </a>
           </p>
         </div>
-        <div className="grow bg-[url(/assets/img/jive-shapes-bottom.svg)] lg:bg-[url(/assets/img/jive-shapes-right.svg)] bg-shapes-top flex min-h-0 lg:h-screen bg-no-repeat bg-cover bg:bottom lg:bg-top w-full"></div>
+        <div className="grow bg-[url(/assets/img/jive-shapes-bottom.svg)] lg:bg-[url(/assets/img/jive-shapes-right.svg)] flex min-h-0 lg:h-screen bg-no-repeat bg-cover bg-top lg:bg-top-left w-full"></div>
       </div>
     </>
   );

@@ -1,42 +1,43 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import Header from '../../../components/Header'
-import Sidebar from '../../../components/Sidebar'
-import { RecordProvider } from '../../../contexts/RecordContext'
-import { CoursesProvider } from '../../../contexts/CoursesContext'
-import { useState } from 'react'
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import Header from "../../../components/Header";
+import Sidebar from "../../../components/Sidebar";
+import { RecordProvider } from "../../../contexts/RecordContext";
+import { CoursesProvider } from "../../../contexts/CoursesContext";
+import { useState } from "react";
 import { useTheme } from "../../../hooks/useTheme";
 
-export const Route = createFileRoute('/app/_authenticated')({
+export const Route = createFileRoute("/app/_authenticated")({
   beforeLoad: ({ context, location }) => {
+    //off user auth for mobile debugging
     if (!context.auth.isAuthenticated) {
       throw redirect({
-        to: '/app/login',
+        to: "/app/login",
         state: {
           redirect: location.pathname,
         },
-      })
+      });
     }
   },
 
   component: Setup,
-})
+});
 
 function Setup() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [theme] = useTheme()
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [theme] = useTheme();
 
   function toogleSidebar() {
-    setSidebarOpen((sidebarOpen) => !sidebarOpen)
+    setSidebarOpen((sidebarOpen) => !sidebarOpen);
   }
 
   function closeSideBar() {
-    setSidebarOpen(false)
+    setSidebarOpen(false);
   }
 
   return (
     <div className={`setup font-monasans ${theme.themes[theme.current].style}`}>
       <RecordProvider>
-        <Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar} />
+      <Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar} />
         <div className="w-full h-full flex flex-col">
           <Header sidebarOpen={sidebarOpen} toogleSidebar={toogleSidebar} />
           <CoursesProvider>
@@ -47,5 +48,5 @@ function Setup() {
         </div>
       </RecordProvider>
     </div>
-  )
+  );
 }
