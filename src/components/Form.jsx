@@ -1,145 +1,142 @@
-import { useState, useRef } from "react";
-import { useTheme } from "../hooks/useTheme";
-import { useRecord } from "../hooks/useRecord";
 import { useCourses } from "../hooks/useCourses";
+import { CircleX } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
+import { useEffect, useRef, useState } from "react";
 
-const Form = () => {
-  const [selectedCourse, setSelectedCourse] = useState("React Basics");
-  const [record, setRecord] = useRecord();
+const Form = ({ setOpenModal }) => {
   const [courses, setCourses] = useCourses();
-  const [theme] = useTheme();
-  const darkMode = theme.current === "dark";
 
-  const [duration, setDuration] = useState("00:00");
-  const durationRef = useRef(null);
+  const previewRef = useRef(null);
+  const [previewUrl, setPreviewUrl] = useState("#");
 
-  const now = new Date();
-  const currentDate = now.toLocaleDateString("en-us", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
+  useEffect(() => {
+    if (!previewRef.current) return;
+
+    previewRef.current.addEventListener("change", function () {
+      const file = this.files[0]; // Get the first selected file
+      if (file) {
+        const reader = new FileReader(); // Create a FileReader object
+
+        // Set the onload event handler
+        reader.onload = function (e) {
+          setPreviewUrl(e.target.result);
+        };
+
+        // Read the file as a Data URL
+        reader.readAsDataURL(file);
+      } else {
+        // Hide the image if no file is selected or the selection is canceled
+        setPreviewUrl("#");
+      }
+    });
+
+    return previewRef.current.removeEventListener("change", () => {});
   });
-
-  const recordEmpty = record.length === 0;
-  const userLogged =
-    !(record.length === 0) &&
-    record[0].date === currentDate &&
-    record[0].notes.some((note) => note.course === selectedCourse);
-
-  function handleSelect(e) {
-    setSelectedCourse(e.target.value);
-  }
-
-  function showDurationPicker() {
-    if (durationRef.current && typeof durationRef.current.showPicker === "function") {
-      durationRef.current.showPicker();
-    }
-  }
-
-  function getDuration(time) {
-    const format = time.replace(":", "hrs ");
-    return format.concat("mins");
-  }
 
   function handleSubmit(formData) {
     const newNote = {
-      id: crypto.randomUUID(),
-      date: currentDate,
-      course: formData.get("course"),
-      duration: getDuration(formData.get("duration")),
-      description: formData.get("description"),
+      id: uuidv4(),
+      created: Date.now(),
+      title: formData.get("course"),
+      instructor: formData.get("instructor"),
+      duration: `${formData.get("hrs")}.${formData.get("mins")}`,
+      rating: formData.get("rating"),
+      progress: 0,
+      img: previewUrl,
     };
 
-    setCourses(
-      courses.map((course) => {
-        if (course.title === newNote.course) {
-          return { ...course, progress: course.progress + newNote.timeSpent };
-        }
-        return course;
-      }),
-    );
-
-    if (!recordEmpty && record[0].date === currentDate) {
-      if (record.length === 1) {
-        setRecord([
-          { date: record[0].date, notes: [newNote, ...record[0].notes] },
-        ]);
-
-        return;
-      }
-
-      setRecord(
-        [{ date: record[0].date, notes: [newNote, ...record[0].notes] }].concat(
-          record.slice(1),
-        ),
-      );
-      return;
-    }
-
-    setRecord([{ date: currentDate, notes: [newNote] }, ...record]);
+    setCourses([newNote, ...courses]);
+    setOpenModal(false);
   }
 
   return (
     <form
       action={handleSubmit}
-      className="flex flex-col gap-5
-       p-8.5 "
+      className="max-w-[300px] ls:max-w-sm flex flex-col justify-center-center gap-4
+       p-6  bg-white border text-sm  border-gray-400 min-w-0 ls:h-auto w-[90%] ls:w-full font-sm  rounded-2xl"
     >
-      <div className="flex flex-col gap-2">
-        <label htmlFor="course" className="font-medium">
-          Course
-        </label>
-        <div className="dropdown w-fit">
-          <select
-            name="course"
-            id="course"
-            autoFocus
-            onChange={handleSelect}
-            value={selectedCourse}
-            className="border border-grey w-[28ch] rounded-2xl p-4 font-medium"
-          >
-            {courses.map((course, index) => {
-              return (
-                <option
-                  key={index}
-                  value={course.title}
-                  className={`${theme.themes[theme.current].style}`}
-                >
-                  {course.title}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+      <div className="absolute right-4 top-4">
+        <button onClick={() => setOpenModal(false)}>
+          <CircleX stroke="white" size={30} />
+        </button>
       </div>
-      <div className="flex flex-col gap-1">
-        <label htmlFor="start-time" className="font-medium">
-          Duration (hrs)
-        </label>
+      <div className="flex flex-col gap-1  w-full">
+        <label htmlFor="course">Course</label>
         <input
-          type="time"
-          name="duration"
-          ref={durationRef}
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          onFocus={showDurationPicker}
+          type="text"
+          id="course"
+          name="course"
+          placeholder="Course"
+          min="4"
+          className=" border border-gray-400 bg-inherit focus:border-dark focus-within:outline-none rounded-xl"
           required
-          className={`max-w-24 font-medium border border-grey rounded-2xl p-2 py-2 ${theme.current == "dark" ? "darkmode" : ""}`}
         />
       </div>
-      <textarea
-        name="description"
-        placeholder="What did you learn today..."
-        required
-        className="p-6 font-medium focus:placeholder:text-[#555] focus:outline-0 focus:shadow-xl border border-grey  rounded-2xl"
-      ></textarea>
-      <button
-        type="submit"
-        disabled={userLogged}
-        className={`p-4 px-8.25 font-medium ${darkMode ? "bg-[#fff1] text-inherit" : "bg-[#222] text-white "} w-fit rounded-[0.625rem] transition hover:shadow-2xl disabled:bg-[#555] disabled:text-[#eee] disabled:shadow-none`}
-      >
-        Log Today
-      </button>
+      <div className="flex flex-col gap-1  w-full">
+        <label htmlFor="instructor">Instructor</label>
+        <input
+          type="text"
+          id="instructor"
+          name="instructor"
+          placeholder="Instructor"
+          className=" border border-gray-400 bg-inherit focus:border-dark focus-within:outline-none rounded-xl"
+          required
+        />
+      </div>
+      <div className="flex flex-row justify-between gap-2">
+        <div className="flex flex-col gap-1 w-full">
+          <label htmlFor="">Duration</label>
+          <div className="flex gap-1">
+            <div className="flex flex-col gap-1">
+              <input
+                type="number"
+                placeholder="Hrs"
+                name="hrs"
+                className="rounded-xl text-sm border-b border-gray-400 bg-inherit focus:border-dark focus-within:outline-none w-full"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <input
+                type="number"
+                placeholder="Min"
+                name="mins"
+                max="59"
+                className="rounded-xl text-sm border-b border-gray-400 bg-inherit focus:border-dark focus-within:outline-none w-full"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-1 w-fit">
+          <label htmlFor="rating">Rating</label>
+          <input
+            type="number"
+            id="rating"
+            name="rating"
+            placeholder="4.5"
+            step="0.1"
+            min="1"
+            max="5"
+            className=" border text-sm border-gray-400 bg-inherit focus:border-dark focus-within:outline-none rounded-xl"
+            required
+          />
+        </div>
+      </div>
+      <div className="flex flex-col gap-2  w-full">
+        <label htmlFor="picture">Select an image:</label>
+        <input
+          ref={previewRef}
+          type="file"
+          id="picture"
+          name="picture"
+          accept="image/*"
+        />
+        <img src={previewUrl} alt="" className="w-10" />
+      </div>
+      <div className="flex gap-2 flex-row justify-between">
+        <button className="bg-dark shadow-sm  flex items-center justify-center gap-1  text-white text-sm p-2.5 px-7 flex-1   rounded-2xl">
+          Add course
+        </button>
+      </div>
     </form>
   );
 };

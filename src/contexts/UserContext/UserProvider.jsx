@@ -9,6 +9,8 @@ export const UserProvider = ({ children }) => {
     isAuthenticated: false,
   });
 
+  localStorage.removeItem("user")
+
   const logOut = () => {
     googleLogout();
     setUser({ isAuthenticated: false });

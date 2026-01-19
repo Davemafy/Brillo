@@ -21,7 +21,7 @@ function NavBar({ className }) {
   );
 }
 
-export function SearchBar({ className}) {
+export function SearchBar({ className }) {
   return (
     <div className={`flex rounded-xl px-2 items-center bg-accent ${className}`}>
       <button className="py-2 shrink-0 flex place-items-center">
@@ -39,9 +39,11 @@ export function SearchBar({ className}) {
   );
 }
 
-export function UserBar({ className}) {
-  const { user: { name, picture } } = useUser();
-  console.log(picture, name)
+export function UserBar({ className }) {
+  const {
+    user: { name, picture },
+  } = useUser();
+  console.log(picture, name);
 
   return (
     <div
@@ -58,9 +60,15 @@ export function UserBar({ className}) {
         </div>
       </button>
       <div className="shrink-0 flex items-center gap-2">
-        <button className={`w-7 aspect-square ${!picture && "bg-black"} rounded-lg `}>
+        <button
+          className={`w-7 aspect-square ${!picture && "bg-dark"} rounded-lg `}
+        >
           {picture ? (
-            <img src={picture} alt="profile" className="rounded-lg h-full w-full object-cover " />
+            <img
+              src={picture}
+              alt="profile"
+              className="rounded-lg h-full w-full object-cover "
+            />
           ) : (
             <p className="text-white text-sm sm:text-base">
               {formatName(name)}

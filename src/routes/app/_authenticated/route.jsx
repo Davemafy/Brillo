@@ -37,11 +37,13 @@ function Setup() {
   return (
     <div className={`setup font-monasans ${theme.themes[theme.current].style}`}>
       <RecordProvider>
-      <Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar} />
-        <div className="w-full h-full flex flex-col">
+        <Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar} />
+        <div
+          className={`w-full h-full flex flex-col transition ${sidebarOpen && "translate-x-[210px]"}`}
+        >
           <Header sidebarOpen={sidebarOpen} toogleSidebar={toogleSidebar} />
           <CoursesProvider>
-            <main className="flex-1 w-full overflow-auto">
+            <main className="flex-1 w-full  overflow-auto">
               <Outlet />
             </main>
           </CoursesProvider>

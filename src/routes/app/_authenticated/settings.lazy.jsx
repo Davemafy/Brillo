@@ -83,7 +83,7 @@ function Settings() {
               </select>
             </div>
           </div>
-          <button className="w-fit bg-black text-white mt-4 p-6.25 py-3 hover:shadow-2xl rounded-2xl">
+          <button className="w-fit bg-dark text-white mt-4 p-6.25 py-3 hover:shadow-2xl rounded-2xl">
             Save
           </button>
         </form>

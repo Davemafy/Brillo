@@ -89,7 +89,7 @@
   --color-accent: #f6f6f6;
   --color-lightgrey: #6d6d6d;
   --color-darkgrey: #a9a9a9;
-  --color-dark: #181818;
+  --color-dark: #000;
   --color-mediumgrey: #5d5d5d;
   --font-monasans: "Mona Sans", "Uncut Sans", "system-ui";
   --text-xs: 0.75rem;
@@ -121,12 +121,11 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-black rounded-full;
+    @apply bg-dark rounded-full;
   }
-  
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    @apply bg-black;
+    @apply bg-dark;
   }
 
   /* Custom scrollbar styles (Firefox) */
@@ -142,7 +141,7 @@
     "ss07" on,
     "liga" off;
 
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: thin;
   /* IE and Edge */
@@ -163,18 +162,16 @@
   background-color: #f3f4f6;
 }
 
+/* Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
-  /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* IE, Edge and Firefox */
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
+/* IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 body {
   font-family: "Uncut Sans", sans-serif;
@@ -203,13 +200,42 @@ body {
   font-variation-settings: normal;
 }
 
-
 [type="checkbox"]:checked {
   background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 12'%3e %3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M1 5.917 5.724 10.5 15 1.5'/%3e %3c/svg%3e");
   background-repeat: no-repeat;
   background-size: 0.55em 0.55em;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
+}
+
+#modal > div {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #0004;
+  height: 100vh;
+  width: 100vw;
+  width: 100dvw;
+  display: grid;
+  place-items: center;
+}
+.pop-up {
+  z-index: 10;
+  position: fixed;
+  inset: 0;
+  background: #3338;
+  max-height: 100vh;
+  backdrop-filter: blur(0.2rem);
+  width: 1000;
+  display: grid;
+  place-items: center;
+}
+
+@media (width > 48rem) {
+  .pop-up {
+    position: absolute;
+  }
 }
 
 .shapes-pos {
@@ -231,7 +257,6 @@ body {
   background: linear-gradient(white, transparent);
   height: 3rem;
   z-index: 10;
-
 }
 .bg-fade::after {
   content: "";
@@ -240,7 +265,6 @@ body {
   background: linear-gradient(to top, white, transparent);
   height: 3rem;
   z-index: 10;
-
 }
 
 .bg-home-shapes {
@@ -279,6 +303,10 @@ body {
     transition:
       all 150ms,
       padding 150ms 75ms;
+  }
+
+  .big-shadow {
+    box-shadow: 0px 0px 20px 10px rgb(0, 0, 0, 0.2);
   }
 }
 

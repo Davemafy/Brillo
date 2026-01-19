@@ -26,6 +26,19 @@ function NewDash() {
   const carouselRef = useRef(null);
   const [scrollDistance, setScrollDistance] = useState(0);
   const [maxScrollable, setMaxScrollable] = useState(null);
+    const [filter, setFilter] = useState("all");
+    const sortedCourses = [...courses].sort((current, next) => {
+      console.log(current.rating);
+      if (filter === "newest") {
+        return next.date - current.date;
+      } else if (filter === "top rated") {
+        return next.rating - current.rating;
+      } else if (filter === "most popular") {
+        return next.duration - current.duration;
+      }
+      return true;
+    });
+
 
   useEffect(() => {
     if (carouselRef.current) {
@@ -36,6 +49,17 @@ function NewDash() {
 
     console.log("maxScrollable: ", maxScrollable);
   }, [maxScrollable]);
+
+  function getDuration(time) {
+    const format = time.replace(".", "hrs ");
+    return format.concat("mins");
+  }
+
+  function getRating(rating) {
+    if (rating.length === 1) return rating + ",0";
+    const format = rating.replace(".", ",");
+    return format;
+  }
 
   function scrollToLeft() {
     const container = carouselRef.current;
@@ -77,7 +101,7 @@ function NewDash() {
       <div className="grid grid-dashboard w-full h-full overflow-auto gap-8 p-5 px-0 ls:pl-0 xlg:p-0 pt-0 sm:py-0">
         <div className="h-full pb-5 overflow-auto no-scrollbar flex flex-col gap-6 rounded-xl px-5 sm:p-8 xlg:py-0 xlg:pr-0 ">
           <NavBar className="hidden md:flex xlg:hidden" />
-          <div className="grid mt-8 sm:mt-0 xlg:mt-8 xs:grid-cols-2 bg-accent border border-gray-200 items-stretch  rounded-[inherit]">
+          <div className="grid  mt-8 sm:mt-0 xlg:mt-8 xs:grid-cols-2 bg-accent border border-gray-200 items-stretch  rounded-[inherit]">
             <div className="p-4 py-8 sm:p-8">
               <h2 className="font-extrabold min-w-[4ch] xxs:max-w-full text-xl">
                 Hello {user.given_name}!
@@ -99,13 +123,17 @@ function NewDash() {
             >
               {courses.map((course, index) => {
                 return (
-                  <div className=" min-w-full snap-center flex flex-col gap-2 pb-2 items-end  rounded-xl">
+                  <div className="min-w-full snap-center flex flex-col gap-2 pb-2 items-end  rounded-xl">
                     <div
                       key={index}
-                      className=" min-w-full snap-center flex flex-col xxs:flex-row min-h-16 xxs:items-center gap-4 p-2 bg-accent border border-gray-200 rounded-xl"
+                      className="min-w-full snap-center flex flex-col xxs:flex-row min-h-16 xxs:items-center gap-4 p-2 bg-accent border border-gray-200 rounded-xl"
                     >
                       <div className="shrink-0 rounded-[inherit] w-10 aspect-square bg-white">
-                        <img src={course.img} className="rounded-xl" alt="" />
+                        <img
+                          src={course.img || `https://picsum.photos/${index}00`}
+                          className="h-full w-full object-cover rounded-xl"
+                          alt=""
+                        />
                       </div>
                       <div className="flex flex-col xxs:flex-row gap-2 justify-between">
                         <div>
@@ -126,13 +154,13 @@ function NewDash() {
                             {course.progress}%
                           </p>
                         </div>
-                        <button className="hidden ls:block bg-black text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit">
+                        <button className="hidden ls:block bg-dark text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit">
                           Continue
                         </button>
                       </div>
                     </div>
                     {/* DUPLICATE BUTTON FOR MOBILE VIEW */}
-                    <button className="ls:hidden bg-black text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit">
+                    <button className="ls:hidden bg-dark text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit">
                       Continue
                     </button>
                   </div>
@@ -146,14 +174,14 @@ function NewDash() {
                   console.log(scrollDistance, scrollDistance == 0) ||
                   scrollDistance <= 0
                 }
-                className="rounded-full p-1.5 disabled:opacity-20 disabled:cursor-default disabled:hover:bg-white disabled:hover:text-black hover:bg-black hover:text-white border"
+                className="rounded-full p-1.5 disabled:opacity-20 disabled:cursor-default disabled:hover:bg-white disabled:hover:text-black hover:bg-dark hover:text-white border"
               >
                 <MoveLeft size={15} strokeWidth={2} />
               </button>
               <button
                 onClick={scrollToRight}
                 disabled={scrollDistance >= maxScrollable}
-                className="rounded-full p-1.5 disabled:opacity-20 disabled:cursor-default disabled:hover:bg-white disabled:hover:text-black hover:bg-black hover:text-white border"
+                className="rounded-full p-1.5 disabled:opacity-20 disabled:cursor-default disabled:hover:bg-white disabled:hover:text-black hover:bg-dark hover:text-white border"
               >
                 <MoveRight size={15} strokeWidth={2} />
               </button>
@@ -162,43 +190,73 @@ function NewDash() {
           <section className="flex flex-col gap-4 h-full xlg:overflow-auto">
             <h3 className="font-bold">Courses</h3>
             <div className="flex flex-col gap-2 md:h-full md:overflow-auto">
-              <ul className="flex text-xs  w-full px-4 -ml-4 py-2 overflow-auto no-scrollbar  gap-6 font-bold">
-                <li className="shrink-0">
-                  <button>All Courses</button>
-                </li>
-                <li className="shrink-0 opacity-40">
-                  <button>The Newest</button>
-                </li>
-                <li className="shrink-0 opacity-40">
-                  <button>Top Rated</button>
-                </li>
-                <li className="shrink-0 opacity-40">
-                  <button>Most Popular</button>
-                </li>
-              </ul>
+                <ul className="flex text-xs  w-full px-4 -ml-4 p-0 sm:py-2 overflow-auto no-scrollbar  gap-6 font-bold">
+                  <li
+                    className={`shrink-0 ${!(filter === "all") && "opacity-40"}`}
+                  >
+                    <button onClick={() => setFilter("all")}>
+                      All Courses
+                    </button>
+                  </li>
+                  <li
+                    className={`shrink-0 ${!(filter === "newest") && "opacity-40"}`}
+                  >
+                    <button onClick={() => setFilter("newest")}>
+                      The Newest
+                    </button>
+                  </li>
+                  <li
+                    className={`shrink-0 ${!(filter === "top rated") && "opacity-40"}`}
+                  >
+                    <button onClick={() => setFilter("top rated")}>
+                      Top Rated
+                    </button>
+                  </li>
+                  <li
+                    className={`shrink-0 ${!(filter === "most popular") && "opacity-40"}`}
+                  >
+                    <button onClick={() => setFilter("most popular")}>
+                      Most Popular
+                    </button>
+                  </li>
+                </ul>
               <div className="overflow-y-auto ">
                 <ul className="grid ls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-3 text-[0.65rem] verflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
-                  {courses.map((course, index) => {
+                  {sortedCourses.map((course, index) => {
                     return (
                       <li
                         key={index}
-                        className="max-h- flex flex-col md:flex-row text-nowrap relative xlg:flex-row min-h-16 items- lg:items-center xlg:items-center gap-4 xlg:gap-4 p-4 lg:p-2  bg-accent border border-gray-200 rounded-xl"
+                        className="flex flex-col  md:flex-row text-nowrap relative xlg:flex-row min-h-16 xlg:items-center gap-4 xlg:gap-4 p-4 xlg:p-2 bg-accent border border-gray-200 rounded-xl"
                       >
-                        <div className="rounded-[0.43rem] hidden lg:flex  sm:mx-0 overflow-hidden w-[calc(100%)] lg:w-10 aspect-square bg-white">
+                        <div className="rounded-[0.43rem] hidden xlg:flex  sm:mx-0 overflow-hidden w-[calc(100%)] xlg:w-10 aspect-square bg-white">
                           <img
-                            src={`https://picsum.photos/${index}00`}
+                            src={
+                              course.img || `https://picsum.photos/${index}00`
+                            }
                             alt={course.title}
-                            className="h-full  w-full top-0 left-0 -z-1 rounded-[0.43rem] object-cover "
+                            className="h-full  w-full  rounded-[0.43rem] object-cover "
                           />
                         </div>
                         <div className="flex w-full items-stretch flex-col gap-4  justify-start xlg:items-center xlg:justify-between xlg:flex-row">
-                          <div className="">
-                            <h3 className="text-[0.8rem] font-bold truncate-text max-w-[15ch]">
-                              {course.title}
-                            </h3>
-                            <p className="text-[0.65rem]">
-                              by {course.instructor}
-                            </p>
+                          <div className="flex justify-between">
+                            <div className="">
+                              <h3 className="text-[0.8rem] font-bold truncate-text max-w-[15ch]">
+                                {course.title}
+                              </h3>
+                              <p className="text-[0.65rem]">
+                                by {course.instructor}
+                              </p>
+                            </div>
+                            <div className="rounded-[0.43rem] absolute top-4 right-4 z-1 xlg:hidden flex  sm:mx-0 overflow-hidden h-16 aspect-square bg-white">
+                              <img
+                                src={
+                                  course.img ||
+                                  `https://picsum.photos/${index}00`
+                                }
+                                alt={course.title}
+                                className="h-full  w-full  rounded-[0.43rem] object-cover "
+                              />
+                            </div>
                           </div>
                           <div className="flex flex-col xlg:flex-row gap-4  xlg:gap-4 ml:auto ml-0 xlg:ml-auto xlg:items-center">
                             <div className="flex gap-4 xlg:ml-auto items-center">
@@ -207,14 +265,14 @@ function NewDash() {
                                   className="bg-white rounded-full invert"
                                   size={15}
                                 />
-                                {course.duration}
+                                {getDuration(course.duration)}
                               </p>
                               <p className="flex gap-1.5 items-center">
                                 <Flame fill="black" size={15} />
-                                {course.rating}
+                                {getRating(course.rating)}
                               </p>
                             </div>
-                            <button className="border border-gray-200 font-medium transition-all bg-white hover:bg-black hover:text-white rounded-xl text-[0.7rem] p-3 px-6">
+                            <button className="border border-gray-200 font-medium transition-all bg-white hover:bg-dark hover:text-white rounded-xl text-[0.7rem] p-3 px-6">
                               View Course
                             </button>
                           </div>
@@ -279,7 +337,7 @@ function NewDash() {
               <p>
                 Unlock premium features <br /> only for $9.99 per month.
               </p>
-              <button className="mt-2 bg-black text-[0.6rem] text-white rounded-md w-fit p-2 px-4">
+              <button className="mt-2 bg-dark text-[0.6rem] text-white rounded-md w-fit p-2 px-4">
                 Go Premium
               </button>
             </div>
@@ -325,7 +383,7 @@ function Dashboard() {
             {!recordEmpty && (
               <div className="flex justify-end sm:justify-end w-full items-center text-[#0007] hover:text-black">
                 <Link to="/notes">
-                  <p className=" flex gap-2 p-4 py-2 border-[#0007]  border rounded-2xl hover:bg-black hover:text-white w-fit">
+                  <p className=" flex gap-2 p-4 py-2 border-[#0007]  border rounded-2xl hover:bg-dark hover:text-white w-fit">
                     View all
                     <ChevronRightCircleIcon fontWeight={300} />
                   </p>

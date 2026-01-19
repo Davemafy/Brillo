@@ -24,9 +24,13 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 
   return (
     <aside
-      className={`  flex transition text-[0.8rem]  md:transition-none flex-col shrink-0 bg-inherit h-full fixed top-0 z-100 md:static w-fit ${!sidebarOpen ? "-translate-x-full md:translate-0" : "md:w-60"}`}
+      className={`flex transition text-[0.8rem]  md:transition-none flex-col shrink-0 bg-inherit h-full fixed top-0 z-30 md:static w-fit ${!sidebarOpen ? "-translate-x-[110%] md:translate-0" : "md:w-60"}`}
     >
-      <div className="shrink-0 flex flex-col h-full   bg-black text-white roun">
+      <div
+        className={` w-screen h-full  absolute sm:hidden  -z-10 top-0 backdrop-blur-[0.2rem]  ${sidebarOpen ? "opacity-100 transition bg-[hsla(0,0%,70%,0.5)] " : "opacity-0 -translate-x-2/3"}`}
+      >
+      </div>
+      <div className="shrink-0 flex flex-col h-full   bg-dark text-white">
         <h2
           className={`shrink-0  p-10 text-xl flex  items-center gap-2 ${!sidebarOpen ? "" : ""}`}
         >
@@ -44,9 +48,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
               to="/app/dashboard"
             >
               <Home size={20} />
-              <p
-                className={`${sidebarOpen ? "" : ""}  md:block font-semibold`}
-              >
+              <p className={`${sidebarOpen ? "" : ""}  md:block font-semibold`}>
                 Dashboard
               </p>
             </Link>
@@ -57,9 +59,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
               to="/app/courses"
             >
               <LibraryBig size={20} />
-              <p
-                className={`${sidebarOpen ? "" : ""}  md:block font-semibold`}
-              >
+              <p className={`${sidebarOpen ? "" : ""}  md:block font-semibold`}>
                 Courses
               </p>
             </Link>
@@ -70,9 +70,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
               to="/app/notes"
             >
               <BookOpenText size={20} />
-              <p
-                className={`${sidebarOpen ? "" : ""} md:block font-semibold`}
-              >
+              <p className={`${sidebarOpen ? "" : ""} md:block font-semibold`}>
                 Notes
               </p>
             </Link>
@@ -86,9 +84,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
               to="/app/settings"
             >
               <Settings size={20} />
-              <p
-                className={`${sidebarOpen ? "" : ""} md:block font-semibold`}
-              >
+              <p className={`${sidebarOpen ? "" : ""} md:block font-semibold`}>
                 Settings
               </p>
             </Link>
@@ -99,9 +95,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
               to="/app/login"
             >
               <LogOut size={20} />
-              <p
-                className={`${sidebarOpen ? "" : ""} md:block font-semibold`}
-              >
+              <p className={`${sidebarOpen ? "" : ""} md:block font-semibold`}>
                 Log Out
               </p>
             </Link>
