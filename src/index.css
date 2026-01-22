@@ -227,7 +227,7 @@ body {
   background: #3338;
   max-height: 100vh;
   backdrop-filter: blur(0.2rem);
-  width: 1000;
+  width: 100%;
   display: grid;
   place-items: center;
 }
