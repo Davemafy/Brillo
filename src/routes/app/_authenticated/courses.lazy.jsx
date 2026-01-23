@@ -1,7 +1,8 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { useCourses } from "../../../hooks/useCourses";
-import { Clock, Flame, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
+import CourseCard from "../../../components/CourseCard";
 import Form from "../../../components/Form";
 import { useMediaQuery } from "react-responsive";
 
@@ -26,17 +27,6 @@ function Courses() {
     return true;
   });
 
-  function getDuration(time) { 
-    const format = time.replace(".", "hrs ");
-    return format.concat("mins");
-  }
-
-  function getRating(rating) {
-    if (rating.length === 1) return rating + ",0";
-    const format = rating.replace(".", ",");
-    return format;
-  }
-
   return (
     <>
       <title> Courses | Brillo </title>
@@ -59,7 +49,7 @@ function Courses() {
           <div className="flex flex-col gap-2 md:h-full md:overflow-auto">
             {isSmallScreen ? (
               <>
-                <div className="sticky -top-4 z-1">
+                <div className="sticky top-0 z-1 sm:static sm:top-auto sm:z-0">
                   <select
                     name="filter"
                     id="filter"
@@ -129,62 +119,8 @@ function Courses() {
               </>
             )}
             <div className="overflow-y-auto ">
-              <ul className="grid ls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4 text-[0.65rem] verflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
-                {sortedCourses.map((course, index) => {
-                  return (
-                    <li
-                      key={index}
-                      className="flex flex-col  md:flex-row text-nowrap relative xlg:flex-row min-h-16 xlg:items-center gap-4 xlg:gap-4 p-4 xlg:p-2 bg-accent border border-gray-200 rounded-xl"
-                    >
-                      <div className="rounded-[0.43rem] hidden xlg:flex  sm:mx-0 overflow-hidden w-[calc(100%)] xlg:w-10 aspect-square bg-white">
-                        <img
-                          src={course.img || `https://picsum.photos/${index}00`}
-                          alt={course.title}
-                          className="h-full  w-full  rounded-[0.43rem] object-cover "
-                        />
-                      </div>
-                      <div className="flex w-full items-stretch flex-col gap-4  justify-start xlg:items-center xlg:justify-between xlg:flex-row">
-                        <div className="flex justify-between">
-                          <div className="">
-                            <h3 className="text-[0.8rem] font-bold truncate-text max-w-[15ch]">
-                              {course.title}
-                            </h3>
-                            <p className="text-[0.65rem]">
-                              by {course.instructor}
-                            </p>
-                          </div>
-                          <div className="rounded-[0.43rem] absolute top-4 right-4 z-1 xlg:hidden flex  sm:mx-0 overflow-hidden h-16 aspect-square bg-white">
-                            <img
-                              src={
-                                course.img || `https://picsum.photos/${index}00`
-                              }
-                              alt={course.title}
-                              className="h-full  w-full  rounded-[0.43rem] object-cover "
-                            />
-                          </div>
-                        </div>
-                        <div className="flex flex-col xlg:flex-row gap-4  xlg:gap-4 ml:auto ml-0 xlg:ml-auto xlg:items-center">
-                          <div className="flex gap-4 xlg:ml-auto items-center">
-                            <p className="flex gap-1">
-                              <Clock
-                                className="bg-white rounded-full invert"
-                                size={15}
-                              />
-                              {getDuration(course.duration)}
-                            </p>
-                            <p className="flex gap-1.5 items-center">
-                              <Flame fill="black" size={15} />
-                              {getRating(course.rating)}
-                            </p>
-                          </div>
-                          <button className="border border-gray-200 font-medium transition-all bg-white hover:bg-dark hover:text-white rounded-xl text-[0.7rem] p-3 px-6">
-                            View Course
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })}
+              <ul className="grid lls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4 text-[0.65rem] verflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
+                {sortedCourses.map((course, index) => <CourseCard course={course} index={index} /> )}
               </ul>
             </div>
           </div>

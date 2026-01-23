@@ -98,7 +98,8 @@
   --breakpoint-xxs: 10rem;
   --breakpoint-xs: 16rem;
   --breakpoint-ls: 25.5rem;
-  --breakpoint-lls: 27rem;
+  --breakpoint-lls: 31rem;
+  --breakpoint-llg: 33rem;
 }
 
 @layer utilities {
