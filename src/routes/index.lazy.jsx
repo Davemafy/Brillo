@@ -32,19 +32,22 @@ function Index() {
                 Login
               </button>
             </div>
-            <div className="sm:mx-auto flex items-center sm:justify-center">
-              <img src="/assets/img/brillo.svg" alt="brillo" className="h-6" />
-            </div>
+            <Link
+              to="/"
+              className="sm:mx-auto flex items-center sm:justify-center"
+            >
+              <img src="/assets/img/brillo.svg" alt="brillo" className="h-7" />
+            </Link>
             <div className=" flex justify-end gap-2 ">
               <Link
                 to="/app/login"
-                className="text-[14px] sm:text-base hidden sm:block border bg-white border-grey font-medium px-4 sm:px-6 py-2 rounded-[6.25rem]"
+                className="text-[14px] sm:text-base hidden sm:block border bg-white border-grey font-medium px-4 sm:px-6 py-2 rounded-[6.25rem] hover:bg-golden"
               >
                 Login
               </Link>
               <Link
                 to="/app/signup"
-                className="text-[14px] sm:text-base text-white whitespace-nowrap bg-dark font-medium px-4 sm:px-6 py-2 rounded-[6.25rem]"
+                className="text-[14px] sm:text-base text-white whitespace-nowrap bg-dark font-medium px-4 sm:px-6 py-2 rounded-[6.25rem] hover:bg-turq"
               >
                 Sign up
               </Link>
@@ -67,7 +70,7 @@ function Index() {
             <div>
               <Link
                 to="/app/signup"
-                className=" block w-fit mx-auto font-semibold text-white text-base sm:text-xl bg-dark px-12 py-4 rounded-[6.25rem]"
+                className=" block w-fit mx-auto font-semibold text-white text-base sm:text-xl bg-dark px-12 py-4 rounded-[6.25rem] transition hover:bg-teal"
               >
                 Try Brillo free
               </Link>
@@ -94,8 +97,8 @@ function Index() {
               Learn smarter, remember better.
             </p>
           </div>
-          <div className="grid lg:grid-cols-3 sm:px-25 gap-12">
-            <article className="flex flex-col items-center gap-3.5">
+          <div className="flex flex-col flex-wrap justify-center sm:px-25 gap-12 ls:flex-row">
+            <article className="flex flex-1 sm:max-w-[310px] sm:min-w-[250px] flex-col items-center gap-3.5">
               <img
                 src="/assets/img/feature-1.svg"
                 alt="feature-1"
@@ -107,7 +110,7 @@ function Index() {
                 Brillo keeps your notes organized and easy to find.
               </p>
             </article>
-            <article className="flex flex-col items-center gap-3.5">
+            <article className="flex flex-1 sm:max-w-[310px] sm:min-w-[250px] flex-col items-center gap-3.5">
               <img
                 src="/assets/img/feature-2.svg"
                 alt="feature-2"
@@ -119,7 +122,7 @@ function Index() {
                 helpful reminders and streaks.
               </p>
             </article>
-            <article className="flex flex-col items-center gap-3.5">
+            <article className="flex flex-1 sm:max-w-[310px] sm:min-w-[250px] flex-col items-center gap-3.5">
               <img
                 src="/assets/img/feature-3.svg"
                 alt="feature-3"
@@ -134,9 +137,9 @@ function Index() {
           </div>
           <Link
             to="/app/signup"
-            className="bg-dark text-white font-semibold px-12 py-4 rounded-[6.25rem]"
+            className="bg-dark text-white font-semibold px-12 py-4 rounded-[6.25rem] hover:bg-rose"
           >
-            Start learning today
+            Start Today
           </Link>
         </div>
       </section>
@@ -149,26 +152,37 @@ function Index() {
           <nav className="mx-auto">
             <ul className="mx-auto flex gap-5.5">
               <li>
-                <Link to="/about">About</Link>
+                <Link to="/" className="hover:text-[#f9c558]">
+                  About
+                </Link>
               </li>
               <li>
-                <Link to="/privacy">Privacy</Link>
+                <Link to="/" className="hover:text-[#00b99a]">
+                  Privacy
+                </Link>
               </li>
               <li>
-                <Link to="/terms">Terms</Link>
+                <Link to="/" className="hover:text-[#8b7fff]">
+                  Terms
+                </Link>
               </li>
               <li>
-                <Link to="/contact">Contact</Link>
+                <Link to="/" className="hover:text-[#fe8363]">
+                  Contact
+                </Link>
               </li>
             </ul>
           </nav>
           <p className="text-lightgrey mt-0.75 text-[0.875rem] ">
             <span>© 2025 </span>
-            <a href="/" className="underline">
+            <a href="/" className="hover:text-[#7de2f2]">
               Brillo
             </a>
             <span> by </span>
-            <a href="https://github.com/Davemafy" className="underline">
+            <a
+              href="https://github.com/Davemafy"
+              className="hover:text-[#ffc7c7]"
+            >
               David Ventures
             </a>
           </p>
