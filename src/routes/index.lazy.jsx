@@ -1,10 +1,38 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
 });
 
+function SpanStyled({ word, wordIndex }) {
+  const [textColor, setTextColor] = useState("");
+
+  return (
+    <span
+      key={wordIndex}
+      className="inline-block px-1.5 transition hover:outline hover:bg-white rounded-xl hover:z-1 hover:relative hover:backdrop-blur-[0.8em] hover:scale-[1.3]"
+      style={{
+        color: textColor,
+        transitionDelay: `${wordIndex}9ms`,
+      }}
+      onMouseEnter={() => {
+        setTextColor(
+          `rgba(${Math.floor(Math.random() * 200)},${Math.floor(Math.random() * 200)},${Math.floor(Math.random() * 200)}, 1)`,
+        );
+      }}
+      onMouseLeave={() => {
+        setTextColor("");
+      }}
+    >
+      {word}
+    </span>
+  );
+}
+
 function Index() {
+  const headCopy = "Don’t let learning get in the way";
+
   return (
     <div className="text-center">
       <div className="absolute top-0 bottom-0 -z-100 mx-auto left-1/2 transform -translate-x-1/2 w-full h-full overflow-hidden max-w-screen">
@@ -58,7 +86,9 @@ function Index() {
           <div className="flex flex-col gap-9.5">
             <div className="grid place-items-center gap-5.5">
               <h1 className="text-[3rem] leading-12 tracking-[-0.075rem] sm:text-[4.5rem] font-bold max-w-[8ch] sm:max-w-[9ch] sm:leading-[72px]">
-                Don’t let learning get in the way
+                {headCopy.split(" ").map((word, wordIndex) => {
+                  return <SpanStyled word={word} index={wordIndex} />;
+                })}
               </h1>
               <p className="text-lightgrey text-base  sm:text-[1.25rem] max-w-[27ch] sm:max-w-[40ch] leading-7">
                 Keep all your course notes and progress organized in one place.
