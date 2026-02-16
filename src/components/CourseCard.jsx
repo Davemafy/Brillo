@@ -32,7 +32,7 @@ const CourseCard = ({ course, index }) => {
             </h3>
             <p className="text-[0.65rem]">by {course.instructor}</p>
           </div>
-          <div className="rounded-[0.43rem] hidden xs:block absolute top-4 right-4 z-1 xlg:hidden flex  sm:mx-0 overflow-hidden h-16 lls:h-13 llg:h-16 aspect-square">
+          <div className="rounded-[0.43rem] bg-white hidden xs:flex absolute top-4 right-4 z-1 xlg:hidden  sm:mx-0 overflow-hidden h-16 lls:h-13 llg:h-16 aspect-square">
             <img onError={(e) => e.target.src = "/favicon.png"}
               src={course.img || `https://picsum.photos/${index}00`}
               alt={course.title}
