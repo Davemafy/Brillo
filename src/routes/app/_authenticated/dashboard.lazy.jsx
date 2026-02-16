@@ -155,9 +155,17 @@ function NewDash() {
                       </div>
                     </div>
                     {/* DUPLICATE BUTTON FOR MOBILE VIEW */}
-                    <button className="ls:hidden bg-dark text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit">
+                    <Link
+                      to={"/app/courses/$courseTitle"}
+                      params={{
+                        courseTitle: course.title
+                          .replaceAll(" ", "-")
+                          .toLowerCase(),
+                      }}
+                      className="ls:hidden bg-dark text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit"
+                    >
                       Continue
-                    </button>
+                    </Link>
                   </li>
                 );
               })}
