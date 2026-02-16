@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Clock, Flame } from "lucide-react";
 
 const CourseCard = ({ course, index }) => {
@@ -14,7 +15,7 @@ const CourseCard = ({ course, index }) => {
   return (
     <li
       key={index}
-      className="flex flex-col  md:flex-row text-nowrap relative xlg:flex-row min-h-16 xlg:items-center gap-4 xlg:gap-4 p-4 xlg:p-2 bg-accent border border-gray-200 rounded-xl"
+      className="flex flex-col text-[0.65rem]  md:flex-row text-nowrap relative xlg:flex-row min-h-16 xlg:items-center gap-4 xlg:gap-4 p-4 xlg:p-2 bg-accent border border-gray-200 rounded-xl"
     >
       <div className="rounded-[0.43rem] hidden xlg:flex  sm:mx-0 overflow-hidden xlg:w-10 aspect-square bg-white">
         <img
@@ -50,9 +51,15 @@ const CourseCard = ({ course, index }) => {
               {getRating(course.rating)}
             </p>
           </div>
-          <button className="border border-gray-200 font-medium transition-all bg-white hover:bg-dark hover:text-white rounded-xl text-[0.7rem] p-3 px-6">
+          <Link
+            to={"/app/courses/$courseTitle"}
+            params={{
+              courseTitle: course.title.replaceAll(" ", "-").toLowerCase(),
+            }}
+            className="border border-gray-200 font-medium transition-all bg-white hover:bg-dark hover:text-white rounded-xl text-[0.7rem] p-3 px-6"
+          >
             View Course
-          </button>
+          </Link>
         </div>
       </div>
     </li>

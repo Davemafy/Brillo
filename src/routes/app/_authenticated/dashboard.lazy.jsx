@@ -29,7 +29,6 @@ function NewDash() {
   const [maxScrollable, setMaxScrollable] = useState(null);
   const [filter, setFilter] = useState("all");
   const sortedCourses = [...courses].sort((current, next) => {
-    console.log(current.rating);
     if (filter === "newest") {
       return next.date - current.date;
     } else if (filter === "top rated") {
@@ -46,8 +45,6 @@ function NewDash() {
         carouselRef.current.scrollWidth - carouselRef.current.scrollWidth / 5;
       setMaxScrollable(maxWidth);
     }
-
-    console.log("maxScrollable: ", maxScrollable);
   }, [maxScrollable]);
 
   function scrollToLeft() {
@@ -143,9 +140,17 @@ function NewDash() {
                             {course.progress}%
                           </p>
                         </div>
-                        <button className="hidden ls:block bg-dark text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit">
+                        <Link
+                          to={"/app/courses/$courseTitle"}
+                          params={{
+                            courseTitle: course.title
+                              .replaceAll(" ", "-")
+                              .toLowerCase(),
+                          }}
+                          className="hidden ls:block bg-dark text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit"
+                        >
                           Continue
-                        </button>
+                        </Link>
                       </div>
                     </div>
                     {/* DUPLICATE BUTTON FOR MOBILE VIEW */}
@@ -159,10 +164,7 @@ function NewDash() {
             <div className="absolute sm:static top-[calc(100%-3.5rem)] sm:top-0 z-10 sm:z-auto -ml-5 pl-5 pt-4 pb-3 w-[calc(50%+1.25rem)] sm:m-0 sm:w-fit sm:p-0 bg-[linear-gradient(to_right,white,#fff9,transparent)] rounded-tr-2xl rounded-br-2xl ls:static flex items-end sm:justify-end lg:justify-start sm:items-center gap-2">
               <button
                 onClick={scrollToLeft}
-                disabled={
-                  console.log(scrollDistance, scrollDistance == 0) ||
-                  scrollDistance <= 0
-                }
+                disabled={scrollDistance <= 0}
                 className="rounded-full p-1.5 disabled:opacity-20 disabled:cursor-default disabled:hover:bg-white disabled:hover:text-black hover:bg-dark hover:text-white border"
               >
                 <MoveLeft size={15} strokeWidth={2} />
@@ -208,7 +210,7 @@ function NewDash() {
                 </li>
               </ul>
               <div className="overflow-y-auto ">
-                <ul className="grid lls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4 text-[0.65rem] verflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
+                <ul className="grid lls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4  verflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
                   {sortedCourses.map((course, index) => (
                     <CourseCard course={course} index={index} />
                   ))}

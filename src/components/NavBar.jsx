@@ -43,7 +43,6 @@ export function UserBar({ className }) {
   const {
     user: { name, picture },
   } = useUser();
-  console.log(picture, name);
 
   return (
     <div

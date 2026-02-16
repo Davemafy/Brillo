@@ -10,16 +10,27 @@ import { useUser } from "../../../../hooks/useUser";
 import { jwtDecode } from "jwt-decode";
 import { flushSync } from "react-dom";
 import { useEffect, useState } from "react";
+import Modal from "../../../../components/Modal";
+import { XCircle } from "lucide-react";
+import { useAuth } from "../../../../hooks/useAuth";
 
 export const Route = createLazyFileRoute("/app/_auth/_signup/signup")({
   component: Signup,
 });
 
+let timer1 = null;
+let timer2 = null;
 
 function Signup() {
   const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const {
+    loading,
+    setLoading,
+    setIsSuccess,
+    message,
+    setMessage,
+    setIsVisible,
+  } = useAuth();
 
   const { setUser } = useUser();
 
@@ -47,6 +58,8 @@ function Signup() {
     const token = response.credential;
     const userData = jwtDecode(token);
 
+    setLoading(false);
+
     flushSync(() => {
       setUser({
         ...userData,
@@ -55,17 +68,38 @@ function Signup() {
     });
 
     router.invalidate();
-
     navigate({ to: redirect || "/app/dashboard" });
+
+    setIsSuccess(true);
+    setMessage("Sigup Successful!");
+    setIsVisible(true);
+
+    setTimeout(() => {
+      setIsVisible(false);
+      setTimeout(() => setMessage(""), 1000);
+    }, 2000);
   };
 
   const handleLoginError = (error) => {
-    console.log(error);
+    setIsSuccess(false);
+    setIsVisible(true);
+    setMessage(error.message);
+
+    setTimeout(() => {
+      setIsVisible(false);
+      setTimeout(() => setMessage(""), 500);
+    }, 1000);
+
+    setLoading(false);
   };
 
-  const handleSignup = async (formdata) => {
-    setLoading(true);
-    setErrorMsg("");
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    const formdata = new FormData(e.currentTarget);
+    flushSync(() => {
+      setLoading(true);
+      setMessage("");
+    });
 
     // 1. Sign up user with email & password
     const { data, error } = await supabase.auth.signUp({
@@ -80,7 +114,21 @@ function Signup() {
     });
 
     if (error) {
-      setErrorMsg(error.message);
+      if (timer1 || timer2) {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      }
+
+      setIsSuccess(false);
+      setIsVisible(true);
+      setMessage(error.message);
+      timer1 = setTimeout(() => {
+        setIsVisible(false);
+      }, 2000);
+      timer2 = setTimeout(() => {
+        setMessage("");
+      }, 3000);
+
       setLoading(false);
       return;
     }
@@ -96,7 +144,9 @@ function Signup() {
       router.invalidate();
       navigate({ to: redirect || "/app/dashboard" });
 
-      alert("Signup successful! Welcome, " + data.user.user_metadata.name);
+      setIsVisible(true);
+      setIsSuccess(true);
+      setMessage("Signup successful!");
     }
 
     setLoading(false);
@@ -108,13 +158,13 @@ function Signup() {
       <div className="h-screen  flex flex-col  lg:flex-row gap-2">
         <div className="grow bg-[url(/assets/img/jive-shapes-top.svg)] lg:bg-[url(/assets/img/jive-shapes-left.svg)] flex min-h-0 lg:h-screen bg-no-repeat bg-cover bg-bottom lg:bg-top w-full"></div>
         <div className="p-6 md:py-8 w-full lg:w-auto px-6 mx-auto flex flex-col flex-none gap-4 items-center lg:min-w-125 max-w-160 md:mt-0 ">
-          <div className="mb-2">
+          <Link to="/" className="mb-2">
             <img src="/assets/img/brillo.svg" alt="logo.svg" />
-          </div>
+          </Link>
           <h1 className=" text-2xl text-center font-bold leading-tight tracking-tight text-gray-900 ">
             Create your account
           </h1>
-          <form action={handleSignup} className="flex flex-col w-full gap-4">
+          <form onSubmit={handleSignup} className="flex flex-col w-full gap-4">
             <div className="flex flex-col  gap-2">
               <label htmlFor="first-name" className="font-medium text-gray-900">
                 Name
@@ -169,14 +219,41 @@ function Signup() {
                 I accept the
                 <a
                   href="./"
-                  className="font-medium inline-block ml-1 text-mediumgrey"
+                  className="font-medium inline-block ml-1 text-mediumgrey hover:text-[#f9c558]"
                 >
                   Terms and Conditions
                 </a>
               </label>
             </div>
-            <button className="w-full text-white bg-dark hover:bg-jive-blue focus:ring-4 focus:outline-none focus:ring-[] font-medium rounded-full text-lg px-5 py-3 text-center  transition">
-              Create an account
+            <button
+              disabled={loading}
+              className={`disabled:cursor-not-allowed w-full text-white bg-dark hover:bg-jive-blue focus:ring-4 focus:outline-none focus:ring-[] font-medium rounded-full text-lg px-5 py-3 text-center  transition hover:bg-[#0590cb]`}
+            >
+              {!loading ? "Create an account" : "Creating your account..."}
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                let timer = null;
+                if (message) {
+                  if (timer) clearTimeout(timer);
+                  setIsSuccess((success) => !success);
+                  setIsVisible(false);
+                  setMessage("");
+                  return;
+                }
+
+                setIsSuccess((success) => !success);
+                setIsVisible(true);
+                setMessage("An Error Occured");
+                timer = setTimeout(() => {
+                  setIsVisible(false);
+                  setTimeout(() => setMessage(""), 1000);
+                }, 1000);
+              }}
+              className="bg-accent border rounded-2xl w-fit  p-2"
+            >
+              Toggle
             </button>
           </form>
           <div className="mr-auto">
@@ -187,7 +264,10 @@ function Signup() {
           </div>
           <p className="text-[#6b7280] font-light">
             Already have an account?{" "}
-            <Link to="/app/login" className="font-medium text-dark">
+            <Link
+              to="/app/login"
+              className="font-medium text-dark hover:text-[#8f81ff]"
+            >
               Login
             </Link>
           </p>

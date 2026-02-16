@@ -60,7 +60,6 @@ function Settings() {
                 autoFocus
                 className="border border-grey w-[28ch]  rounded-2xl p-4"
               >
-                {" "}
                 className={theme.themes[theme.current].style}
                 <option
                   value="English"

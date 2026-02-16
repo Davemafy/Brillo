@@ -18,7 +18,11 @@ export const Route = createFileRoute("/app/_authenticated")({
       });
     }
   },
-
+  notFoundComponent: () => (
+    <div className="h-full flex items-center justify-center">
+      <p>Page not found</p>
+    </div>
+  ),
   component: Setup,
 });
 
