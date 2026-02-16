@@ -32,8 +32,8 @@ const CourseCard = ({ course, index }) => {
             </h3>
             <p className="text-[0.65rem]">by {course.instructor}</p>
           </div>
-          <div className="rounded-[0.43rem] absolute top-4 right-4 z-1 xlg:hidden flex  sm:mx-0 overflow-hidden h-16 lls:h-13 llg:h-16 aspect-square bg-white">
-            <img
+          <div className="rounded-[0.43rem] hidden xs:block absolute top-4 right-4 z-1 xlg:hidden flex  sm:mx-0 overflow-hidden h-16 lls:h-13 llg:h-16 aspect-square">
+            <img onError={(e) => e.target.src = "/favicon.png"}
               src={course.img || `https://picsum.photos/${index}00`}
               alt={course.title}
               className="h-full  w-full  rounded-[0.43rem] object-cover "
@@ -56,7 +56,7 @@ const CourseCard = ({ course, index }) => {
             params={{
               courseTitle: course.title.replaceAll(" ", "-").toLowerCase(),
             }}
-            className="border border-gray-200 font-medium transition-all bg-white hover:bg-dark hover:text-white rounded-xl text-[0.7rem] p-3 px-6"
+            className="border border-gray-200 font-medium transition-all bg-white text-center hover:bg-dark hover:text-white rounded-xl text-[0.7rem] p-3 px-6"
           >
             View Course
           </Link>

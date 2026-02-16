@@ -23,7 +23,7 @@ function CourseComponent() {
 
   return (
     <section className="p-6">
-      <CourseCard course={course} index={300}></CourseCard>
+      <CourseCard course={course} index={courses.indexOf(course)}></CourseCard>
     </section>
   );
 }

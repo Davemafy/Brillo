@@ -116,6 +116,7 @@ function NewDash() {
                     <div className="min-w-full snap-center flex flex-col xxs:flex-row min-h-16 xxs:items-center gap-4 p-2 bg-accent border border-gray-200 rounded-xl">
                       <div className="shrink-0 rounded-[inherit] w-10 aspect-square bg-white">
                         <img
+                          onError={(e) => (e.target.src = "/favicon.png")}
                           src={course.img || `https://picsum.photos/${index}00`}
                           className="h-full w-full object-cover rounded-xl"
                           alt=""
