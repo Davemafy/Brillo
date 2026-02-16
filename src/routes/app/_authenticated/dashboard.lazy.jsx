@@ -210,7 +210,7 @@ function NewDash() {
                 </li>
               </ul>
               <div className="overflow-y-auto ">
-                <ul className="grid lls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4  verflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
+                <ul className="grid lls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4 text-[0.65rem] overflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
                   {sortedCourses.map((course, index) => (
                     <CourseCard course={course} index={index} />
                   ))}

@@ -231,30 +231,6 @@ function Signup() {
             >
               {!loading ? "Create an account" : "Creating your account..."}
             </button>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                let timer = null;
-                if (message) {
-                  if (timer) clearTimeout(timer);
-                  setIsSuccess((success) => !success);
-                  setIsVisible(false);
-                  setMessage("");
-                  return;
-                }
-
-                setIsSuccess((success) => !success);
-                setIsVisible(true);
-                setMessage("An Error Occured");
-                timer = setTimeout(() => {
-                  setIsVisible(false);
-                  setTimeout(() => setMessage(""), 1000);
-                }, 1000);
-              }}
-              className="bg-accent border rounded-2xl w-fit  p-2"
-            >
-              Toggle
-            </button>
           </form>
           <div className="mr-auto">
             <GoogleLogin

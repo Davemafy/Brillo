@@ -13,7 +13,7 @@ function formatName(name) {
 function NavBar({ className }) {
   return (
     <nav
-      className={`sticky top-0 z-10  bg-white flex justify-between items-center gap-2 ${className}`}
+      className={`sticky top-0 z-0  bg-white flex justify-between items-center gap-2 ${className}`}
     >
       <SearchBar className={`flex-[0.5] sm:flex-2`} />
       <UserBar />
@@ -33,7 +33,7 @@ export function SearchBar({ className }) {
       </button>
       <input
         type="text"
-        className=" w-0 p-0 ls:px-4 ls:w-full h-full border-0 bg-inherit focus:border-0 focus:outline-0 text-sm"
+        className=" w-0 p-0 focus:ring-0 ls:px-4 ls:w-full h-full border-0 bg-inherit focus:border-0 focus:outline-0 text-sm"
       />
     </div>
   );

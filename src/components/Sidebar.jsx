@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Streak from "./Streak";
 import { useUser } from "../hooks/useUser";
+import { useAuth } from "../hooks/useAuth";
 
 const Sidebar = ({ sidebarOpen, closeSideBar }) => {
   const activeTab = useLocation({
@@ -18,8 +19,20 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
   }).replace("/app", "");
   const { logOut } = useUser();
 
+  const { setLoading, setIsSuccess, setMessage, setIsVisible } = useAuth();
+
   const handleLogout = () => {
     logOut();
+    setIsSuccess(false);
+    setIsVisible(true);
+    setMessage("You are logged out");
+
+    setTimeout(() => {
+      setIsVisible(false);
+      setTimeout(() => setMessage(""), 1000);
+    }, 2000);
+
+    setLoading(false);
   };
 
   return (
