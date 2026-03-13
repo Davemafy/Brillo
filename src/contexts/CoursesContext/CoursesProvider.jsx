@@ -13,7 +13,7 @@ export const CoursesProvider = ({ children }) => {
       rating: "4.9",
       progress: 99,
       id: "kwejwer",
-      img: null,
+      img: "https://ontpliitdnnsfwvvzuvg.supabase.co/storage/v1/object/public/app-assets/courses/figma.png",
     },
     {
       title: "Analog photography",
@@ -22,7 +22,7 @@ export const CoursesProvider = ({ children }) => {
       rating: "4.7",
       progress: 99,
       id: "sjlakwawjkrel",
-      img: null,
+      img: "https://ontpliitdnnsfwvvzuvg.supabase.co/storage/v1/object/public/app-assets/courses/analog-photography.png",
     },
     {
       title: "Master Instagram",
@@ -31,7 +31,7 @@ export const CoursesProvider = ({ children }) => {
       rating: "4.6",
       progress: 99,
       id: "skmgwkmsglwrkems",
-      img: null,
+      img: "https://ontpliitdnnsfwvvzuvg.supabase.co/storage/v1/object/public/app-assets/courses/master-instagram.png",
     },
     {
       title: "Basics of drawing",
@@ -40,7 +40,7 @@ export const CoursesProvider = ({ children }) => {
       rating: "4.8",
       progress: 99,
       id: "sjlakwawjskmgwlwkrel",
-      img: null,
+      img: "https://ontpliitdnnsfwvvzuvg.supabase.co/storage/v1/object/public/app-assets/courses/basics-of-drawing.png",
     },
     {
       title: "Photoshop - Essence",
@@ -49,7 +49,7 @@ export const CoursesProvider = ({ children }) => {
       rating: "4.7",
       progress: 99,
       id: "liwjslidjaglwijwielw",
-      img: null,
+      img: "https://ontpliitdnnsfwvvzuvg.supabase.co/storage/v1/object/public/app-assets/courses/photoshop-essence.png",
     },
   ];
 
