@@ -1,28 +1,24 @@
 import { useCourses } from "../hooks/useCourses";
+import { supabase } from "../superbaseClient";
 import {
   Bookmark,
-  Clock,
-  Delete,
-  Flame,
   Hourglass,
   ImageDown,
   School,
-  SmilePlusIcon,
   Star,
   Timer,
-  Trash,
-  Trash2,
   X,
-  XCircle,
 } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useRef, useState } from "react";
 
-const Form = ({ setOpenModal }) => {
+const CourseForm = ({ setOpenModal }) => {
   const [courses, setCourses] = useCourses();
 
   const previewRef = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+
+  const [courseImg, setCourseImg] = useState(null);
 
   useEffect(() => {
     const node = previewRef.current;
@@ -33,10 +29,8 @@ const Form = ({ setOpenModal }) => {
       if (file) {
         const objectUrl = URL.createObjectURL(file);
         setPreviewUrl(objectUrl);
+        setCourseImg(file);
       }
-
-      // THE FIX: Reset the input value so the same file can be picked again
-      e.target.value = "";
     };
 
     node.addEventListener("change", handleChange);
@@ -46,8 +40,37 @@ const Form = ({ setOpenModal }) => {
     };
   }, []);
 
-  function handleSubmit(formData) {
-    const newNote = {
+  async function handleSubmit(e) {
+    e.preventDefault();
+   
+    if (!courseImg) {
+      alert("Please select an image first!");
+      return;
+    }
+
+    const formData = new FormData(e.currentTarget);
+    const fileName = `courses/${Date.now()}-${formData.get("course").replace(/\s+/g, "-")}`;
+
+    // Use 'courseImg' from state instead of trying to find it in the DOM
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("app-assets")
+      .upload(fileName, courseImg, {
+        contentType: courseImg.type, // Ensures it's not 'octet-stream'
+      });
+
+    if (uploadError) {
+      console.error("Upload failed:", uploadError.message);
+      return;
+    }
+
+    // Get the permanent Public URL
+    const { data: urlData } = supabase.storage
+      .from("app-assets")
+      .getPublicUrl(fileName);
+
+    const publicUrl = urlData.publicUrl;
+
+    const newCourse = {
       id: uuidv4(),
       created: Date.now(),
       title: formData.get("course"),
@@ -55,23 +78,24 @@ const Form = ({ setOpenModal }) => {
       duration: `${formData.get("hrs")}.${formData.get("mins")}`,
       rating: formData.get("rating"),
       progress: 0,
-      img: previewUrl,
+      img: publicUrl,
     };
 
-    setCourses([newNote, ...courses]);
+    setCourses([newCourse, ...courses]);
     setOpenModal(false);
   }
 
   return (
     <form
-      action={handleSubmit}
-      className="  relative ls:max-w-fit  md:min-w-[500px] grid gap-4 p-6 pt-
-        bg-white text-sm  border border-gray-400 min-w-0 ls:h-auto max-h-[100%] overflow-y-auto w-full font-sm  rounded-2xl"
+      onSubmit={handleSubmit}
+      className="  relative ls:max-w-fit  md:min-w-125 grid gap-4 p-6 pt-
+        bg-white text-sm  border border-gray-400 min-w-0 ls:h-auto max-h-full overflow-y-auto w-full font-sm  rounded-2xl"
     >
       <div className="absolute right-4   top-5">
         <button
           onClick={(e) => {
             e.preventDefault();
+            setCourseImg(null)
             setOpenModal(false);
           }}
           className="bg-[#eee] rounded-sm p-1"
@@ -99,7 +123,7 @@ const Form = ({ setOpenModal }) => {
         />
       </div>
       <div className="flex flex-col gap-1  w-full">
-        <label htmlFor="course" className="flex items-center gap-1.5">
+        <label htmlFor="instructor" className="flex items-center gap-1.5">
           <School size={16} />
           Instructor
         </label>
@@ -114,7 +138,7 @@ const Form = ({ setOpenModal }) => {
       </div>
       <div className="flex flex-col lg:flex-col justify-between gap-4">
         <div className="flex flex-col gap-1 w-full">
-          <label htmlFor="course" className="flex items-center gap-1">
+          <label htmlFor="rating" className="flex items-center gap-1">
             <Star size={16} />
             Rating
           </label>
@@ -185,12 +209,12 @@ const Form = ({ setOpenModal }) => {
         }}
       >
         <div className="hidden">
-          <label htmlFor="picture">Select an image:</label>
+          <label htmlFor="course-image">Select an image:</label>
           <input
             ref={previewRef}
             type="file"
-            id="picture"
-            name="picture"
+            id="course-image"
+            name="course-image"
             accept="image/*"
           />
         </div>
@@ -204,7 +228,7 @@ const Form = ({ setOpenModal }) => {
               <a
                 href=""
                 onClick={(e) => e.preventDefault()}
-                className="underline focus:text-purple-500 text-blue-500"
+                className="underline inline-block mr-1 focus:text-purple-500 text-blue-500"
               >
                 Click to upload
               </a>
@@ -223,4 +247,4 @@ const Form = ({ setOpenModal }) => {
   );
 };
 
-export default Form;
+export default CourseForm;

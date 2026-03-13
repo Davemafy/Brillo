@@ -10,7 +10,6 @@ import { flushSync } from "react-dom";
 import { useUser } from "../../../../hooks/useUser";
 import { GoogleLogin } from "@react-oauth/google";
 import { supabase } from "../../../../superbaseClient";
-import { set } from "zod";
 import { useAuth } from "../../../../hooks/useAuth";
 
 export const Route = createLazyFileRoute("/app/_auth/_login/login")({

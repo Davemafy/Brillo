@@ -11,6 +11,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx,css,html}\""
   },
   "dependencies": {
+    "@google/genai": "^1.42.0",
     "@react-oauth/google": "^0.13.4",
     "@supabase/supabase-js": "^2.89.0",
     "@tailwindcss/forms": "^0.5.11",

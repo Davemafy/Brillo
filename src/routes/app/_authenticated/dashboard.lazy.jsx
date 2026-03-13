@@ -1,5 +1,5 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import Note from "../../../components/Note";
+import Note from "../../../components/NoteCard";
 import {
   ChevronRightCircleIcon,
   Clock,
@@ -9,7 +9,7 @@ import {
   MoveRight,
 } from "lucide-react";
 import { useRecord } from "../../../hooks/useRecord";
-import Form from "../../../components/Form";
+import Form from "../../../components/CourseForm";
 import CourseCard from "../../../components/CourseCard";
 import { useTheme } from "../../../hooks/useTheme";
 import { useUser } from "../../../hooks/useUser";
@@ -84,7 +84,7 @@ function NewDash() {
   return (
     <>
       <title> Dashboard | Brillo </title>
-      <div className="grid grid-dashboard w-full h-full overflow-auto gap-8 p-5 px-0 ls:pl-0 xlg:p-0 pt-0 sm:py-0">
+      <div className="grid grid-dashboard  bg-linear-to-br from-lime-200/15 to-white  w-full h-full overflow-auto gap-8 p-5 px-0 ls:pl-0 xlg:p-0 pt-0 sm:py-0">
         <div className="h-full pb-5 overflow-auto no-scrollbar flex flex-col gap-6 rounded-xl px-5 sm:p-8 xlg:py-0 xlg:pr-0 ">
           <NavBar className="hidden md:flex xlg:hidden" />
           <div className="grid  mt-8 sm:mt-0 xlg:mt-8 xs:grid-cols-2 bg-accent border border-gray-200 items-stretch  rounded-[inherit]">
@@ -98,6 +98,7 @@ function NewDash() {
               <img
                 className="mx-auto xs:absolute xs:right-[15%]  xs:opacity-100 sm:right-[40%] h-full object-contain object-bottom bottom-0 sm:h-[110%] "
                 src="/assets/img/user.svg"
+                fetchPriority="high"
                 alt="user.svg"
               />
             </div>
@@ -110,14 +111,17 @@ function NewDash() {
               {courses.map((course, index) => {
                 return (
                   <li
-                    key={index}
+                    key={course.id}
                     className="min-w-full snap-center flex flex-col gap-2 pb-2 items-end  rounded-xl"
                   >
                     <div className="min-w-full snap-center flex flex-col xxs:flex-row min-h-16 xxs:items-center gap-4 p-2 bg-accent border border-gray-200 rounded-xl">
                       <div className="shrink-0 rounded-[inherit] w-10 aspect-square bg-white">
                         <img
-                          onError={(e) => (e.target.src = "/favicon.png")}
+                          onError={(e) =>
+                            (e.target.src = "https://placehold.co/200")
+                          }
                           src={course.img || `https://picsum.photos/${index}00`}
+                          decoding="async"
                           className="h-full w-full object-cover rounded-xl"
                           alt=""
                         />
@@ -148,9 +152,9 @@ function NewDash() {
                               .replaceAll(" ", "-")
                               .toLowerCase(),
                           }}
-                          className="hidden ls:block bg-dark text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit"
+                          className="hidden ls:block bg-dark text-white transition hover:bg-white hover:text-dark rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit"
                         >
-                          Continue
+                          <button>Continue</button>
                         </Link>
                       </div>
                     </div>
@@ -221,7 +225,7 @@ function NewDash() {
               <div className="overflow-y-auto ">
                 <ul className="grid lls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4 text-[0.65rem] overflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
                   {sortedCourses.map((course, index) => (
-                    <CourseCard course={course} index={index} />
+                    <CourseCard key={course.id} course={course} index={index} />
                   ))}
                 </ul>
               </div>
@@ -287,6 +291,7 @@ function NewDash() {
             <div className="mx-auto">
               <img
                 src="/assets/img/book.png"
+                decoding="async"
                 alt="book.png"
                 className={"w-26 h-auto"}
               />

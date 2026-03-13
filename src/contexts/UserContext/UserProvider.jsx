@@ -4,8 +4,8 @@ import { useSemiPersistentState } from "../../hooks/useSemiPersistentState";
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useSemiPersistentState("user", {
-    // name: "Guest User",
-    // given_name: "Guest",
+    //  name: "Guest User",
+    //  given_name: "Guest",
     isAuthenticated: false,
   });
 

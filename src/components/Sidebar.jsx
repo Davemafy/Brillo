@@ -53,6 +53,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
         <ul className="h-full flex items-stretch flex-col gap-2 px-2 pb-10">
           <li onClick={closeSideBar} className=" relative">
             <Link
+              preload={"intent"}
               activeProps={{ className: "bg-[#333] text-[#eee] opacity-100" }}
               className={`flex gap-2 items-center justify-stretch  p-4 py-3 px-8 pr-20   hover:bg-[#333] hover:text-[#eee] rounded-md  transition ${activeTab == "/dashboard" ? "bg-[#333] text-[#eee] " : "opacity-45"}`}
               to="/app/dashboard"
@@ -65,6 +66,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
           </li>
           <li onClick={closeSideBar}>
             <Link
+              preload={"intent"}
               activeProps={{ className: "bg-[#333] text-[#eee] opacity-100" }}
               className={`flex gap-2 items-center justify-stretch  p-4 py-3 px-8 pr-20   hover:bg-[#333] hover:text-[#eee] rounded-md  transition opacity-45`}
               to="/app/courses"
@@ -77,6 +79,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
           </li>
           <li onClick={closeSideBar}>
             <Link
+              preload={"intent"}
               activeProps={{ className: "bg-[#333] text-[#eee] opacity-100" }}
               className={`flex gap-2 items-center justify-stretch  p-4 py-3 px-8 pr-20   hover:bg-[#333] hover:text-[#eee] rounded-md  transition ${activeTab == "/notes" ? "bg-[#333] text-[#eee] " : "opacity-45"}`}
               to="/app/notes"
@@ -89,6 +92,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
           </li>
           <li onClick={closeSideBar} className="mt-auto relative">
             <Link
+              preload={"intent"}
               activeProps={{ className: "bg-[#333] text-[#eee] opacity-100" }}
               className={`flex gap-2 items-center justify-stretch  p-4 py-3 px-8 pr-20   hover:bg-[#333] hover:text-[#eee] rounded-md  transition ${activeTab == "/settings" ? "bg-[#333] text-[#eee] " : "opacity-45"}`}
               to="/app/settings"

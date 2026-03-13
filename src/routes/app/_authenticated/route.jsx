@@ -5,10 +5,11 @@ import { RecordProvider } from "../../../contexts/RecordContext";
 import { CoursesProvider } from "../../../contexts/CoursesContext";
 import { useState } from "react";
 import { useTheme } from "../../../hooks/useTheme";
+import { NotesProvider } from "../../../contexts/NotesContext";
 
 export const Route = createFileRoute("/app/_authenticated")({
   beforeLoad: ({ context, location }) => {
-    //off user auth for mobile debugging
+    // off user auth for offline debugging
     if (!context.auth.isAuthenticated) {
       throw redirect({
         to: "/app/login",
@@ -39,20 +40,22 @@ function Setup() {
   }
 
   return (
-    <div className={`setup font-monasans ${theme.themes[theme.current].style}`}>
-      <RecordProvider>
-        <Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar} />
+    <CoursesProvider>
+      <NotesProvider>
         <div
-          className={`w-full h-full flex flex-col transition ${sidebarOpen && "translate-x-[210px]"}`}
+          className={`setup font-monasans ${theme.themes[theme.current].style}`}
         >
-          <Header sidebarOpen={sidebarOpen} toogleSidebar={toogleSidebar} />
-          <CoursesProvider>
-            <main className="flex-1 w-full  overflow-auto">
+          <Sidebar sidebarOpen={sidebarOpen} closeSideBar={closeSideBar} />
+          <div
+            className={`w-full h-full flex flex-col transition ${sidebarOpen && "translate-x-56.75"}`}
+          >
+            <Header sidebarOpen={sidebarOpen} toogleSidebar={toogleSidebar} />
+            <main className="flex-1 w-full overflow-auto">
               <Outlet />
             </main>
-          </CoursesProvider>
+          </div>
         </div>
-      </RecordProvider>
-    </div>
+      </NotesProvider>
+    </CoursesProvider>
   );
 }

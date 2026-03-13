@@ -94,6 +94,7 @@
   --color-lightgrey: #6d6d6d;
   --color-darkgrey: #a9a9a9;
   --color-dark: #000;
+  --color-lightdark: #000;
   --color-mediumgrey: #5d5d5d;
   --font-monasans: "Mona Sans", "Uncut Sans", "system-ui";
   --text-xs: 0.75rem;
@@ -138,6 +139,10 @@
     scrollbar-width: thin; /* "auto" or "thin" */
     scrollbar-color: theme("colors.black") theme("colors.gray.200"); /* thumb and track color */
   }
+
+  .btn {
+    @apply bg-dark transition hover:bg-[#181818] shadow-sm text-white text-sm p-2.5 px-7 w-fit rounded-2xl;
+  }
 }
 
 * {
@@ -178,6 +183,10 @@
   scrollbar-width: none;
 }
 
+html, body {
+  overscroll-behavior: none;
+}
+
 body {
   font-family: "Uncut Sans", sans-serif;
   position: relative;
@@ -204,6 +213,71 @@ body {
     "ss07";
   font-variation-settings: normal;
 }
+
+.fade-in {
+  animation: fadeIn 0.25s both;
+}
+
+@keyframes fadeIn {
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+}
+
+.maskfade {
+  /* The magic: Top and Bottom fade */
+  
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 10%,      /* Top fade ends 10% down */
+    black 90%,      /* Bottom fade starts at 90% */
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+
+}
+
+
+/* button:not(.flat) {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 0.375rem;
+  border: 1px solid #0a0a0a;
+  background-color: #171717;
+  padding: 6px 12px;
+  color: #f5f5f5;
+  box-shadow:
+    inset 0 1px #525252,
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+}
+button:hover {
+  background-color: #262626;
+}
+button:active {
+  background-color: #0a0a0a;
+  box-shadow:
+    inset 0 1px #262626,
+    0 0 #0000;
+} */
 
 [type="checkbox"]:checked {
   background-image: url("data:image/svg+xml,%3csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 12'%3e %3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M1 5.917 5.724 10.5 15 1.5'/%3e %3c/svg%3e");
@@ -235,6 +309,53 @@ body {
   width: 100%;
   display: grid;
   place-items: center;
+}
+
+.img-container {
+  background: #f0f0f0; /* Match your dashboard card color */
+  overflow: hidden;
+  position: relative;
+}
+
+.img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  scale: 0;
+  transition: opacity 0.2s;
+}
+
+.img-container img.loaded {
+  opacity: 1;
+  scale: 1; 
+}
+
+.tooltip {
+    position: relative;
+    cursor: pointer;
+    display: block  ;
+}
+
+.tooltip::after {
+    content: var(--tooltip-text);
+    font-size: 0.85rem;
+    position: absolute;
+    bottom: 125%; /* position above */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
 }
 
 @media (width > 48rem) {
