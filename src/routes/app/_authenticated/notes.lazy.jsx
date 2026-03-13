@@ -7,7 +7,7 @@ import NoteForm from "../../../components/NoteForm";
 import { useState } from "react";
 import CourseCard from "../../../components/CourseCard";
 import { msToDate } from "../../../utils/msToDate";
-import { formatDate } from "../../../utils/formatdate";
+import { formatDate } from "../../../utils/formatDate";
 
 export const Route = createLazyFileRoute("/app/_authenticated/notes")({
   component: Notes,
@@ -17,7 +17,7 @@ function Notes() {
   const [notes, setNotes] = useNotes();
   const [courses, setCourses] = useCourses();
 
-  const [openModal, setOpenModal] = useState(false);
+ const [openModal, setOpenModal] = useState(false);
   const [openSelectModal, setOpenSelectModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
 
