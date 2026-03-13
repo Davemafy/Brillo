@@ -1,6 +1,8 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import Note from "../../../components/NoteCard";
 import {
+  ArrowBigDown,
+  ArrowDown,
   ChevronRightCircleIcon,
   Clock,
   Flame,
@@ -251,16 +253,25 @@ function NewDash() {
           <section className="flex flex-col gap-4 mt-2 h-full overflow-auto no-scrollbar">
             <h4 className="font-bold pt-4 rounded-xl">Your statistics</h4>
             <div>
-              <ul className="flex text-xs gap-6 font-bold">
+              <ul className="flex items-center text-xs gap-6 font-bold">
                 <li>
                   <button>Learning Hours</button>
                 </li>
                 <li className={`opacity-45`}>
                   <button> My Courses</button>
                 </li>
+                <li className="ml-auto">
+                  <div className="flex items-bottom gap-1.5 bg-accent text-[0.7rem] rounded-md text-base p-2 px-3 text-dark">
+                    <p>Weekly</p>
+                    <img src="/assets/img/arrow-down.svg" alt="" />
+                  </div>
+                </li>
               </ul>
             </div>
-            <figure className="text-[0.68rem] w-full flex flex-col h-full overflow-auto ">
+            <figure className="text-[0.68rem] relative w-full flex flex-col h-full overflow-auto ">
+              <div className="absolute inset-0 left-4">
+                <img src="/assets/img/today-graph.png" alt="" />
+              </div>
               <div className="py-1.75">5</div>
               <div className="py-1.75">4</div>
               <div className="py-1.75">3</div>
