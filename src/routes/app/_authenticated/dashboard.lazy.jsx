@@ -269,15 +269,15 @@ function NewDash() {
               </ul>
             </div>
             <figure className="text-[0.68rem] relative w-full flex flex-col h-full overflow-auto ">
-              <div className="absolute inset-0 left-4">
-                <img src="/assets/img/today-graph.png" alt="" />
+              <div className="absolute grid inset-0 left-4">
+                <img className="mt-auto mb-3" src="/assets/img/today-graph.png" alt="" />
               </div>
-              <div className="py-1.75">5</div>
-              <div className="py-1.75">4</div>
-              <div className="py-1.75">3</div>
-              <div className="py-1.75">2</div>
-              <div className="py-1.75">1</div>
-              <div className="py-1.75">0</div>
+              <div className="py-1.75 border-b border-accent">5</div>
+              <div className="py-1.75 border-b border-accent">4</div>
+              <div className="py-1.75 border-b border-accent">3</div>
+              <div className="py-1.75 border-b border-accent">2</div>
+              <div className="py-1.75 border-b border-accent">1</div>
+              <div className="py-1.75 border-b border-accent">0</div>
               <ul className="flex pl-5 gap-5">
                 <li>mon</li>
                 <li>tue</li>

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useRef, useState } from "react";
+import { generateCourseSubtitle } from "../utils/ai";
 
 const CourseForm = ({ setOpenModal }) => {
   const [courses, setCourses] = useCourses();
@@ -42,7 +43,7 @@ const CourseForm = ({ setOpenModal }) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-   
+
     if (!courseImg) {
       alert("Please select an image first!");
       return;
@@ -70,8 +71,12 @@ const CourseForm = ({ setOpenModal }) => {
 
     const publicUrl = urlData.publicUrl;
 
+    const generatedSubtitle =
+      await generateCourseSubtitle(formData.get("course"));
+
     const newCourse = {
       id: uuidv4(),
+      subtitle: generateCourseSubtitle || "",
       created: Date.now(),
       title: formData.get("course"),
       instructor: formData.get("instructor"),
@@ -95,7 +100,7 @@ const CourseForm = ({ setOpenModal }) => {
         <button
           onClick={(e) => {
             e.preventDefault();
-            setCourseImg(null)
+            setCourseImg(null);
             setOpenModal(false);
           }}
           className="bg-[#eee] rounded-sm p-1"

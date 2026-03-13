@@ -8,6 +8,7 @@ export const CoursesProvider = ({ children }) => {
   const mockCourses = [
     {
       title: "Learn Figma",
+      subtitle: "Mastering UI/UX Design with Figma",
       instructor: "Christopher Morgan",
       duration: "6.30",
       rating: "4.9",
@@ -17,6 +18,7 @@ export const CoursesProvider = ({ children }) => {
     },
     {
       title: "Analog photography",
+      subtitle: "Focusing on the Art of Film: A Journey Through Lenses and Lights",
       instructor: "Gordon Norman",
       duration: "3.15",
       rating: "4.7",
@@ -26,6 +28,7 @@ export const CoursesProvider = ({ children }) => {
     },
     {
       title: "Master Instagram",
+      subtitle: "Unleashing the Power of Visual Storytelling",
       instructor: "Sophie Gill",
       duration: "7.40",
       rating: "4.6",
@@ -35,6 +38,7 @@ export const CoursesProvider = ({ children }) => {
     },
     {
       title: "Basics of drawing",
+      subtitle: "Unleash Your Creativity: A Beginner's Guide to Mastering the Fundamentals",
       instructor: "Jean Tate",
       duration: "11.30",
       rating: "4.8",
@@ -44,6 +48,7 @@ export const CoursesProvider = ({ children }) => {
     },
     {
       title: "Photoshop - Essence",
+      subtitle: "Unleashing Creative Power: Mastering the Basics and Beyond",
       instructor: "David Green",
       duration: "5.35",
       rating: "4.7",
