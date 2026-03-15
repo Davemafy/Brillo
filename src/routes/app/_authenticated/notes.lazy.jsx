@@ -6,8 +6,8 @@ import { useCourses } from "../../../hooks/useCourses";
 import NoteForm from "../../../components/NoteForm";
 import { useState } from "react";
 import CourseCard from "../../../components/CourseCard";
-import { msToDate } from "../../../utils/msToDate";
 import { formatDate } from "../../../utils/formatDate";
+import { isoToDate } from "../../../utils/isoToDate";
 
 export const Route = createLazyFileRoute("/app/_authenticated/notes")({
   component: Notes,
@@ -25,26 +25,28 @@ function Notes() {
 
   const sortedNotes = [...notes].sort((current, next) => {
     if (filter === "newest") {
-      return next.created - current.created;
+      return next.created_at - current.created_at;
     } else if (filter === "longest") {
+      console.log(next.title, current.title)
       return next.description.length > current.description.length;
     } else if (filter === "most popular") {
       return next.duration - current.duration;
     }
+    
     return true;
   });
 
   const dates = notes.reduce((all, note) => {
-    if (!all.includes(note.created)) {
-      all.push(note.created);
+    if (!all.includes(note.created_at)) {
+      all.push(note.created_at);
     }
     return all;
   }, []);
 
   const mappedByDate = dates.map((date) => {
     return {
-      date: date,
-      notes: sortedNotes.filter((note) => note.created === date),
+      date: isoToDate(date),
+      notes: sortedNotes.filter((note) => note.created_at === date),
     };
   });
 
@@ -141,13 +143,13 @@ function Notes() {
               </div>
               <ul className="flex flex-wrap gap-4">
                 {item.notes.map((note) => {
-                  note.created = msToDate(note.created);
+                  note.created_at = isoToDate(note.created_at);
                   return (
                     <NoteCard
                       key={note.id}
                       className={"max-w-[370px]"}
                       note={note}
-                      notes={note}
+                      notes={notes}
                       setNotes={setNotes}
                     />
                   );
@@ -168,7 +170,7 @@ function SelectCoursePopUp({
   setSelectedCourse,
 }) {
   return (
-    <div className="absolute  p-8 pt-6 sm:py-8 bg-[#3335] backdrop-blur-[0.2rem] grid place-items-center  inset-0 overflow-auto w-full z-30">
+    <div className="fixed inset-0  p-8 pt-6 sm:py-8 bg-[#3335] backdrop-blur-[0.2rem] grid place-items-center overflow-auto w-full z-30">
       <div className="relative h-full w-full md:w-[55%] sm:border rounded-2xl border-gray-200 bg-white flex flex-col gap-3 overflow-auto  p-6 sm:p-6">
         <div>
           <h3 className="font-semibold">Select a course</h3>

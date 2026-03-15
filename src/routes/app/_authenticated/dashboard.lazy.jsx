@@ -16,7 +16,7 @@ import CourseCard from "../../../components/CourseCard";
 import { useTheme } from "../../../hooks/useTheme";
 import { useUser } from "../../../hooks/useUser";
 import NavBar from "../../../components/NavBar";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useCourses } from "../../../hooks/useCourses";
 
 export const Route = createLazyFileRoute("/app/_authenticated/dashboard")({
@@ -83,6 +83,31 @@ function NewDash() {
     }
   }
 
+  function getGreeting(name) {
+    const hour = new Date().getHours();
+    let greeting;
+
+    if (hour >= 5 && hour < 12) {
+      greeting = "Good Morning";
+    } else if (hour >= 12 && hour < 17) {
+      greeting = "Good Afternoon";
+    } else {
+      greeting = "Good Evening";
+    }
+
+    return `${greeting} ${name}!`;
+  }
+
+ const subGreeting = useMemo(() => {
+    const subGreetings = [
+      "It's good to see you again.",
+      "Ready to get some work done?",
+      "We've missed you!",
+      "Let's make today count."
+    ];
+    return subGreetings[Math.floor(Math.random() * subGreetings.length)];
+ }, []);
+  
   return (
     <>
       <title> Dashboard | Brillo </title>
@@ -92,9 +117,9 @@ function NewDash() {
           <div className="grid  mt-8 sm:mt-0 xlg:mt-8 xs:grid-cols-2 bg-accent border border-gray-200 items-stretch  rounded-[inherit]">
             <div className="p-4 py-8 sm:p-8">
               <h2 className="font-extrabold min-w-[4ch] xxs:max-w-full text-xl">
-                Hello {user.given_name}!
+                {getGreeting(user.given_name)}
               </h2>
-              <p className="text-[0.7rem] ">It's good to see you again.</p>
+              <p className="text-[0.7rem] ">{subGreeting}</p>
             </div>
             <div className="flex h-full items-center xxs:block p-2 relative max-h-30 xxs:max-h-full">
               <img
@@ -270,7 +295,11 @@ function NewDash() {
             </div>
             <figure className="text-[0.68rem] relative w-full flex flex-col h-full overflow-auto ">
               <div className="absolute grid inset-0 left-4">
-                <img className="mt-auto mb-3" src="/assets/img/today-graph.png" alt="" />
+                <img
+                  className="mt-auto mb-3"
+                  src="/assets/img/today-graph.png"
+                  alt=""
+                />
               </div>
               <div className="py-1.75 border-b border-accent">5</div>
               <div className="py-1.75 border-b border-accent">4</div>

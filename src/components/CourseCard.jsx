@@ -15,7 +15,7 @@ const CourseCard = ({
 
   function getRating(rating) {
     if (rating.length === 1) return rating + ",0";
-    const format = rating.replace(".", ",");
+    const format = String(rating).replace(".", ",");
     return format;
   }
 

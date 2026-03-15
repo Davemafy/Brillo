@@ -360,7 +360,7 @@ button:active {
 
 @media (width > 48rem) {
   .pop-up {
-    position: absolute;
+    position: fixed;
   }
 }
 

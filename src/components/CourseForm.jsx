@@ -12,9 +12,11 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useRef, useState } from "react";
 import { generateCourseSubtitle } from "../utils/ai";
+import { useUser } from "../hooks/useUser";
 
 const CourseForm = ({ setOpenModal }) => {
   const [courses, setCourses] = useCourses();
+  const { user } = useUser();
 
   const previewRef = useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -71,20 +73,41 @@ const CourseForm = ({ setOpenModal }) => {
 
     const publicUrl = urlData.publicUrl;
 
-    const generatedSubtitle =
-      await generateCourseSubtitle(formData.get("course"));
+    const generatedSubtitle = await generateCourseSubtitle(
+      formData.get("course"),
+    );
 
-    const newCourse = {
-      id: uuidv4(),
-      subtitle: generateCourseSubtitle || "",
-      created: Date.now(),
-      title: formData.get("course"),
-      instructor: formData.get("instructor"),
-      duration: `${formData.get("hrs")}.${formData.get("mins")}`,
-      rating: formData.get("rating"),
-      progress: 0,
-      img: publicUrl,
-    };
+    const hours = parseFloat(formData.get("hrs")) || 0;
+    const minutes = parseFloat(formData.get("mins")) || 0;
+    const totalDuration = hours + minutes / 60;
+
+    const subTitle = await generateCourseSubtitle() 
+
+    console.log(subTitle)
+
+    const { data: newCourse, error } = await supabase
+      .from("courses")
+      .insert([
+        {
+          user_id: user.id,
+          subtitle: subTitle,
+          title: formData.get("course"),
+          instructor: formData.get("instructor"),
+          duration: totalDuration,
+          rating: +formData.get("rating"),
+          progress: 0,
+          img: publicUrl,
+        },
+      ])
+      .select();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+    if (newCourse) {
+      console.log("newCourse: ", newCourse);
+    }
 
     setCourses([newCourse, ...courses]);
     setOpenModal(false);

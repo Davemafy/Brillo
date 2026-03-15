@@ -1,11 +1,13 @@
 import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCourses } from "../../../../hooks/useCourses";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CourseCard from "../../../../components/CourseCard";
 import CourseForm from "../../../../components/CourseForm";
 import { useMediaQuery } from "react-responsive";
 import NavBar from "../../../../components/NavBar";
+import { supabase } from "../../../../superbaseClient";
+import { useUser } from "../../../../hooks/useUser";
 
 export const Route = createLazyFileRoute("/app/_authenticated/courses/")({
   component: Courses,
@@ -25,7 +27,7 @@ function Courses() {
 
   const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
   const [filter, setFilter] = useState("all");
-  const sortedCourses = [...courses].sort((current, next) => {
+  const sortedCourses = [...courses].reverse().sort((current, next) => {
     if (filter === "newest") {
       return next.date - current.date;
     } else if (filter === "top rated") {
@@ -33,7 +35,7 @@ function Courses() {
     } else if (filter === "most popular") {
       return next.duration - current.duration;
     }
-    return true;
+    return -1;
   });
 
   return (

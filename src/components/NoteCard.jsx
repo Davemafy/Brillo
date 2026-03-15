@@ -7,7 +7,7 @@ const NoteCard = ({ note, className, notes, setNotes }) => {
     >
       <div className="flex mb-2 justify-between items-center ">
         <p className="text-[0.5rem] p-2 px-3 font-semibold bg-neutral-200 rounded-2xl">
-          {note.course.toUpperCase()}
+          {note.course_title.toUpperCase()}
         </p>
         <div className="flex gap-2">
           <button
