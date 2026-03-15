@@ -41,7 +41,9 @@ export function SearchBar({ className }) {
 
 export function UserBar({ className }) {
   const {
-    user: { name, picture },
+    user: {
+      user_metadata: { full_name, avatar_url },
+     },
   } = useUser();
 
   return (
@@ -60,17 +62,17 @@ export function UserBar({ className }) {
       </button>
       <div className="shrink-0 flex items-center gap-2">
         <button
-          className={`w-7 aspect-square ${!picture && "bg-dark"} rounded-lg `}
+          className={`w-7 aspect-square ${!avatar_url && "bg-dark"} rounded-lg `}
         >
-          {picture ? (
+          {avatar_url ? (
             <img
-              src={picture}
+              src={avatar_url}
               alt="profile"
               className="rounded-lg h-full w-full object-cover "
             />
           ) : (
             <p className="text-white text-sm sm:text-base">
-              {formatName(name)}
+              {formatName(full_name)}
             </p>
           )}
         </button>

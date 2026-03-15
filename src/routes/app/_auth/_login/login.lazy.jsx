@@ -24,33 +24,47 @@ function Login() {
   const navigate = useNavigate();
   const state = useRouterState({ select: (s) => s.location.state });
   const router = useRouter();
-  const { redirect } = Route.useSearch(); // Captured from the initial redirect
+  const { redirect } = Route.useSearch();
 
-  const handleLoginSuccess = (response) => {
-    const token = response.credential;
-    const userData = jwtDecode(token);
+  const handleLoginSuccess = async (response) => {
+    const idToken = response.credential;
 
-    flushSync(() => {
-      setUser({
-        ...userData,
-        isAuthenticated: true,
-      });
+    const { data, error } = await supabase.auth.signInWithIdToken({
+      provider: "google",
+      token: idToken,
     });
 
-    router.invalidate();
+    if (error) {
+      console.error("Supabase Auth Error:", error.message);
+      setIsSuccess(false);
+      setMessage("Google login failed on server");
+      setIsVisible(true);
+      return;
+    }
 
-    const destination = state?.returnTo || "/app/dashboard";
+    if (data.user) {
+      flushSync(() => {
+        setUser({
+          ...data.user,
+          isAuthenticated: true,
+        });
+      });
 
-    navigate({ to: destination });
+      router.invalidate();
 
-    setIsSuccess(true);
-    setMessage("Login Successful!");
-    setIsVisible(true);
+      const destination = state?.returnTo || "/app/dashboard";
 
-    setTimeout(() => {
-      setIsVisible(false);
-      setTimeout(() => setMessage(""), 1000);
-    }, 2000);
+      navigate({ to: destination });
+
+      setIsSuccess(true);
+      setMessage("Login Successful!");
+      setIsVisible(true);
+
+      setTimeout(() => {
+        setIsVisible(false);
+        setTimeout(() => setMessage(""), 1000);
+      }, 2000);
+    }
   };
 
   const handleLoginError = (error) => {
@@ -58,9 +72,9 @@ function Login() {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setLoading(true);
-    const formdata =  new FormData(e.currentTarget)
+    const formdata = new FormData(e.currentTarget);
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email: formdata.get("email"),
@@ -155,7 +169,10 @@ function Login() {
                 className="bg-gray-50 border border-gray-200 text-gray-900 text-base md:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full px-4 py-3  placeholder:text-gray-400"
               />
             </div>
-            <button disabled={loading} className="disabled:cursor-not-allowed w-full text-white bg-dark hover:bg-jive-blue focus:ring-4 focus:outline-none font-medium rounded-full text-lg px-5 py-3 text-center  transition hover:bg-teal">
+            <button
+              disabled={loading}
+              className="disabled:cursor-not-allowed w-full text-white bg-dark hover:bg-jive-blue focus:ring-4 focus:outline-none font-medium rounded-full text-lg px-5 py-3 text-center  transition hover:bg-teal"
+            >
               {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>

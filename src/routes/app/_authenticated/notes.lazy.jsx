@@ -170,7 +170,7 @@ function SelectCoursePopUp({
   setSelectedCourse,
 }) {
   return (
-    <div className="fixed inset-0  p-8 pt-6 sm:py-8 bg-[#3335] backdrop-blur-[0.2rem] grid place-items-center overflow-auto w-full z-30">
+    <div className="fixed inset-0  p-4 pt-6 sm:p-8 bg-[#3335] backdrop-blur-[0.2rem] grid place-items-center overflow-auto w-full z-30">
       <div className="relative h-full w-full md:w-[55%] sm:border rounded-2xl border-gray-200 bg-white flex flex-col gap-3 overflow-auto  p-6 sm:p-6">
         <div>
           <h3 className="font-semibold">Select a course</h3>

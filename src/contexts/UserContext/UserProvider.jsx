@@ -1,26 +1,52 @@
+import { useEffect } from "react";
 import { UserContext } from "./UserContext";
 import { googleLogout } from "@react-oauth/google";
-import { useSemiPersistentState } from "../../hooks/useSemiPersistentState";
+import { useState } from "react";
+import { supabase } from "../../superbaseClient";
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useSemiPersistentState("user", {
-    //  name: "Guest User",
-    //  given_name: "Guest",
-    isAuthenticated: false,
-  });
+  const [user, setUser] = useState({ isAuthenticated: false });
+  const [loading, setLoading] = useState(true);
 
-  localStorage.removeItem("user")
+  useEffect(() => {
+    const initAuth = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) {
+        setUser({ ...session.user, isAuthenticated: true });
+      }
+      setLoading(false);
+    };
 
-  const logOut = () => {
-    googleLogout();
+    initAuth();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setUser({ ...session.user, isAuthenticated: true });
+      } else {
+        setUser({ isAuthenticated: false });
+      }
+    });
+
+
+    return () => subscription.unsubscribe();
+  }, []);
+  
+
+  const logOut = async () => {
     setUser({ isAuthenticated: false });
+    googleLogout(); // Clean up Google client
+    await supabase.auth.signOut(); // Clean up Supabase session
   };
 
-  const providerValue = { user, setUser, logOut };
+  const providerValue = { user, setUser, logOut, loading };
 
   return (
     <UserContext.Provider value={providerValue}>
-      {children}
+      {!loading && children}
     </UserContext.Provider>
   );
 };

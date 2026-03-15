@@ -54,30 +54,45 @@ function Signup() {
     };
   }, []);
 
-  const handleLoginSuccess = (response) => {
-    const token = response.credential;
-    const userData = jwtDecode(token);
+  const handleLoginSuccess = async (response) => {
+    const idToken = response.credential;
 
-    setLoading(false);
-
-    flushSync(() => {
-      setUser({
-        ...userData,
-        isAuthenticated: true,
-      });
+    const { data, error } = await supabase.auth.signInWithIdToken({
+      provider: "google",
+      token: idToken,
     });
 
-    router.invalidate();
-    navigate({ to: redirect || "/app/dashboard" });
+    if (error) {
+      console.error("Supabase Auth Error:", error.message);
+      setIsSuccess(false);
+      setMessage("Google login failed on server");
+      setIsVisible(true);
+      return;
+    }
 
-    setIsSuccess(true);
-    setMessage("Sigup Successful!");
-    setIsVisible(true);
+    if (data.user) {
+      flushSync(() => {
+        setUser({
+          ...data.user,
+          isAuthenticated: true,
+        });
+      });
 
-    setTimeout(() => {
-      setIsVisible(false);
-      setTimeout(() => setMessage(""), 1000);
-    }, 2000);
+      router.invalidate();
+
+      const destination = state?.returnTo || "/app/dashboard";
+
+      navigate({ to: destination });
+
+      setIsSuccess(true);
+      setMessage("Sigup Successful!");
+      setIsVisible(true);
+
+      setTimeout(() => {
+        setIsVisible(false);
+        setTimeout(() => setMessage(""), 1000);
+      }, 2000);
+    }
   };
 
   const handleLoginError = (error) => {

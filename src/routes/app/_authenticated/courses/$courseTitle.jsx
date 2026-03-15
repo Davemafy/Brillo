@@ -34,7 +34,7 @@ function CourseComponent() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <p className="text-gray-500 font-medium">Course not found.</p>
-        <Link to="/app/_authenticated/courses" className="text-blue-600 underline">Return to Dashboard</Link>
+        <Link to="../" className="text-blue-600 underline">Return to Dashboard</Link>
       </div>
     );
   }

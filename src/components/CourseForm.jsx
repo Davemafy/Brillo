@@ -9,7 +9,7 @@ import {
   Timer,
   X,
 } from "lucide-react";
-import { v4 as uuidv4 } from "uuid";
+import { Squircle } from "ldrs/react";
 import { useEffect, useRef, useState } from "react";
 import { generateCourseSubtitle } from "../utils/ai";
 import { useUser } from "../hooks/useUser";
@@ -22,6 +22,7 @@ const CourseForm = ({ setOpenModal }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
 
   const [courseImg, setCourseImg] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const node = previewRef.current;
@@ -45,9 +46,11 @@ const CourseForm = ({ setOpenModal }) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
 
     if (!courseImg) {
       alert("Please select an image first!");
+      setLoading(false);
       return;
     }
 
@@ -63,6 +66,7 @@ const CourseForm = ({ setOpenModal }) => {
 
     if (uploadError) {
       console.error("Upload failed:", uploadError.message);
+      setLoading(false);
       return;
     }
 
@@ -79,11 +83,11 @@ const CourseForm = ({ setOpenModal }) => {
 
     const hours = parseFloat(formData.get("hrs")) || 0;
     const minutes = parseFloat(formData.get("mins")) || 0;
-    const totalDuration = hours + minutes / 60;
+    const totalDuration = (hours + minutes / 60).toFixed(2);
 
-    const subTitle = await generateCourseSubtitle() 
+    const subTitle = await generateCourseSubtitle();
 
-    console.log(subTitle)
+    console.log(subTitle);
 
     const { data: newCourse, error } = await supabase
       .from("courses")
@@ -103,22 +107,35 @@ const CourseForm = ({ setOpenModal }) => {
 
     if (error) {
       console.error(error);
+      setLoading(false);
       return;
     }
     if (newCourse) {
-      console.log("newCourse: ", newCourse);
+      setLoading(false);
+      setCourses([newCourse, ...courses]);
+      setOpenModal(false);
     }
-
-    setCourses([newCourse, ...courses]);
-    setOpenModal(false);
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="  relative ls:max-w-fit  md:min-w-125 grid gap-4 p-6 pt-
+      className="  relative ls:max-w-120 md:min-w-125 grid gap-4 p-6 pt-
         bg-white text-sm  border border-gray-400 min-w-0 ls:h-auto max-h-full overflow-y-auto w-full font-sm  rounded-2xl"
     >
+      {loading && (
+        <div className="absolute z-10 w-full bg-linear-to-r from-neutral-400/30 to-white/30  backdrop-blur-[0.2rem]  h-full grid place-content-center">
+          <Squircle
+            size="37"
+            stroke="5"
+            strokeLength="0.15"
+            bgOpacity="0.1"
+            speed="0.9"
+            color="black"
+          />
+        </div>
+      )}
+
       <div className="absolute right-4   top-5">
         <button
           onClick={(e) => {
@@ -267,8 +284,11 @@ const CourseForm = ({ setOpenModal }) => {
         </div>
       </div>
       <div className="">
-        <button className="bg-dark shadow-sm   flex items-center justify-center gap-1  text-white text-sm p-2.5 px-7 ml-auto    w-fit flex-1   rounded-2xl">
-          Add course
+        <button
+          disabled={loading}
+          className="bg-dark shadow-sm  disabled:opacity-80  flex items-center justify-center gap-1  text-white text-sm p-2.5 px-7 ml-auto    w-fit flex-1   rounded-2xl"
+        >
+          {loading ? "Adding Course..." : "Add Course"}
         </button>
       </div>
     </form>

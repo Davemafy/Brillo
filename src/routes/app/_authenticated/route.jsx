@@ -50,7 +50,7 @@ function Setup() {
             className={`w-full h-full flex flex-col transition ${sidebarOpen && "translate-x-56.75"}`}
           >
             <Header sidebarOpen={sidebarOpen} toogleSidebar={toogleSidebar} />
-            <main className="flex-1 w-full overflow-auto">
+            <main className="flex-1 w-full  overflow-auto">
               <Outlet />
             </main>
           </div>

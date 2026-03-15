@@ -8,7 +8,6 @@ import {
   Timer,
   X,
 } from "lucide-react";
-import { v4 as uuidv4 } from "uuid";
 import { Squircle } from "ldrs/react";
 
 export default function NoteForm({

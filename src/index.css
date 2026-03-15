@@ -300,7 +300,7 @@ button:active {
   place-items: center;
 }
 .pop-up {
-  z-index: 10;
+  z-index: 30;
   position: fixed;
   inset: 0;
   background: #3338;
@@ -308,6 +308,7 @@ button:active {
   backdrop-filter: blur(0.2rem);
   width: 100%;
   display: grid;
+  padding: 1rem;
   place-items: center;
 }
 
@@ -335,6 +336,34 @@ button:active {
     position: relative;
     cursor: pointer;
     display: block  ;
+}
+
+.bg-gradient-shapes {
+  position: relative;
+  isolation: isolate; /* Keeps z-index -1 from disappearing behind the body */
+}
+
+/* Layer 1: The Shapes (Bottom) */
+.bg-gradient-shapes::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2; /* Moves this behind the blur layer */
+  background-image: url('/assets/img/jive-shapes-left.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.3;
+}
+
+/* Layer 2: The Blur (Middle) */
+.bg-gradient-shapes::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1; /* Sits on top of the shapes but behind the text */
+  backdrop-filter: blur(2rem);
+  -webkit-backdrop-filter: blur(2rem); /* Required for Safari support */
+  background: rgba(255, 255, 255, 0.05); /* Needs some transparency to trigger the blur */
 }
 
 .tooltip::after {

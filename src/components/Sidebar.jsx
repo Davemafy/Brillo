@@ -1,13 +1,10 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import {
-  Book,
   BookOpenText,
-  Gauge,
   Home,
   LibraryBig,
   LogOut,
   Settings,
-  StickyNote,
 } from "lucide-react";
 import Streak from "./Streak";
 import { useUser } from "../hooks/useUser";
@@ -21,8 +18,8 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
 
   const { setLoading, setIsSuccess, setMessage, setIsVisible } = useAuth();
 
-  const handleLogout = () => {
-    logOut();
+  const handleLogout = async () => {
+    await logOut();
     setIsSuccess(false);
     setIsVisible(true);
     setMessage("You are logged out");

@@ -1,35 +1,24 @@
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import Note from "../../../components/NoteCard";
-import {
-  ArrowBigDown,
-  ArrowDown,
-  ChevronRightCircleIcon,
-  Clock,
-  Flame,
-  FolderOpenDot,
-  MoveLeft,
-  MoveRight,
-} from "lucide-react";
-import { useRecord } from "../../../hooks/useRecord";
-import Form from "../../../components/CourseForm";
 import CourseCard from "../../../components/CourseCard";
-import { useTheme } from "../../../hooks/useTheme";
 import { useUser } from "../../../hooks/useUser";
 import NavBar from "../../../components/NavBar";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useCourses } from "../../../hooks/useCourses";
+import StatsBar from "../../../components/StatsBar";
+import CoursesCarousel from "../../../components/CoursesCarousel";
+import CourseEmpty from "../../../components/CourseEmpty";
 
 export const Route = createLazyFileRoute("/app/_authenticated/dashboard")({
-  component: NewDash,
+  component: Dashboard,
 });
 
-function NewDash() {
+function Dashboard() {
   const { user } = useUser();
   const [courses] = useCourses();
-  const carouselRef = useRef(null);
-  const [scrollDistance, setScrollDistance] = useState(0);
-  const [maxScrollable, setMaxScrollable] = useState(null);
   const [filter, setFilter] = useState("all");
+
+  const username = user.user_metadata.full_name.split(" ")[0]
+  
   const sortedCourses = [...courses].sort((current, next) => {
     if (filter === "newest") {
       return next.date - current.date;
@@ -40,48 +29,6 @@ function NewDash() {
     }
     return true;
   });
-
-  useEffect(() => {
-    if (carouselRef.current) {
-      const maxWidth =
-        carouselRef.current.scrollWidth - carouselRef.current.scrollWidth / 5;
-      setMaxScrollable(maxWidth);
-    }
-  }, [maxScrollable]);
-
-  function scrollToLeft() {
-    const container = carouselRef.current;
-    if (container) {
-      const scrollStep = container.scrollWidth / courses.length;
-
-      const newTarget = container.scrollLeft - scrollStep;
-
-      container.scrollTo({
-        left: newTarget,
-        behavior: "smooth",
-      });
-
-      setScrollDistance(newTarget);
-      console.log("scrollLeft: ", newTarget);
-    }
-  }
-
-  function scrollToRight() {
-    const container = carouselRef.current;
-    if (container) {
-      const scrollStep = container.scrollWidth / courses.length;
-
-      const newTarget = container.scrollLeft + scrollStep;
-
-      container.scrollTo({
-        left: newTarget,
-        behavior: "smooth",
-      });
-
-      setScrollDistance(newTarget);
-      console.log("scrollLeft: ", newTarget);
-    }
-  }
 
   function getGreeting(name) {
     const hour = new Date().getHours();
@@ -95,19 +42,19 @@ function NewDash() {
       greeting = "Good Evening";
     }
 
-    return `${greeting} ${name}!`;
+    return `${greeting} ${name.split(" ")[0]}!`;
   }
 
- const subGreeting = useMemo(() => {
+  const subGreeting = useMemo(() => {
     const subGreetings = [
       "It's good to see you again.",
       "Ready to get some work done?",
       "We've missed you!",
-      "Let's make today count."
+      "Let's make today count.",
     ];
     return subGreetings[Math.floor(Math.random() * subGreetings.length)];
- }, []);
-  
+  }, []);
+
   return (
     <>
       <title> Dashboard | Brillo </title>
@@ -116,10 +63,10 @@ function NewDash() {
           <NavBar className="hidden md:flex xlg:hidden" />
           <div className="grid  mt-8 sm:mt-0 xlg:mt-8 xs:grid-cols-2 bg-accent border border-gray-200 items-stretch  rounded-[inherit]">
             <div className="p-4 py-8 sm:p-8">
-              <h2 className="font-extrabold min-w-[4ch] xxs:max-w-full text-xl">
-                {getGreeting(user.given_name)}
+              <h2 className="font-extrabold min-w-[4ch] xxs:max-w-full sm:text-xl">
+                Hello {username}
               </h2>
-              <p className="text-[0.7rem] ">{subGreeting}</p>
+              <p className="text-[0.7rem] sm:text-sm ">{subGreeting}</p>
             </div>
             <div className="flex h-full items-center xxs:block p-2 relative max-h-30 xxs:max-h-full">
               <img
@@ -130,94 +77,7 @@ function NewDash() {
               />
             </div>
           </div>
-          <div className="flex relative flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <ul
-              ref={carouselRef}
-              className="w-full h-full flex rounded-xl gap-4 overflow-x-scroll snap-x snap-mandatory"
-            >
-              {courses.map((course, index) => {
-                return (
-                  <li
-                    key={course.id}
-                    className="min-w-full snap-center flex flex-col gap-2 pb-2 items-end  rounded-xl"
-                  >
-                    <div className="min-w-full snap-center flex flex-col xxs:flex-row min-h-16 xxs:items-center gap-4 p-2 bg-accent border border-gray-200 rounded-xl">
-                      <div className="shrink-0 rounded-[inherit] w-10 aspect-square bg-white">
-                        <img
-                          onError={(e) =>
-                            (e.target.src = "https://placehold.co/200")
-                          }
-                          src={course.img || `https://picsum.photos/${index}00`}
-                          decoding="async"
-                          className="h-full w-full object-cover rounded-xl"
-                          alt=""
-                        />
-                      </div>
-                      <div className="flex flex-col xxs:flex-row gap-2 justify-between">
-                        <div>
-                          <h3 className="text-[0.7rem] whitespace-nowrap sm:text-[0.8rem]  font-bold">
-                            {course.title}
-                          </h3>
-                          <p className="text-[0.6rem] whitespace-nowrap sm:text-[0.65rem]">
-                            by {course.instructor}
-                          </p>
-                        </div>
-                        <p className="xxs:hidden grid place-items-center text-[0.65rem]  border-[2.5px] rounded-full  w-9 h-9 aspect-square">
-                          {course.progress}%
-                        </p>
-                      </div>
-                      <div className="flex gap-4 xxs:ml-auto">
-                        <div className="hidden xxs:flex justify-center xxs:px-2">
-                          <p className="grid place-items-center text-[0.65rem] border-[2.5px] rounded-full w-10 aspect-square">
-                            {course.progress}%
-                          </p>
-                        </div>
-                        <Link
-                          to={"/app/courses/$courseTitle"}
-                          params={{
-                            courseTitle: course.title
-                              .replaceAll(" ", "-")
-                              .toLowerCase(),
-                          }}
-                          className="hidden ls:block bg-dark text-white transition hover:bg-white hover:text-dark rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit"
-                        >
-                          <button>Continue</button>
-                        </Link>
-                      </div>
-                    </div>
-                    {/* DUPLICATE BUTTON FOR MOBILE VIEW */}
-                    <Link
-                      to={"/app/courses/$courseTitle"}
-                      params={{
-                        courseTitle: course.title
-                          .replaceAll(" ", "-")
-                          .toLowerCase(),
-                      }}
-                      className="ls:hidden bg-dark text-white rounded-xl text-[0.7rem] p-3 px-6 w-full xxs:w-fit"
-                    >
-                      Continue
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="absolute sm:static top-[calc(100%-3.5rem)] sm:top-0 z-10 sm:z-auto -ml-5 pl-5 pt-4 pb-3 w-[calc(50%+1.25rem)] sm:m-0 sm:w-fit sm:p-0 bg-[linear-gradient(to_right,white,#fff9,transparent)] rounded-tr-2xl rounded-br-2xl ls:static flex items-end sm:justify-end lg:justify-start sm:items-center gap-2">
-              <button
-                onClick={scrollToLeft}
-                disabled={scrollDistance <= 0}
-                className="rounded-full p-1.5 disabled:opacity-20 disabled:cursor-default disabled:hover:bg-white disabled:hover:text-black hover:bg-dark hover:text-white border"
-              >
-                <MoveLeft size={15} strokeWidth={2} />
-              </button>
-              <button
-                onClick={scrollToRight}
-                disabled={scrollDistance >= maxScrollable}
-                className="rounded-full p-1.5 disabled:opacity-20 disabled:cursor-default disabled:hover:bg-white disabled:hover:text-black hover:bg-dark hover:text-white border"
-              >
-                <MoveRight size={15} strokeWidth={2} />
-              </button>
-            </div>
-          </div>
+          {courses.length > 0 && <CoursesCarousel courses={courses} />}
           <section className="flex flex-col gap-4 h-full xlg:overflow-auto">
             <h3 className="font-bold">Courses</h3>
             <div className="flex flex-col gap-2 md:h-full md:overflow-auto">
@@ -250,154 +110,26 @@ function NewDash() {
                 </li>
               </ul>
               <div className="overflow-y-auto ">
-                <ul className="grid lls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4 text-[0.65rem] overflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
-                  {sortedCourses.map((course, index) => (
-                    <CourseCard key={course.id} course={course} index={index} />
-                  ))}
-                </ul>
+                {courses.length === 0 ? (
+                 <CourseEmpty />
+                ) : (
+                  <ul className="grid lls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4 text-[0.65rem] overflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
+                    {sortedCourses.map((course, index) => (
+                      <CourseCard
+                        key={course.id}
+                        course={course}
+                        index={index}
+                      />
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </section>
         </div>
-        <div className="hidden xlg:flex rounded-xl flex-col gap-4 pt-8 pb-7 h-full w-full overflow-auto xlg:pr-8">
-          <NavBar />
-          <div className="flex gap-[inherit] text-xs">
-            <div className="flex-1 flex items-center bg-accent border border-gray-200 p-[0.65625rem] pl-6 gap-2 rounded-xl">
-              <h4 className="text-4xl font-black">11</h4>
-              <p>
-                Courses <br /> completed
-              </p>
-            </div>
-            <div className="flex-1 flex items-center bg-accent border border-gray-200 p-[0.65625rem] pl-6 gap-2 rounded-xl">
-              <h4 className="text-4xl font-black">4</h4>
-              <p>
-                Courses <br /> in progress
-              </p>
-            </div>
-          </div>
-          <section className="flex flex-col gap-4 mt-2 h-full overflow-auto no-scrollbar">
-            <h4 className="font-bold pt-4 rounded-xl">Your statistics</h4>
-            <div>
-              <ul className="flex items-center text-xs gap-6 font-bold">
-                <li>
-                  <button>Learning Hours</button>
-                </li>
-                <li className={`opacity-45`}>
-                  <button> My Courses</button>
-                </li>
-                <li className="ml-auto">
-                  <div className="flex items-bottom gap-1.5 bg-accent text-[0.7rem] rounded-md text-base p-2 px-3 text-dark">
-                    <p>Weekly</p>
-                    <img src="/assets/img/arrow-down.svg" alt="" />
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <figure className="text-[0.68rem] relative w-full flex flex-col h-full overflow-auto ">
-              <div className="absolute grid inset-0 left-4">
-                <img
-                  className="mt-auto mb-3"
-                  src="/assets/img/today-graph.png"
-                  alt=""
-                />
-              </div>
-              <div className="py-1.75 border-b border-accent">5</div>
-              <div className="py-1.75 border-b border-accent">4</div>
-              <div className="py-1.75 border-b border-accent">3</div>
-              <div className="py-1.75 border-b border-accent">2</div>
-              <div className="py-1.75 border-b border-accent">1</div>
-              <div className="py-1.75 border-b border-accent">0</div>
-              <ul className="flex pl-5 gap-5">
-                <li>mon</li>
-                <li>tue</li>
-                <li>wed</li>
-                <li>thu</li>
-                <li>fri</li>
-                <li>sat</li>
-                <li>sun</li>
-              </ul>
-            </figure>
-          </section>
-          <article className="flex text-[0.7rem] p-3 pt-5 rounded-xl mt-auto bg-accent border border-gray-200">
-            <div className="flex flex-col gap-1">
-              <h4 className="text-[0.9rem] font-bold">Learn even more!</h4>
-              <p>
-                Unlock premium features <br /> only for $9.99 per month.
-              </p>
-              <button className="mt-2 bg-dark text-[0.6rem] text-white rounded-md w-fit p-2 px-4">
-                Go Premium
-              </button>
-            </div>
-            <div className="mx-auto">
-              <img
-                src="/assets/img/book.png"
-                decoding="async"
-                alt="book.png"
-                className={"w-26 h-auto"}
-              />
-            </div>
-          </article>
-        </div>
+        <StatsBar />
       </div>
     </>
   );
 }
 
-function Dashboard() {
-  const [record] = useRecord();
-  const [theme] = useTheme();
-
-  const darkMode = theme.current === "dark";
-
-  const recordEmpty = record.length === 0;
-
-  const recentNotes = record
-    .slice(0, 3)
-    .reduce((acc, current) => {
-      return acc.concat(current.notes);
-    }, [])
-    .slice(0, 3);
-
-  return (
-    <div className="w-full h-full overflow-auto">
-      <Form />
-
-      {!recordEmpty ? (
-        <section className="p-8.25 flex flex-col gap-4 ">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2">
-              <h3 className="text-xl font-medium">Recent</h3> <FolderOpenDot />
-            </div>
-            {!recordEmpty && (
-              <div className="flex justify-end sm:justify-end w-full items-center text-[#0007] hover:text-black">
-                <Link to="/notes">
-                  <p className=" flex gap-2 p-4 py-2 border-[#0007]  border rounded-2xl hover:bg-dark hover:text-white w-fit">
-                    View all
-                    <ChevronRightCircleIcon fontWeight={300} />
-                  </p>
-                </Link>
-              </div>
-            )}
-          </div>
-          <ul
-            className={`grid sm:grid-cols gap-4 flex-wrap sm:grid-cols-2 ${recentNotes.length === 3 ? "md:grid-cols-3" : ""}`}
-          >
-            {!recordEmpty ? (
-              <>
-                {recentNotes.map((note, index) => (
-                  <Note key={index} note={note} className={""} />
-                ))}
-              </>
-            ) : (
-              <li>
-                <p className={`${darkMode ? "text-darkgrey" : "text-[#0009]"}`}>
-                  No recents found.
-                </p>
-              </li>
-            )}
-          </ul>
-        </section>
-      ) : null}
-    </div>
-  );
-}
