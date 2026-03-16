@@ -80,7 +80,7 @@ function Signup() {
 
       router.invalidate();
 
-      const destination = state?.returnTo || "/app/dashboard";
+      const destination = redirect?.returnTo || "/app/dashboard";
 
       navigate({ to: destination });
 
