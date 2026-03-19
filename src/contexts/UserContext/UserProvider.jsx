@@ -37,9 +37,8 @@ export const UserProvider = ({ children }) => {
   
 
   const logOut = async () => {
-    setUser({ isAuthenticated: false });
-    googleLogout(); // Clean up Google client
     await supabase.auth.signOut(); // Clean up Supabase session
+    googleLogout(); // Clean up Google client
   };
 
   const providerValue = { user, setUser, logOut, loading };

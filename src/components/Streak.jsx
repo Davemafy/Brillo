@@ -3,10 +3,10 @@ import { CheckCheck, Flame, FlameKindlingIcon } from "lucide-react";
 const Streak = ({ sidebarOpen }) => {
   return (
     <div
-      className={`flex  flex-col gap-4 md:gap-8.75 py-6.25  md:p-0 md:py-10 sm:border-b border-grey font-semibold`}
+      className={`flex text-xs flex-col gap-4 md:gap-8.75 py-6.25  md:p-0 mx-6 md:py-6 md:pt-10 font-semibold`}
     >
       <div className="flex items-center gap-2 opacity-50 f">
-        <CheckCheck />
+        <CheckCheck size={20} />
         <p>
           <span className={`${!sidebarOpen ? "hidden" : ""} md:inline`}>
             Logged Today
@@ -15,7 +15,7 @@ const Streak = ({ sidebarOpen }) => {
         </p>
       </div>
       <div className="flex items-center gap-2 opacity-50">
-        <Flame />
+        <Flame size={20} />
         <p>
           <span className={`${!sidebarOpen ? "hidden" : ""} md:inline`}>
             0-day streak

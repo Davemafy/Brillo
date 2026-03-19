@@ -71,65 +71,36 @@ function Login() {
     console.log(error);
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const formdata = new FormData(e.currentTarget);
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  const formdata = new FormData(e.currentTarget);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: formdata.get("email"),
-      password: formdata.get("password"),
-    });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: formdata.get("email"),
+    password: formdata.get("password"),
+  });
 
-    if (error) {
-      setIsSuccess(false);
-      setMessage(error);
-      setIsVisible(true);
-
-      setTimeout(() => {
-        setIsVisible(false);
-        setTimeout(() => setMessage(""), 1000);
-      }, 2000);
-
-      setLoading(false);
-
-      return;
-    }
-
-    if (data.user) {
-      const { data: profileData, error: profileError } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", data.user.id)
-        .single();
-
-      if (profileError) {
-        console.error("Error fetching profile:", profileError.message);
-      } else {
-        flushSync(() => {
-          setUser({
-            ...profileData,
-            isAuthenticated: true,
-          });
-        });
-
-        router.invalidate();
-
-        navigate({ to: redirect || "/app/dashboard" });
-
-        setIsSuccess(true);
-        setMessage("Login Successful!");
-        setIsVisible(true);
-
-        setTimeout(() => {
-          setIsVisible(false);
-          setTimeout(() => setMessage(""), 1000);
-        }, 2000);
-      }
-    }
+  if (error) {
+    setIsSuccess(false);
+    setMessage(error.message);
+    setIsVisible(true);
     setLoading(false);
-  };
-  return (
+    return;
+  }
+
+  // Fetch profile and navigate
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", data.user.id)
+    .single();
+
+  setUser({ ...(profile || data.user), isAuthenticated: true });
+  await router.invalidate();
+  navigate({ to: redirect || "/app/dashboard" });
+  setLoading(false);
+};  return (
     <>
       <title> Login | Brillo </title>
       <div className="h-screen  flex flex-col  lg:flex-row gap-2">

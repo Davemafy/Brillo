@@ -1,19 +1,17 @@
 import { createLazyFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCourses } from "../../../../hooks/useCourses";
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CourseCard from "../../../../components/CourseCard";
 import CourseForm from "../../../../components/CourseForm";
 import { useMediaQuery } from "react-responsive";
-import NavBar from "../../../../components/NavBar";
-import { supabase } from "../../../../superbaseClient";
-import { useUser } from "../../../../hooks/useUser";
 import StatsBar from "../../../../components/StatsBar";
 import CourseEmpty from "../../../../components/CourseEmpty";
 
 export const Route = createLazyFileRoute("/app/_authenticated/courses/")({
   component: Courses,
 });
+
 
 function Courses() {
   const [courses] = useCourses();

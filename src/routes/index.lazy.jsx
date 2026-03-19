@@ -87,7 +87,7 @@ function Index() {
             <div className="grid place-items-center gap-5.5">
               <h1 className="text-[3rem] leading-12 tracking-[-0.075rem] sm:text-[4.5rem] font-bold max-w-[8ch] sm:max-w-[9ch] sm:leading-[72px]">
                 {headCopy.split(" ").map((word, wordIndex) => {
-                  return <SpanStyled word={word} index={wordIndex} />;
+                  return <SpanStyled key={wordIndex} word={word} index={wordIndex} />;
                 })}
               </h1>
               <p className="text-lightgrey text-base  sm:text-[1.25rem] max-w-[27ch] sm:max-w-[40ch] leading-7">

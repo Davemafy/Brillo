@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
+import { createLazyFileRoute, Link, Navigate } from "@tanstack/react-router";
 import CourseCard from "../../../components/CourseCard";
 import { useUser } from "../../../hooks/useUser";
 import NavBar from "../../../components/NavBar";
@@ -14,11 +14,13 @@ export const Route = createLazyFileRoute("/app/_authenticated/dashboard")({
 
 function Dashboard() {
   const { user } = useUser();
+
   const [courses] = useCourses();
   const [filter, setFilter] = useState("all");
 
-  const username = user.user_metadata.full_name.split(" ")[0]
-  
+  const username = user.user_metadata.full_name.split(" ")[0];
+  console.log(user);
+
   const sortedCourses = [...courses].sort((current, next) => {
     if (filter === "newest") {
       return next.date - current.date;
@@ -111,7 +113,7 @@ function Dashboard() {
               </ul>
               <div className="overflow-y-auto ">
                 {courses.length === 0 ? (
-                 <CourseEmpty />
+                  <CourseEmpty />
                 ) : (
                   <ul className="grid lls:grid-cols-2  lg:grid-cols-3 xlg:grid-cols-1 gap-4 text-[0.65rem] overflow-y-auto scroll-m-6 pt-2 sm:pt-0 pr-1">
                     {sortedCourses.map((course, index) => (
@@ -132,4 +134,3 @@ function Dashboard() {
     </>
   );
 }
-
