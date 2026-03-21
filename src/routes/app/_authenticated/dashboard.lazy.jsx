@@ -12,14 +12,29 @@ export const Route = createLazyFileRoute("/app/_authenticated/dashboard")({
   component: Dashboard,
 });
 
+const getUserDisplayData = (user) => {
+  return {
+    // Google uses 'full_name' or 'name', Email uses what you saved
+    name:
+      user?.user_metadata?.full_name || user?.user_metadata?.name || "New User",
+
+    // Google provides this automatically
+    avatar: user?.user_metadata?.avatar_url || "https://picsum/200",
+
+    email: user?.email,
+    uid: user?.id,
+  };
+};
+
 function Dashboard() {
   const { user } = useUser();
+  const userData = getUserDisplayData(user)
+  const username = userData.user_metadata.full_name.split(" ")[0];
+
 
   const [courses] = useCourses();
   const [filter, setFilter] = useState("all");
 
-  const username = user.user_metadata.full_name.split(" ")[0];
-  console.log(user);
 
   const sortedCourses = [...courses].sort((current, next) => {
     if (filter === "newest") {
