@@ -28,7 +28,6 @@ function CoursesCarousel({ courses }) {
       });
 
       setScrollDistance(newTarget);
-      console.log("scrollLeft: ", newTarget);
     }
   }
 

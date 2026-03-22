@@ -27,7 +27,6 @@ function Notes() {
     if (filter === "newest") {
       return next.created_at - current.created_at;
     } else if (filter === "longest") {
-      console.log(next.title, current.title)
       return next.description.length > current.description.length;
     } else if (filter === "most popular") {
       return next.duration - current.duration;

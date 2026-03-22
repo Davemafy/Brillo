@@ -27,8 +27,6 @@ function Courses() {
   const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
   const [filter, setFilter] = useState("all");
 
-  console.log(courses)
-
   const sortedCourses = [...courses].sort((current, next) => {
     if (filter === "newest") {
       return next.date - current.date;

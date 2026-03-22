@@ -83,7 +83,8 @@ export default function NoteForm({
           img: urlData.publicUrl,
         },
       ])
-      .select();
+      .select()
+      .single();
 
     if (error) {
       console.error(error);
@@ -91,14 +92,12 @@ export default function NoteForm({
       return;
     }
     if (newNote) {
-      console.log("newNote: ", newNote);
+      setNotes((notes) => [newNote, ...notes]);
+      setOpenModal(false);
+      setOpenSelectModal(false);
+
+      setLoading(false);
     }
-
-    setNotes((notes) => [...newNote, ...notes]);
-    setOpenModal(false);
-    setOpenSelectModal(false);
-
-    setLoading(false);
   }
 
   return (
