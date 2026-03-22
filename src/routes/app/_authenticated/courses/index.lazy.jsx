@@ -12,7 +12,6 @@ export const Route = createLazyFileRoute("/app/_authenticated/courses/")({
   component: Courses,
 });
 
-
 function Courses() {
   const [courses] = useCourses();
 
@@ -28,6 +27,8 @@ function Courses() {
   const isSmallScreen = useMediaQuery({ query: "(max-width: 640px)" });
   const [filter, setFilter] = useState("all");
 
+  console.log(courses)
+
   const sortedCourses = [...courses].sort((current, next) => {
     if (filter === "newest") {
       return next.date - current.date;
@@ -36,7 +37,7 @@ function Courses() {
     } else if (filter === "most popular") {
       return next.duration - current.duration;
     }
-    return -1;
+    return 0 ;
   });
 
   return (

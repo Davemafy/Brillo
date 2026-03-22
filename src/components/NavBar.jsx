@@ -1,4 +1,5 @@
 import { useUser } from "../hooks/useUser";
+import { normalizeUser } from "../utils/normalizeUser";
 
 function formatName(name) {
   if (!name) return;
@@ -40,11 +41,9 @@ export function SearchBar({ className }) {
 }
 
 export function UserBar({ className }) {
-  const {
-    user: {
-      user_metadata: { full_name, avatar_url },
-     },
-  } = useUser();
+  const { user } = useUser();
+
+  const { name, avatar_url } = normalizeUser(user)
 
   return (
     <div
@@ -72,7 +71,7 @@ export function UserBar({ className }) {
             />
           ) : (
             <p className="text-white text-sm sm:text-base">
-              {formatName(full_name)}
+              {formatName(name)}
             </p>
           )}
         </button>

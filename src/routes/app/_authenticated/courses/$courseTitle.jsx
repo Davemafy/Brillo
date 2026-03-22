@@ -1,40 +1,61 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  useNavigate,
+  useRouter,
+} from "@tanstack/react-router";
 import { useCourses } from "../../../../hooks/useCourses";
 import { useState, useMemo } from "react";
 import NoteForm from "../../../../components/NoteForm";
-import { ChevronLeft, Plus, Clock, BarChart3, Star } from "lucide-react";
+import {
+  ChevronLeft,
+  Plus,
+  Clock,
+  BarChart3,
+  Star,
+  Trash2,
+} from "lucide-react";
 import { useNotes } from "../../../../hooks/useNotes";
 import NoteCard from "../../../../components/NoteCard";
+import { supabase } from "../../../../superbaseClient";
 
 export const Route = createFileRoute(
   "/app/_authenticated/courses/$courseTitle",
 )({
-  component: CourseComponent,
+  component: CoursePage,
 });
 
-function CourseComponent() {
+function CoursePage() {
   const { courseTitle } = Route.useParams();
   const [notes, setNotes] = useNotes();
   const [openModal, setOpenModal] = useState(false);
   const [courses, setCourses] = useCourses();
 
+  const navigate = useNavigate();
+  const router = useRouter();
+
   // Memoize course lookup for performance
-  const course = useMemo(() => 
-    courses.find((c) => c.title.toLowerCase().replaceAll(" ", "-") === courseTitle),
-    [courses, courseTitle]
+  const course = useMemo(
+    () =>
+      courses.find(
+        (c) => c.title.toLowerCase().replaceAll(" ", "-") === courseTitle,
+      ),
+    [courses, courseTitle],
   );
 
   // Memoize filtered notes
-  const courseNotes = useMemo(() => 
-    notes.filter((note) => note.courseId === course?.id),
-    [notes, course?.id]
+  const courseNotes = useMemo(
+    () => notes.filter((note) => note.courseId === course?.id),
+    [notes, course?.id],
   );
 
   if (!course) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <p className="text-gray-500 font-medium">Course not found.</p>
-        <Link to="../" className="text-blue-600 underline">Return to Dashboard</Link>
+        <Link to="../" className="text-blue-600 underline">
+          Return to Dashboard
+        </Link>
       </div>
     );
   }
@@ -45,10 +66,33 @@ function CourseComponent() {
     return (
       <div className="flex gap-0.5 text-yellow-500">
         {[...Array(5)].map((_, i) => (
-          <Star key={i} size={18} fill={i < r ? "currentColor" : "none"} strokeWidth={2} />
+          <Star
+            key={i}
+            size={18}
+            fill={i < r ? "currentColor" : "none"}
+            strokeWidth={2}
+          />
         ))}
       </div>
     );
+  };
+
+  const deleteCourse = async (courseId) => {
+    const { error } = await supabase
+      .from("courses")
+      .delete()
+      .eq("id", courseId); // Matches the specific course ID
+
+    if (error) {
+      console.error("Error deleting course:", error.message);
+      alert("Could not delete course!");
+    } else {
+      setCourses(courses.filter((item) => item.id !== course.id));
+      router.invalidate();
+      navigate({ to: "/app/courses" });
+
+      console.log("Course deleted!");
+    }
   };
 
   return (
@@ -71,7 +115,10 @@ function CourseComponent() {
       <div className="max-w-6xl mx-auto">
         <Link to="../" className="inline-block group">
           <button className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors mb-6">
-            <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" /> 
+            <ChevronLeft
+              size={20}
+              className="group-hover:-translate-x-1 transition-transform"
+            />
             <span className="font-medium">Back to Courses</span>
           </button>
         </Link>
@@ -106,7 +153,6 @@ function CourseComponent() {
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
           {/* Stats Column */}
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
@@ -114,16 +160,20 @@ function CourseComponent() {
                 <BarChart3 size={18} className="text-blue-500" />
                 Course Insights
               </h3>
-              
+
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-500 font-medium">Course Progress</span>
-                    <span className="text-blue-600 font-bold">{course.progress || 0}%</span>
+                    <span className="text-gray-500 font-medium">
+                      Course Progress
+                    </span>
+                    <span className="text-blue-600 font-bold">
+                      {course.progress || 0}%
+                    </span>
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-2.5">
-                    <div 
-                      className="bg-blue-500 h-2.5 rounded-full transition-all duration-500" 
+                    <div
+                      className="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
                       style={{ width: `${course.progress || 0}%` }}
                     />
                   </div>
@@ -134,11 +184,23 @@ function CourseComponent() {
                     <Clock size={20} className="text-gray-600" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Time Invested</p>
+                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">
+                      Time Invested
+                    </p>
                     <p className="text-gray-900 font-semibold">0 Hours</p>
                   </div>
                 </div>
               </div>
+            </div>
+            <div>
+              <button
+                onClick={(e) => {
+                  deleteCourse(course.id);
+                }}
+                className="flex gap-2 items-center bg-red-400 text-white rounded-xl p-3 py-2 hover:bg-red-500"
+              >
+                Delete Course <Trash2 size={15} />
+              </button>
             </div>
           </div>
 
@@ -170,7 +232,6 @@ function CourseComponent() {
               )}
             </div>
           </div>
-
         </div>
       </div>
     </section>

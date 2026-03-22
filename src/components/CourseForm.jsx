@@ -87,7 +87,7 @@ const CourseForm = ({ setOpenModal }) => {
 
     const subTitle = await generateCourseSubtitle();
 
-    console.log(subTitle);
+    //console.log(subTitle);
 
     const { data: newCourse, error } = await supabase
       .from("courses")
@@ -103,7 +103,8 @@ const CourseForm = ({ setOpenModal }) => {
           img: publicUrl,
         },
       ])
-      .select();
+      .select()
+      .single();
 
     if (error) {
       console.error(error);
@@ -111,8 +112,8 @@ const CourseForm = ({ setOpenModal }) => {
       return;
     }
     if (newCourse) {
+      setCourses(courses => [newCourse, ...courses]);
       setLoading(false);
-      setCourses([newCourse, ...courses]);
       setOpenModal(false);
     }
   }

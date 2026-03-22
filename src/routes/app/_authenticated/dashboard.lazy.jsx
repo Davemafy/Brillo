@@ -7,29 +7,16 @@ import { useCourses } from "../../../hooks/useCourses";
 import StatsBar from "../../../components/StatsBar";
 import CoursesCarousel from "../../../components/CoursesCarousel";
 import CourseEmpty from "../../../components/CourseEmpty";
+import { normalizeUser } from "../../../utils/normalizeUser";
 
 export const Route = createLazyFileRoute("/app/_authenticated/dashboard")({
   component: Dashboard,
 });
 
-const getUserDisplayData = (user) => {
-  return {
-    // Google uses 'full_name' or 'name', Email uses what you saved
-    name:
-      user?.user_metadata?.full_name || user?.user_metadata?.name || "New User",
-
-    // Google provides this automatically
-    avatar: user?.user_metadata?.avatar_url || "https://picsum/200",
-
-    email: user?.email,
-    uid: user?.id,
-  };
-};
-
 function Dashboard() {
   const { user } = useUser();
-  const userData = getUserDisplayData(user)
-  const username = userData.user_metadata.full_name.split(" ")[0];
+  const userData = normalizeUser(user)
+  const username = userData.name.split(" ")[0];
 
 
   const [courses] = useCourses();

@@ -1,6 +1,19 @@
 import { Pencil, Trash } from "lucide-react";
+import { supabase } from "../superbaseClient";
 
 const NoteCard = ({ note, className, notes, setNotes }) => {
+  const deleteNote = async (noteId) => {
+    const { error } = await supabase.from("notes").delete().eq("id", noteId); 
+
+    if (error) {
+      console.error("Error deleting note:", error.message);
+      alert("Could not delete note!");
+    } else {
+      setNotes(notes.filter((item) => item.id !== note.id));
+      console.log("Note deleted!");
+    }
+  };
+
   return (
     <li
       className={`flex relative cursor-pointer outline w-full bg-[#f9f9f9] flex-col p-6 px-6 gap-2 border outline-accent border-grey rounded-2xl ${className || ""}`}
@@ -16,12 +29,7 @@ const NoteCard = ({ note, className, notes, setNotes }) => {
           >
             <Pencil size={15} />
           </button>
-          <button
-            className=""
-            onClick={(e) => {
-              setNotes(notes.filter((item) => item.id !== note.id));
-            }}
-          >
+          <button className="hover:bg-red-500" onClick={(e) => {deleteNote(note.id)}}>
             <Trash size={15} />
           </button>
         </div>
@@ -39,14 +47,14 @@ const NoteCard = ({ note, className, notes, setNotes }) => {
           <span>{note.duration.replace(".", "h ") + "m"}</span>
         </p>
         <div className="img-container w-10 h-10 rounded-2xl overflow-clip">
-           <img
-          src={note.img}
-          loading="eager"
-          onLoad={(e) => e.currentTarget.classList.add('loaded')}
-          alt=""
-          className="w-full bject-cover "
-        />
-       </div>
+          <img
+            src={note.img}
+            loading="eager"
+            onLoad={(e) => e.currentTarget.classList.add("loaded")}
+            alt=""
+            className="w-full bject-cover "
+          />
+        </div>
       </div>
     </li>
   );

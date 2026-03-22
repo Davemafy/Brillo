@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { Clock, Flame } from "lucide-react";
 
 const CourseCard = ({
   course,
@@ -8,6 +7,7 @@ const CourseCard = ({
   setOpenModal,
   setOpenSelectModal,
 }) => {
+
   function getDuration(time) {
     const format = time.replace(".", "h ");
     return format.concat("m");
@@ -27,10 +27,10 @@ const CourseCard = ({
       <div className="rounded-[0.43rem] img-container hidden xlg:flex  sm:mx-0 overflow-hidden xlg:w-10 aspect-square bg-white">
         <img
           onError={(e) => (e.currentTarget.style.visibility = "hidden")}
-          onLoad={(e) => e.currentTarget.classList.add('loaded')}
+          onLoad={(e) => e.currentTarget.classList.add("loaded")}
           src={course.img}
           alt={course.title}
-          style={{contentVisibility: "auto", backgroundColor: "#ffffff"}}
+          style={{ contentVisibility: "auto", backgroundColor: "#ffffff" }}
           className="h-full  w-full rounded-[0.43rem] object-cover"
         />
       </div>
