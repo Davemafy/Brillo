@@ -1,6 +1,6 @@
 # <img src="./public/brillo.svg" alt="Brillo logo"  />
 
-A simple learning tracker that helps users log daily learning activity and stay consistent.
+Easy to use learning tracker that helps you log daily learning activity and stay consistent.
 
 ## Features
 - Add daily learning entries
