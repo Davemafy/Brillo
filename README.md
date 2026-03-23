@@ -19,3 +19,4 @@ I wanted to practice building a real, usable web app instead of isolated compone
 
 ## Status
 MVP in progress – core features implemented.
+
