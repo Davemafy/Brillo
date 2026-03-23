@@ -9,6 +9,7 @@ A simple learning tracker that helps users log daily learning activity and stay 
 
 ## Tech Stack
 - React
+- Typescript
 - Tanstack Router
 - Tailwind CSS
 - Node.js
