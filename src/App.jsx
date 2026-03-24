@@ -5,6 +5,7 @@ import { UserProvider } from "./contexts/UserContext";
 
 import { Squircle } from "ldrs/react";
 import "ldrs/react/Squircle.css";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const router = createRouter({
   routeTree,
@@ -66,13 +67,15 @@ function App() {
 function RouterApp() {
   const { user } = useUser();
   const auth = {
-    isAuthenticated: user.isAuthenticated,
+    isAuthenticated: user?.isAuthenticated || false,
     user: user,
   };
 
   return (
     <>
-      <RouterProvider router={router} context={{ auth }} />
+      <ErrorBoundary>
+        <RouterProvider router={router} context={{ auth }} />
+      </ErrorBoundary>
     </>
   );
 }

@@ -87,7 +87,10 @@ function CoursePage() {
       console.error("Error deleting course:", error.message);
       alert("Could not delete course!");
     } else {
-      setCourses(courses.filter((item) => item.id !== course.id));
+      setCourses(courses => courses.filter((item) => item.id !== course.id));
+      setNotes((notes) =>
+        notes.filter((item) => item.courseId !== course.id),
+      );
       router.invalidate();
       navigate({ to: "/app/courses" });
 

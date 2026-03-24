@@ -1,8 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { UserContext } from "./UserContext";
 import { googleLogout } from "@react-oauth/google";
 import { useState } from "react";
 import { supabase } from "../../superbaseClient";
+
+const logOut = async () => {
+  await supabase.auth.signOut(); // Clean up Supabase session
+  googleLogout(); // Clean up Google client
+};
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({ isAuthenticated: false });
@@ -31,15 +36,8 @@ export const UserProvider = ({ children }) => {
       }
     });
 
-
     return () => subscription.unsubscribe();
   }, []);
-  
-
-  const logOut = async () => {
-    await supabase.auth.signOut(); // Clean up Supabase session
-    googleLogout(); // Clean up Google client
-  };
 
   const providerValue = { user, setUser, logOut, loading };
 

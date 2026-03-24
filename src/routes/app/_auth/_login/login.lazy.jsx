@@ -43,13 +43,11 @@ function Login() {
     }
 
     if (data.user) {
-      flushSync(() => {
-        setUser({
-          ...data.user,
-          isAuthenticated: true,
-        });
-      });
-
+      setUser((user) => ({
+        ...data.user,
+        isAuthenticated: true,
+      }));
+      
       router.invalidate();
 
       const destination = state?.returnTo || "/app/dashboard";

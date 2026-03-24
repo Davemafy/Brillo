@@ -7,11 +7,8 @@ import {
 import { GoogleLogin } from "@react-oauth/google";
 import { supabase } from "../../../../superbaseClient";
 import { useUser } from "../../../../hooks/useUser";
-import { jwtDecode } from "jwt-decode";
 import { flushSync } from "react-dom";
 import { useEffect, useState } from "react";
-import Modal from "../../../../components/Modal";
-import { XCircle } from "lucide-react";
 import { useAuth } from "../../../../hooks/useAuth";
 
 export const Route = createLazyFileRoute("/app/_auth/_signup/signup")({
@@ -71,12 +68,10 @@ function Signup() {
     }
 
     if (data.user) {
-      flushSync(() => {
-        setUser({
-          ...data.user,
-          isAuthenticated: true,
-        });
-      });
+      setUser((user) => ({
+        ...data.user,
+        isAuthenticated: true,
+      }));
 
       router.invalidate();
 
