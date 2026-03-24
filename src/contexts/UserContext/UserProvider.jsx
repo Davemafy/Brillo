@@ -32,7 +32,7 @@ export const UserProvider = ({ children }) => {
       if (session) {
         setUser({ ...session.user, isAuthenticated: true });
       } else {
-        setUser({ isAuthenticated: false });
+        setUser((user) => ({ isAuthenticated: false }));
       }
     });
 

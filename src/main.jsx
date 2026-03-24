@@ -10,9 +10,9 @@ const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find root element");
 
 createRoot(rootElement).render(
-  <GoogleOAuthProvider clientId={google_client_id}>
-    <StrictMode>
+  <StrictMode>
+    <GoogleOAuthProvider clientId={google_client_id}>
       <App />
-    </StrictMode>
-  </GoogleOAuthProvider>,
+    </GoogleOAuthProvider>
+  </StrictMode>,
 );
