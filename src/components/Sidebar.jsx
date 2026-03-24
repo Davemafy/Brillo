@@ -1,6 +1,10 @@
-import { Link, useLocation, useNavigate, useRouter } from "@tanstack/react-router";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useRouter,
+} from "@tanstack/react-router";
 import { BookOpenText, Home, LibraryBig, LogOut, Settings } from "lucide-react";
-import Streak from "./Streak";
 import { useUser } from "../hooks/useUser";
 import { useAuth } from "../hooks/useAuth";
 
@@ -10,7 +14,7 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
   }).replace("/app", "");
 
   const navigate = useNavigate();
-  const router = useRouter()
+  const router = useRouter();
   const { setUser, logOut } = useUser();
 
   const { setLoading, setIsSuccess, setMessage, setIsVisible } = useAuth();
@@ -18,10 +22,9 @@ const Sidebar = ({ sidebarOpen, closeSideBar }) => {
   const handleLogout = async () => {
     await logOut();
 
-    setUser(user => { isAuthenticated: false; });
+    setUser((user) => ({ isAuthenticated: false }));
     router.invalidate();
-    navigate({ to: "/app/login" })
-
+    navigate({ to: "/app/login" });
 
     setIsSuccess(false);
     setIsVisible(true);
