@@ -44,6 +44,7 @@ function CoursePage() {
   );
 
   const timeSpent = ((course.duration * course.progress) / 100).toFixed(1);
+  const timeLeft = (course.duration - timeSpent).toFixed(1);
 
   // Memoize filtered notes
   const courseNotes = useMemo(
@@ -206,7 +207,7 @@ function CoursePage() {
                       Time Left
                     </p>
                     <p className="text-gray-900 font-semibold">
-                      {course.duration - timeSpent} Hours
+                      {timeLeft} Hours
                     </p>
                   </div>
                 </div>
