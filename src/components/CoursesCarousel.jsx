@@ -86,7 +86,7 @@ function CoursesCarousel({ courses }) {
                 <div className="flex gap-4 xxs:ml-auto">
                   <div className="hidden xxs:flex justify-center xxs:px-2">
                     <p className="grid place-items-center text-[0.65rem] border-[2.5px] rounded-full w-10 aspect-square">
-                      {course.progress}%
+                      {(course.progress).toFixed(1)}%
                     </p>
                   </div>
                   <Link

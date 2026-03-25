@@ -8,7 +8,7 @@ export const NotesProvider = ({ children }) => {
 
   useEffect(() => {
     const getNotes = async () => {
-      const { data, error } = await supabase.from("notes").select("*");
+      const { data, error } = await supabase.from("notes").select("*").order("created_at", { ascending: false});
 
       if (error) {
         console.error(error);

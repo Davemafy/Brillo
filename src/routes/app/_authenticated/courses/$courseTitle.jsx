@@ -43,6 +43,8 @@ function CoursePage() {
     [courses, courseTitle],
   );
 
+  const timeSpent = ((course.duration * course.progress) / 100).toFixed(1);
+
   // Memoize filtered notes
   const courseNotes = useMemo(
     () => notes.filter((note) => note.courseId === course?.id),
@@ -164,14 +166,14 @@ function CoursePage() {
                 Course Insights
               </h3>
 
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div>
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-gray-500 font-medium">
                       Course Progress
                     </span>
                     <span className="text-blue-600 font-bold">
-                      {course.progress || 0}%
+                      {course.progress.toFixed(1) || 0}%
                     </span>
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-2.5">
@@ -190,7 +192,22 @@ function CoursePage() {
                     <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">
                       Time Invested
                     </p>
-                    <p className="text-gray-900 font-semibold">0 Hours</p>
+                    <p className="text-gray-900 font-semibold">
+                      {timeSpent} Hours
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                  <div className="p-2 bg-white rounded-lg border border-gray-200">
+                    <Clock size={20} className="text-gray-600" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">
+                      Time Left
+                    </p>
+                    <p className="text-gray-900 font-semibold">
+                      {course.duration - timeSpent} Hours
+                    </p>
                   </div>
                 </div>
               </div>

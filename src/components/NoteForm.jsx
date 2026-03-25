@@ -21,6 +21,24 @@ export default function NoteForm({
   const [noteImg, setNoteImg] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  async function updateCourseProgress(course, duration) {
+    const totalProgress = course.progress + ((parseFloat(duration) / course.duration)*100);
+    console.log(course, `${course.progress} + ${duration} ${totalProgress}`);
+
+    const { data, error } = await supabase
+      .from("courses")
+      .update({ progress: totalProgress })
+
+      .eq("id", course.id)
+      .select();
+
+    if (error) {
+      console.error("Error updating data:", error.message);
+    } else {
+      console.log("Data updated successfully:", data);
+    }
+  }
+
   useEffect(() => {
     const node = previewRef.current;
     if (!node) return;
@@ -71,6 +89,8 @@ export default function NoteForm({
       .from("app-assets")
       .getPublicUrl(fileName);
 
+    const totalDuration = `${formData.get("hrs")}.${formData.get("mins")}`;
+
     const { data: newNote, error } = await supabase
       .from("notes")
       .insert([
@@ -79,12 +99,14 @@ export default function NoteForm({
           course_title: course.title,
           title: formData.get("title"),
           description: formData.get("description"),
-          duration: `${formData.get("hrs")}.${formData.get("mins")}`,
+          duration: totalDuration,
           img: urlData.publicUrl,
         },
       ])
       .select()
       .single();
+
+    await updateCourseProgress(course, totalDuration);
 
     if (error) {
       console.error(error);
