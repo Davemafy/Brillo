@@ -2,6 +2,8 @@
 
 Easy to use learning tracker that helps you log daily learning activity and stay consistent.
 
+![landing](https://github.com/user-attachments/assets/bff04c57-ed41-43e4-8fd0-183957eecaa3)
+
 ## Features
 - Add daily learning entries
 - View learning history
