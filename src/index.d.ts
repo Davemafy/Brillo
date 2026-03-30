@@ -49,6 +49,8 @@ interface Note {
   img: string;
 }
 
+type NewCourse = Omit<Course, 'id' | 'created_at'>;
+type NewNote = Omit<Note, 'id' | 'created_at'>;
 
 type ThemeMode = 'light' | 'dark' | 'system';
 

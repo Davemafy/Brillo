@@ -90,14 +90,14 @@ const CourseForm = ({ setOpenModal }: CourseFormProps) => {
       .insert([
         {
           user_id: user?.id,
-          subtitle: generateCourseSubtitle,
+          subtitle: generatedSubtitle,
           title: formData.get('course'),
           instructor: formData.get('instructor'),
           duration: totalDuration,
           rating: +(formData.get('rating') as string),
           progress: 0,
           img: publicUrl
-        }
+        } as NewCourse
       ])
       .select()
       .single()

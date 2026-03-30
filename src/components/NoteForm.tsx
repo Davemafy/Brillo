@@ -127,7 +127,7 @@ export default function NoteForm({
           description: formData.get("description"),
           duration: totalDuration,
           img: urlData.publicUrl,
-        },
+        } as NewNote,
       ])
       .select()
       .single();

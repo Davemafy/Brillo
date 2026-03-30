@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       setLoading,
       setIsVisible,
     }),
-    [],
+    [message, loading, isSuccess, isVisible],
   );
 
   return (
