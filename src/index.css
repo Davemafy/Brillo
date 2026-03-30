@@ -96,6 +96,7 @@
   --color-dark: #000;
   --color-lightdark: #000;
   --color-mediumgrey: #5d5d5d;
+  --font-uncutsans: "Mona Sans", "Uncut Sans", "system-ui";
   --font-monasans: "Mona Sans", "Uncut Sans", "system-ui";
   --text-xs: 0.75rem;
   --breakpoint-xlg: 70rem;

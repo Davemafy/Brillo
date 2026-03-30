@@ -1,9 +1,4 @@
-import {
-  createLazyFileRoute,
-  getRouteApi,
-  Link,
-  useNavigate,
-} from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { useCourses } from "../../../../hooks/useCourses";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -12,18 +7,18 @@ import CourseForm from "../../../../components/CourseForm";
 import { useMediaQuery } from "react-responsive";
 import StatsBar from "../../../../components/StatsBar";
 import CourseEmpty from "../../../../components/CourseEmpty";
+import { Route as ParentRoute } from "./route";
+import { isoToMs } from "$/utils/isoToMs";
 
 export const Route = createLazyFileRoute("/app/_authenticated/courses/")({
   component: Courses,
 });
 
-const routeApi = getRouteApi("/app/_authenticated/courses");
-
 function Courses() {
   const { courses } = useCourses();
 
-  const { addCourse } = routeApi.useSearch();
-  const navigate = useNavigate({ from: "/app/_authenticated/courses/" });
+  const { addCourse } = ParentRoute.useSearch();
+  const navigate = ParentRoute.useNavigate();
 
   const setOpenModal = (open: boolean) => {
     navigate({
@@ -36,7 +31,7 @@ function Courses() {
 
   const sortedCourses = [...courses].sort((current, next) => {
     if (filter === "newest") {
-      return next.date - current.date;
+      return isoToMs(next.created_at) - isoToMs(current.created_at);
     } else if (filter === "top rated") {
       return next.rating - current.rating;
     } else if (filter === "most popular") {
@@ -102,7 +97,7 @@ function Courses() {
                       onClick={() => setOpenModal(true)}
                       className="bg-dark text-xs border  sm:border-0 h-full  flex justify-center items-center gap-1 font-medium p-4 sm:p-2 sm:w-22 text-white rounded-xl"
                     >
-                      <span className="hidden sm:inline">Add</span>{" "}
+                      <span className="hidden sm:inline">Add</span>
                       <Plus size={18} stroke="white" />
                     </button>
                   </div>
