@@ -108,9 +108,10 @@ function Signup() {
 
   const handleSignup: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
     const formdata = new FormData(e.currentTarget);
-    setLoading((loading) => true);
-    setMessage((message) => "");
 
     const userEmail = formdata.get("email")?.toString();
     const userName = formdata.get("name")?.toString();
@@ -161,9 +162,14 @@ function Signup() {
       router.invalidate();
       navigate({ to: search.redirect || "/app/dashboard" });
 
-      setIsVisible(true);
       setIsSuccess(true);
-      setMessage("Signup successful!");
+      setIsVisible(true);
+      setMessage("Sigup Successful!");
+
+      setTimeout(() => {
+        setIsVisible(false);
+        setTimeout(() => setMessage(""), 1000);
+      }, 2000);
     }
 
     setLoading(false);
@@ -236,7 +242,7 @@ function Signup() {
                 I accept the
                 <a
                   href="./"
-                  className="font-medium inline-block ml-1 text-mediumgrey hover:text-golden"
+                  className="font-medium inline-block ml-1 text-mediumgrey hover:text-golden focus:text-golden"
                 >
                   Terms and Conditions
                 </a>
@@ -244,7 +250,7 @@ function Signup() {
             </div>
             <button
               disabled={loading}
-              className={`disabled:cursor-not-allowed w-full text-white bg-dark hover:bg-jive-blue focus:ring-4 focus:outline-none focus:ring-[] font-medium rounded-full text-lg px-5 py-3 text-center  transition hover:bg-turq`}
+              className={`disabled:cursor-not-allowed w-full text-white bg-dark  focus:bg-turq focus:ring-4 focus:ring-[] font-medium rounded-full text-lg px-5 py-3 text-center  transition hover:bg-turq`}
             >
               {!loading ? "Create an account" : "Creating your account..."}
             </button>
