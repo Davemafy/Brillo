@@ -1,12 +1,68 @@
-interface CourseProps {
+interface RouterContext {
+  auth: { isAuthenticated: boolean; user: string | null }
+  queryClient: QueryClient
+}
+
+interface SearchParams {
+  redirect?: string;
+};
+
+interface HistoryState {
+  returnTo?: string;
+  from?: string;
+}
+
+interface LoginState {
+  returnTo?: string;
+}
+
+interface AppUser {
   id: string;
+  email: string;
+  name: string;
+  avatar: string;
+  provider: 'google' | 'email';
+}
+
+
+interface Course {
+  id: string;
+  created_at: string;
+  user_id: string;
   img: string;
   title: string;
-  rating: number;
-  user_id: string;
-  duration: sting;
-  subtitle: string;
-  progress: number;
-  created_at: string;
   instructor: string;
+  subtitle: string;
+  duration: sting;
+  rating: number;
+  progress: number;
+}
+
+interface Note {
+  id: string;
+  course_id: string;
+  title: string;
+  course_title: string;
+  created_at: string;
+  description: string;
+  duration: string;
+  img: string;
+}
+
+
+type ThemeMode = 'light' | 'dark' | 'system';
+
+interface ThemeType {
+  current: ThemeMode;
+  themes: {
+    light: {
+      style: string;
+    };
+    dark: {
+      style: string;
+    };
+    system: {
+      style: string;
+    };
+  };
 }
