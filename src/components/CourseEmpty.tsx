@@ -16,8 +16,8 @@ function CourseEmpty() {
       <p className="font-semibold text-xs">
         Your journey hasn't started... yet.
       </p>
-      <Link className="" to={"../courses"} search={{ addCourse: true }}>
-        <button className="bg-dark text-x h-full  flex justify-center items-center justify-between gap-1 font-medium p-2 w-fit text-white text-sm rounded-xl">
+      <Link className="" to={"/app/courses"} search={{ addCourse: true }}>
+        <button className="bg-dark text-x h-full  flex justify-center items-center gap-1 font-medium p-2 w-fit text-white text-sm rounded-xl">
           Add a course <Plus size={18} stroke="white" />
         </button>
       </Link>
