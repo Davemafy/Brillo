@@ -20,5 +20,6 @@ Easy to use learning tracker that helps you log daily learning activity and stay
 I wanted to practice building a real, usable web app instead of isolated components.
 
 ## Status
-MVP in progress – core features implemented.
+MVP in completed – core features implemented.
 
+New Version Incoming 🚀 
