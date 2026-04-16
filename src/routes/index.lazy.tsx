@@ -141,7 +141,6 @@ function Index() {
             sizes="(max-width: 600px) 300px,
          791px"
             src="/assets/img/brillo-phones.webp"
-            loading="lazy"
             className="w-full"
             alt="Jive phones"
           />
