@@ -135,15 +135,17 @@ function Index() {
       </div>
       <section className="flex  items-center pt-8 justify-center">
         <div className="relative mx-auto max-w-200 w-auto">
-          <img
-            srcSet="/assets/img/brillo-phones-small.webp 300w,
-          /assets/img/brillo-phones.webp 791w"
-            sizes="(max-width: 600px) 300px,
-         791px"
-            src="/assets/img/brillo-phones.webp"
-            className="w-full"
-            alt="Jive phones"
-          />
+          <picture>
+            <source
+              srcSet="/assets/img/brillo-phones-small.webp"
+              media="(max-width: 600px)"
+            />
+            <img
+              src="/assets/img/brillo-phones.webp"
+              className="w-full"
+              alt="Jive phones"
+            />
+          </picture>
         </div>
       </section>
       <section className="grid place-content-center px-6 py-24">
