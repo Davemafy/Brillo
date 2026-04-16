@@ -142,7 +142,8 @@ function Index() {
             />
             <img
               src="/assets/img/brillo-phones.webp"
-              className="w-full min-h-197.75"
+              className="w-full"
+              height="791"
               alt="Jive phones"
             />
           </picture>
