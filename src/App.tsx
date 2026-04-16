@@ -10,7 +10,11 @@ import ErrorBoundary from "./components/ErrorBoundary";
 const router = createRouter({
   routeTree,
   context: {
-    auth: undefined,
+    auth: {
+      isAuthenticated: false,
+      user: null,
+    },
+    queryClient: undefined,
   },
   defaultPendingComponent: () => (
     <div className="h-screen grid place-content-center">
@@ -54,16 +58,16 @@ const router = createRouter({
   ),
 });
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
-    router: typeof router
+    router: typeof router;
   }
 }
 
 function App() {
   return (
     <>
-      <UserProvider>  
+      <UserProvider>
         <RouterApp />
       </UserProvider>
     </>
@@ -72,15 +76,18 @@ function App() {
 
 function RouterApp() {
   const { user } = useUser();
-  const auth = {
+  const authContext = {
     isAuthenticated: !!user,
     user: user,
   };
-  
+
   return (
     <>
       <ErrorBoundary>
-        <RouterProvider router={router} context={{ auth }} />
+        <RouterProvider
+          router={router}
+          context={{ auth: authContext, queryClient: undefined }}
+        />
       </ErrorBoundary>
     </>
   );

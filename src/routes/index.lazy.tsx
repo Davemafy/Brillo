@@ -105,7 +105,11 @@ function Index() {
               >
                 {headCopy.split(" ").map((word, wordIndex) => {
                   return (
-                    <SpanStyled key={wordIndex} word={word} wordIndex={wordIndex} />
+                    <SpanStyled
+                      key={wordIndex}
+                      word={word}
+                      wordIndex={wordIndex}
+                    />
                   );
                 })}
               </h1>
@@ -129,9 +133,13 @@ function Index() {
           </div>
         </section>
       </div>
-      <section className="flex items-center pt-8 justify-center">
+      <section className="flex  items-center pt-8 justify-center">
         <div className="relative mx-auto max-w-200 w-auto">
           <img
+            srcSet="/assets/img/brillo-phones-small.webp 300w,
+          /assets/img/brillo-phones.webp 791w"
+            sizes="(max-width: 600px) 300px,
+         791px"
             src="/assets/img/brillo-phones.webp"
             loading="lazy"
             className="w-full"
@@ -239,10 +247,7 @@ function Index() {
               Brillo
             </a>
             <span> by </span>
-            <a
-              href="https://github.com/Davemafy"
-              className="hover:text-rose"
-            >
+            <a href="https://github.com/Davemafy" className="hover:text-rose">
               David Ventures
             </a>
           </p>

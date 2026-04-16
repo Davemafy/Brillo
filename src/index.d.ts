@@ -1,5 +1,5 @@
 interface RouterContext {
-  auth: { isAuthenticated: boolean; user: string | null }
+  auth: { isAuthenticated: boolean; user: AppUser | null }
   queryClient: QueryClient
 }
 

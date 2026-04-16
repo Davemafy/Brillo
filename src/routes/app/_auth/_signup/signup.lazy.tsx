@@ -230,6 +230,7 @@ function Signup() {
             </div>
             <div className="flex gap-3 items-center">
               <input
+                id="accept-terms"
                 type="checkbox"
                 name="accept-terms"
                 required
@@ -237,12 +238,13 @@ function Signup() {
               />
               <label
                 htmlFor="accept-terms"
-                className="font-light text-sm md:text-base text-gray-500"
+                className="font-light cursor-pointer select-none text-sm md:text-base text-gray-500"
               >
                 I accept the
                 <a
-                  href="./"
+                  href="#"
                   className="font-medium inline-block ml-1 text-mediumgrey hover:text-golden focus:text-golden"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   Terms and Conditions
                 </a>
@@ -261,7 +263,7 @@ function Signup() {
               onError={handleLoginError}
             />
           </div>
-          <p className="text-[#6b7280] font-light">
+          <p className="text-[#6b7280] flex gap-1 font-light">
             Already have an account?
             <Link
               to="/app/login"

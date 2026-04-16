@@ -25,14 +25,27 @@ const Sidebar = ({ sidebarOpen, closeSideBar }: SidebarProps) => {
   const { setLoading, setIsSuccess, setMessage, setIsVisible } = useAuth();
 
   const handleLogout = async () => {
+    setLoading(true);
+
+    // 1. Clear external sessions (Supabase/Google) first
     await logOut();
 
-    setUser((user) => null);
-    router.invalidate();
-    navigate({ to: "/app/login" });
+    // 2. IMPORTANT: Move to the login page BEFORE updating internal state.
+    // This prevents the protected route's beforeLoad from firing while you're still on it.
+    await navigate({
+      to: "/app/login",
+      replace: true,
+    });
 
-    setIsSuccess(false);
+    // 3. Now update your React state.
+    // The router context updates, but since you're already on /login,
+    // the protected beforeLoad guards won't intercept you.
+    setUser(null);
+
+    // 4. Force a clean state refresh
+    router.invalidate();
     setIsVisible(true);
+    setIsSuccess(false);
     setMessage("You are logged out");
 
     setTimeout(() => {
