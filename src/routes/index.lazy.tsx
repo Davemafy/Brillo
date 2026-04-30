@@ -143,6 +143,7 @@ function Index() {
             <img
               src="/assets/img/brillo-phones.webp"
               className=""
+              fetchPriority="high"
               style={{
                 aspectRatio: "1.03",
                 height: "auto",
