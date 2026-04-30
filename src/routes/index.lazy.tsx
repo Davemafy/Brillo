@@ -79,7 +79,7 @@ function Index() {
               to="/"
               className="sm:mx-auto flex items-center sm:justify-center"
             >
-              <img src="/assets/img/brillo.svg" alt="brillo" className="h-7" />
+              <img src="/assets/img/brillo.svg" height="28" alt="brillo" />
             </Link>
             <div className=" flex justify-end gap-2 ">
               <Link
@@ -219,6 +219,7 @@ function Index() {
             src="/assets/img/brillo.svg"
             loading="lazy"
             alt=""
+            height="32"
             className="mx-auto"
           />
           <p className="text-lightgrey font-normal leading-7">
