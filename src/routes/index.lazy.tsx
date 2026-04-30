@@ -133,7 +133,7 @@ function Index() {
           </div>
         </section>
       </div>
-      <section className="flex  items-center pt-8 justify-center">
+      <section className="flex items-center pt-8 justify-center">
         <div className="relative mx-auto max-w-200 w-auto">
           <picture>
             <source
