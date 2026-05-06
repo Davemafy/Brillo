@@ -5,6 +5,7 @@ import { Squircle } from 'ldrs/react'
 import { useEffect, useRef, useState, type SubmitEventHandler } from 'react'
 import { generateCourseSubtitle } from '../utils/ai'
 import { useUser } from '../hooks/useUser'
+import { useAuth } from '$/hooks/useAuth'
 
 interface CourseFormProps {
   setOpenModal: (open: boolean) => void
@@ -104,6 +105,7 @@ const CourseForm = ({ setOpenModal }: CourseFormProps) => {
 
     if (error) {
       console.error(error)
+
       setLoading(false)
       return
     }
