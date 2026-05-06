@@ -118,7 +118,7 @@ function Login() {
   return (
     <>
       <title> Login | Brillo </title>
-      <div className="h-screen  flex flex-col  lg:flex-row gap-2">
+      <main className="h-screen  flex flex-col  lg:flex-row gap-2">
         <div className="grow bg-[url(/assets/img/jive-shapes-top.svg)]  lg:bg-[url(/assets/img/jive-shapes-left.svg)] flex min-h-0 lg:h-screen bg-no-repeat bg-cover bg-bottom lg:bg-top-right w-full"></div>
         <div className="grow md:py-8 w-full md:mt-0 sm:max-w-md xl:p-0 lg:w-auto px-6 mx-auto flex flex-col justify-center flex-none gap-6 items-center lg:min-w-125 max-w-160 ">
           <Link to="/" className="mb-4">
@@ -185,7 +185,7 @@ function Login() {
           </p>
         </div>
         <div className="grow bg-[url(/assets/img/jive-shapes-bottom.svg)] lg:bg-[url(/assets/img/jive-shapes-right.svg)] flex min-h-0 lg:h-screen bg-no-repeat bg-cover bg-top lg:bg-top-left w-full"></div>
-      </div>
+      </main>
     </>
   );
 }

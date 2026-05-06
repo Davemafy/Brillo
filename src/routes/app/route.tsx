@@ -25,6 +25,7 @@ function PopUp() {
       className={` ${isVisible ? ` scale-100 ${isSuccess ? "text-green-900 border-neutral-800" : "text-neutral-900 border-red-800"} translate-x-0 opacity-100 shadow-2xl   duration-300` : "scale-0 opacity-0 translate-x-100"} fixed z-100 top-6 right-6 sm:top-10 sm:right-10 flex gap-1.5 items-center bg-white border-t-0 outline font-medium rounded-xl transform  p-4  transition  `}
     >
       <button
+        name={isSuccess ? "check" : "cancel"}
         onClick={() => {
           setIsVisible(false);
           setMessage("");

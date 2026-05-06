@@ -108,14 +108,12 @@ function CoursePage() {
       {/* Modal Overlay */}
       {openModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
             <NoteForm
               course={course}
               setCourses={setCourses}
               setNotes={setNotes}
               setOpenModal={setOpenModal}
             />
-          </div>
         </div>
       )}
 
