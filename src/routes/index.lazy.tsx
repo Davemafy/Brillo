@@ -59,6 +59,7 @@ function Index() {
           {/* Mobile: default fallback */}
           <img
             src="/assets/img/home-shapes-mobile.svg"
+            fetchPriority="high"
             className="w-full h-full object-cover shapes-pos"
             alt="Background Shapes"
           />
