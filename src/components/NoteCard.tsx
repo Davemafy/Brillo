@@ -27,20 +27,37 @@ const NoteCard = ({ note, className, notes, setNotes }: NoteCardProps) => {
     }
   };
 
-  function saveEdit() {
-    setEditing(false);
+  const saveEdit = async function () {
+    console.log("Saving...");
+
+    const { data, error } = await supabase
+      .from("notes")
+      .update({ title: titleValue, description: descValue })
+      .eq("id", note.id)
+      .select();
+
+      console.log(data);
     
-  }
+    if (error) {
+      console.log("Failed to save!");
+    }
+    if (data) {
+      setNotes?.(notes => [...notes, ...data])
+      console.log("Succesfully Saved!");
+    }
+
+    setEditing(false);
+  };
 
   function cancelEdit() {
     setEditing(false);
-    setTitleValue(note.title)
-    setDescValue(note.description)
+    setTitleValue(note.title);
+    setDescValue(note.description);
   }
 
   return (
     <li
-      className={`${editing ? "border-black bg-linear-120 from-[#f9f9f9] to-[#FFF9E6] " : "border-grey bg-[#f9f9f9] "} flex relative cursor-pointer outline w-full flex-col p-6 px-6 gap-2 border outline-accent rounded-2xl ${className || ""}`}
+      className={`${editing ? "note-card border-black bg-linear-120 from-[#f9f9f9] to-[#FFF9E6] " : "border-grey bg-[#f9f9f9] "} flex relative cursor-pointer outline w-full flex-col p-6 px-6 gap-2 border outline-accent rounded-2xl ${className || ""}`}
     >
       <div className="flex mb-2 justify-between items-center ">
         <p className="text-[0.5rem] p-2 px-3 font-semibold bg-neutral-200 rounded-2xl">
