@@ -36,13 +36,13 @@ const NoteCard = ({ note, className, notes, setNotes }: NoteCardProps) => {
       .eq("id", note.id)
       .select();
 
-      console.log(data);
-    
+    console.log(data);
+
     if (error) {
       console.log("Failed to save!");
     }
     if (data) {
-      setNotes?.(notes => [...notes, ...data])
+      setNotes?.((notes) => [...notes, ...data]);
       console.log("Succesfully Saved!");
     }
 
@@ -57,7 +57,7 @@ const NoteCard = ({ note, className, notes, setNotes }: NoteCardProps) => {
 
   return (
     <li
-      className={`${editing ? "note-card border-black bg-linear-120 from-[#f9f9f9] to-[#FFF9E6] " : "border-grey bg-[#f9f9f9] "} flex relative cursor-pointer outline w-full flex-col p-6 px-6 gap-2 border outline-accent rounded-2xl ${className || ""}`}
+      className={`note-card 90${editing ? " border-black bg-linear-120 from-[#f9f9f9] to-[#FFF9E6] " : "border-grey bg-[#f9f9f9] "}  flex relative cursor-pointer outline w-full flex-col p-6 px-6 gap-2 border outline-accent rounded-2xl ${className || ""}`}
     >
       <div className="flex mb-2 justify-between items-center ">
         <p className="text-[0.5rem] p-2 px-3 font-semibold bg-neutral-200 rounded-2xl">
@@ -65,17 +65,28 @@ const NoteCard = ({ note, className, notes, setNotes }: NoteCardProps) => {
         </p>
         <div className="flex gap-2">
           {!editing ? (
-            <button
-              style={
-                {
-                  "--tooltip-text": '"Edit"',
-                } as React.CSSProperties
-              }
-              onClick={() => setEditing(true)}
-              className="tooltip border-gray-200 ml-auto"
-            >
-              <Pencil size={15} className="hover:text-orange-500" />
-            </button>
+            <div className="action-btns flex gap-[inherit]">
+              <button
+                style={
+                  {
+                    "--tooltip-text": '"Edit"',
+                  } as React.CSSProperties
+                } 
+                onClick={() => setEditing(true)}
+                className="tooltip border-gray-200 ml-auto"
+              >
+                <Pencil size={15} className="hover:text-orange-500" />
+              </button>
+              <button
+                style={{ "--tooltip-text": '"Delete"' } as React.CSSProperties}
+                className=" tooltip hover:text-red-500 "
+                onClick={(e) => {
+                  deleteNote(note.id);
+                }}
+              >
+                <Trash size={15} />
+              </button>
+            </div>
           ) : (
             <>
               <button
@@ -102,15 +113,6 @@ const NoteCard = ({ note, className, notes, setNotes }: NoteCardProps) => {
               </button>
             </>
           )}
-          <button
-            style={{ "--tooltip-text": '"Delete"' } as React.CSSProperties}
-            className=" tooltip hover:text-red-500 "
-            onClick={(e) => {
-              deleteNote(note.id);
-            }}
-          >
-            <Trash size={15} />
-          </button>
         </div>
       </div>
       <div className="flex h-full mb-2 justify-between">
